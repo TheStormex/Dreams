@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Library script(s) -->
+    <!-- Add your required libraries here either as local files or CDN-hosted files -->
+
+    <!-- My script(s) -->
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+      integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+      crossorigin="anonymous"></script>
+
+    <script src="js/libraries/p5.min.js"></script>
+    <script src="js/libraries/p5.sound.min.js"></script>
+    <script src="js/libraries/p5.dom.min.js"></script>
+
+    <script src="js/Images.js"></script>
+    <script src="js/Player.js"></script>
+    <script src="js/Enemy.js"></script>
+    <script src="js/States/FightState.js"></script>
+    <script src="js/States/PlanState.js"></script>
+    <script src="js/Abilities/AbilityEffect.js"></script>
+    <script src="js/Abilities/PlayerAbility.js"></script>
+    <script src="js/Abilities/EnemyAbility.js"></script>
+    <script src="js/Abilities/Bullets/Bullet.js"></script>
+    <script src="js/Abilities/Bullets/BulletStats.js"></script>
+    <script src="js/script.js"></script>
+
+  </head>
+
+  <body>
+    <div id="dialogBox">
+      <p id="dialogText"> </p>
+      <button id="previousButton" onclick="previousDialog()"> Back </button>
+      <button id="nextButton" onclick="nextDialog()"> Next </button>
+      <button id="skipButton" onclick="skipDialog()"> Finish Tutorial </button>
+    </div>
+    <div id="startScreen">
+      <p id="title" class="largeText">
+        The Last Hacktivists
+      </p>
+      <div id="letter" class="textWall">
+        <p>
+          In 202X, the global technology and communication corporation OmniSyt has taken over the entire world.
+          using their control over all information, they have engaged in information warfare and has taken over
+          every government in the world. Using this power, OmniSyt is slowly taking away
+          the freedom of all Internet users and charging impossible prices for all to use phones, Internet and more.
+          all hacktivism groups have failed to defeat them, except one. The duo known as Nuts and Bolt have infiltrated
+          their system and is attempting to disable their main servers, however, the server has sent two powerful programs
+          to stop them.
+        </p>
+        <p>
+          You have been selected to be the person-behind-the-desk for Nuts and Bolt!
+          Your job is to give commands through our game-based interface and control their virtual avatars in order to
+          defeat the two anti-virus programs protecting OmniSyt's system. Hurry! The fate of humanity and the freedom of
+          information rest upon your fingertips! Patch in now by pressing this button!
+        </p>
+        <button id="startButton" class="bigButton" onclick="startGame()"> Begin!  </button>
+      </div>
+    </div>
+    <div id="endScreen" class="largeText">
+      <p id="endingTitle"> </p>
+      <p id="endingText"> </p>
+    <!--  <button id="restartButton" class="bigButton" onclick="restart()"> Restart Game </button> -->
+    </div>
+  </body>
+
+</html>
