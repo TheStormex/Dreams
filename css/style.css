@@ -4,7 +4,7 @@ body {
   background-color: black;
 }
 .bigButton {
-  background-color: #00FF00;
+  background-color: #ffbf00;
   color: white;
   width: 20%;
   height: 20%;
@@ -15,12 +15,12 @@ body {
 
 .bigButton:hover {
   background-color: white;
-  color: #00FF00;
+  color: #ffbf00;
 }
 
 button {
   font-family: 'Orbitron', sans-serif;
-  background-color: #00FF00;
+  background-color: #ffbf00;
   color: black;
 }
 
@@ -33,18 +33,18 @@ button:hover {
   font-size: 30px;
   text-align: center;
   text-indent: 2em;
-  color: #00FF00;
+  color: #ffbf00;
   margin: auto;
 }
 
 #title {
-  
+
 }
 
 .largeText {
   font-size: 50px;
   text-align: center;
-  color: #00FF00;
+  color: #ffbf00;
   margin: auto;
 }
 
@@ -59,7 +59,7 @@ button:hover {
 #dialogBox {
   display: none;
   background-color: black;
-  color: #00FF00;
+  color: #ffbf00;
   margin: auto;
   text-align: center;
 }

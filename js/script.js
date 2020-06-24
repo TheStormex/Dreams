@@ -109,10 +109,16 @@ let currentChar;
 let whichScreen;
 let winLose;
 // players and enemy objects
-let bolt;
-let nuts;
-let serpent;
-let agent;
+// players
+let main;
+let roller;
+let zaria;
+let grandma;
+// enemies
+let wallraiser;
+let bigBully;
+let twistedClock;
+let cardImp;
 
 let boltImages;
 let nutsImages;
@@ -141,8 +147,12 @@ let gameStarted = false;
 // speed and size = % of screen
 // change: what to change, how much to change total %, how long should it take to finish the change
 // change for spawn = spawn, what tp spawn, what can cause the spawn (time, hit) if time, then how long; if hit, then hit what
-let pro_p_bolt_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
-let pro_p_nuts_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// basic attacks
+let pro_p_main_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
+let pro_p_roller_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_zaria_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_grandma_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// abilities
 let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
@@ -285,10 +295,14 @@ function setup() {
   soundsList.push(A_COMBAT_ULT);
 
   // add the image to each bullet's image slot and sounds slot
-  pro_p_bolt_basic.images = S_BOLT_BULLET_BASIC;
-  pro_p_bolt_basic.sounds = A_BOLT_BASIC;
-  pro_p_nuts_basic.images = S_NUTS_BULLET_BASIC;
-  pro_p_nuts_basic.sounds = A_NUTS_BASIC;
+  pro_p_main_basic.images = S_BOLT_BULLET_BASIC;
+  pro_p_main_basic.sounds = A_BOLT_BASIC;
+  pro_p_roller_basic.images = S_NUTS_BULLET_BASIC;
+  pro_p_roller_basic.sounds = A_NUTS_BASIC;
+  pro_p_zaria_basic.images = S_BOLT_BULLET_BASIC;
+  pro_p_zaria_basic.sounds = A_BOLT_BASIC;
+  pro_p_grandma_basic.images = S_NUTS_BULLET_BASIC;
+  pro_p_grandma_basic.sounds = A_NUTS_BASIC;
   pro_p_logicBomb.images = S_LOGIC_BOMB;
   pro_p_logicBomb.sounds = A_COMBAT;
   pro_p_backdoor.images = S_BACK_DOOR;
@@ -709,22 +723,35 @@ function skipDialog() {
 function initialisation() {
   // reset all stats fora new game
   // create the player characters and enemy characters
+  // players
   boltImages = new Images(S_BOLT_LEFT, S_BOLT_RIGHT, S_BOLT_FRONT, S_BOLT_FACE);
-  bolt = new Player("Bolt", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_bolt_basic, boltImages);
+  main = new Player("Main", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_main_basic, boltImages);
+  roller = new Player("Roller", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_roller_basic, boltImages);
   nutsImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
-  nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_nuts_basic, nutsImages);
+  zaria = new Player("Zaria", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_zaria_basic, nutsImages);
+  grandma = new Player("Grandma", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_grandma_basic, nutsImages);
+  // enemies
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
-  agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages);
-  for (var i = 0; i < agent.abilities.length; i++) {
-    agent.abilities[i].user = agent;
+  wallraiser = new Enemy("Wallraiser", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages);
+  for (var i = 0; i < wallraiser.abilities.length; i++) {
+    wallraiser.abilities[i].user = wallraiser;
+  }
+  bigBully = new Enemy("Big Bully", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages);
+  for (var i = 0; i < bigBully.abilities.length; i++) {
+    bigBully.abilities[i].user = bigBully;
   }
   serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
-  serpent = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages);
-  for (var i = 0; i < serpent.abilities.length; i++) {
-    serpent.abilities[i].user = serpent;
+  twistedClock = new Enemy("Twisted Clock", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages);
+  for (var i = 0; i < twistedClock.abilities.length; i++) {
+    twistedClock.abilities[i].user = twistedClock;
   }
-  playersList = [bolt, nuts];
-  enemiesList = [agent, serpent];
+  serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
+  cardImp = new Enemy("Card Imp", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages);
+  for (var i = 0; i < cardImp.abilities.length; i++) {
+    cardImp.abilities[i].user = cardImp;
+  }
+  playersList = [main, roller, zaria, grandma];
+  enemiesList = [wallraiser, bigBully, twistedClock, cardImp];
 // set the number of steps of each ability of each player
   for (let i = 0; i < playersList.length; i++) {
     for (let i2 = 0; i2 <  playersList[i].abilities[0].length; i2++) {
@@ -735,7 +762,7 @@ function initialisation() {
       }
     }
   }
-  frontline = bolt;
+  frontline = main;
   currentChar = "none";
   // enter the title state and starts the first turn
   whichScreen = PLAN_STATE;
