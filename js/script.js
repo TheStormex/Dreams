@@ -348,11 +348,11 @@ function drawCommonUI() {
     fill(255);
     rect(width/2, height-height/6, width, height/3);
     // name of char, health bar, energy, ult charge
-    textSize(width/30+height/60);
+    textSize(width/65+height/60);
     textAlign(CENTER);
     fill(0);
     // name
-    text(currentChar.name, width/20, height-height/4);
+    text(currentChar.name, width/20, height-height/3.8);
     fill(255);
     strokeWeight(5);
     stroke(0);

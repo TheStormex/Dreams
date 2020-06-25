@@ -40,6 +40,12 @@ class PlanState {
             }
           }
         }
+        // if mouseover a character's head, show the passives this character has
+        if (currentChar !== "none") {
+          if (mouseX > width/18-width/20 && mouseX < width/18-width/20+width/10 && mouseY > height-height/7-height/12 && mouseY < height-height/7-height/12+height/6) {
+            console.log("yes");
+          }
+        }
         // check if mousing over the fight button
         if (mouseX > width-width/10-width/20 && mouseX < width-width/10+width/10-width/20 && mouseY > height/2-height/30 && mouseY < height/2+height/15-height/30) {
           mouseOver = "fight"
@@ -81,26 +87,26 @@ class PlanState {
     fill(255);
     // check enemy / player amount, for each enemy / player, draw name, sprites and stats
     for (let i = 0; i < playersList.length; i++) {
-      textSize(width/100+height/100);
+      textSize(width/200+height/100);
       rectMode(CENTER, CENTER);
       // mark the selected character with a square depending on the situation, if choose, then friendly only (can be selected to act)
       // if ability, then those who can be selected will glow and those moused over will have another square
       if (this.situation === "choose") {
         if (currentChar.name === playersList[i].name) {
           fill(0, 100, 255);
-          rect(width*(i+1)/(playersList.length+1), height/2, width/5, height/3);
+          rect(width*(i+1)/(playersList.length+1), height/2, width/7, height/3);
         }
       } else if (this.situation === "ability") {
         if (currentAbility.currentEffect.canTargetsList.includes(playersList[i])) {
           fill(255, 200, 50);
-          rect(width*(i+1)/(playersList.length+1), height/2, width/5, height/3);
+          rect(width*(i+1)/(playersList.length+1), height/2, width/7, height/3);
         }
       }
 
       // if this is the frontline character, mark it
       if (frontline.name === playersList[i].name) {
         fill(255, 150, 0);
-        rect(width*(i+1)/(playersList.length+1), height/2, width/7, height/3.2);
+        rect(width*(i+1)/(playersList.length+1), height/2, width/9, height/3.2);
       }
       // images of the player's front
       imageMode(CENTER);
@@ -178,7 +184,7 @@ class PlanState {
       if (this.situation === "ability") {
         if (currentAbility.currentEffect.canTargetsList.includes(enemiesList[i])) {
           fill(255, 200, 50);
-          rect(width*(i+1)/(enemiesList.length+1), height/6, width/5, height/3.4);
+          rect(width*(i+1)/(enemiesList.length+1), height/6, width/7, height/3.4);
         }
       }
       fill(255);
@@ -299,7 +305,7 @@ class PlanState {
         } else {
           fill(255,50,0);
         }
-        rect(width-width/10, height/2, width/10, height/15);
+        rect(width-width/15, height/2, width/10, height/15);
         // if moused over, it is highlighted
         if (mouseOver === "cancel") {
           fill(255, 0, 0);
@@ -308,7 +314,7 @@ class PlanState {
         }
         textAlign(CENTER, CENTER);
         textSize(width/120+height/120);
-        text("Cancel Ability", width-width/10, height/2);
+        text("Cancel Ability", width-width/15, height/2);
         pop();
       }
     }
@@ -323,7 +329,7 @@ class PlanState {
       } else {
         fill(255,255,0);
       }
-      rect(width-width/10, height/2, width/10, height/15);
+      rect(width-width/15, height/2, width/10, height/15);
       // if moused over, it is highlighted
       if (mouseOver === "fight") {
         fill(255, 255, 0);
@@ -332,7 +338,7 @@ class PlanState {
       }
       textAlign(CENTER, CENTER);
       textSize(width/80+height/50);
-      text("Fight!", width-width/10, height/2);
+      text("Fight!", width-width/15, height/2);
       pop();
     }
   }
