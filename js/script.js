@@ -13,43 +13,17 @@ and free the world from tyranny?
 // constants
 // dialogue given by the hacker characters as tutorial
 const TUTORIAL_TEXT = [
-  "Bolt: Hey! Here you are!",
-  "Nuts: We've been waiting for you!",
-  "Bolt: It is time to finish this!",
-  "Nuts: OmniSyt is going down today!",
-  "Bolt: Let's help you get familiar with the interface!",
-  "Nuts: You can see the AVATARS of the two enemies on top and us under them,",
-  "Nuts: On the very bottom you can see our stats and abilities.",
-  "Bolt: Switch between which one of us you see by hovering your mouse over our AVATARS.",
-  "Bolt: You can see our stats: HEALTH, ENERGY and ULT CHARGE.",
-  "Nuts: If our HEALTH hits 0, we get disconnected! Make sure that does not happen!",
-  "Nuts: On the other hand, our goal is to make the enemies' HEALTH hit 0!",
-  "Bolt: Our ENERGY is used to activate abilities, we get some ENERGY at the beginning of every turn.",
-  "Bolt: You can see which turn we are on at the bottom-left corner of your screen.",
-  "Bolt: A turn goes like so: you choose if any of us uses our SUPPORT ABILITIES you see down there in this PLAN STATE,",
-  "Bolt: We can only use each of our SUPPORT ABILITIES once per turn.",
-  "Bolt: Afterwards, you press the Fight! button to enter FIGHT STATE so we can destroy the enemies!",
-  "Nuts: In the FIGHT STATE, you control one of us, the FRONTLINE that you have chosen. At the moment, Bolt is the frontline.",
-  "Nuts: You use left click on the mouse to shoot at the enemies and WASD to move around.",
-  "Nuts: Avoid enemies and their bullets, you can also press CTRL, SPACEBAR and SHIFT to activate COMBAT ABILITIES",
-  "Nuts: After using a COMBAT ABILITY, it goes on cooldown so you'll have to wait before using it again.",
-  "Nuts: When the bar above the stats reaches full, you go back to PLAN STATE and do it over again",
-  "Bolt: If any of us did not use any abilities for a turn, we become REFRESHED, becoming stronger that turn and getting more ENERGY.",
-  "Bolt: If any of us is frontline for more than 2 turns and used abilities, we become TIRED, so switch between which one of us being the frontline often!",
-  "Nuts: All buffs and debuffs to our incoming and outgoing damage lasts for one turn, the same goes for the enemies.",
-  "Nuts: Using SUPPORT and COMBAT abilities as well as hitting enemies with bullets increase our ULT CHARGE.",
-  "Bolt: Once one of our ULT CHARGE is at 100%, click on our ULTIMATE ABILITY to use it. Mine is a COMBAT ABILITY while Nuts' is a SUPPORT ABILITY.",
-  "Nuts and Bolt: All right! If you are ready, press Finish Tutorial to begin our quest!"
+  "Test",
 ];
 
 const ENDING_SCREEN_TITLE = [
-  "Victory for the Hacktivists!",
-  "Defeat of the Hacktivists!"
+  "Victory",
+  "Defeat"
 ];
 
 const ENDING_SCREEN_TEXT = [
-  "We won! The future of information is saved!",
-  "We lost! There is no hope against OmniSyt anymore... is there?"
+  "We won!",
+  "We lost!"
 ];
 
 let currentDialog = TUTORIAL_TEXT;
@@ -133,6 +107,8 @@ let timeoutsList = [];
 let intervalsList = [];
 let soundsList = [];
 
+let lingeringAbilities = []
+
 // how many turns has past
 let turns = 1;
 
@@ -152,12 +128,22 @@ let pro_p_main_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["
 let pro_p_roller_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_zaria_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_grandma_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
-// abilities
+// abilities bullets
+// main
+let pro_p_confidenceBoost = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 2], ["heal", "self", 2]], 8, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+let pro_p_shockwave = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// roller
 let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["stun", 500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// zaria
+let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+// Grandma
+let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 // enemy bullets
 // agent
 let pro_e_agentBullet = new BulletStats(0.8, "towards", "straight", "players", [["damage", 5]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
@@ -165,8 +151,8 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 
 
 
-// nuts and bolt's abilities and effects
-let ab_logicBomb_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
+// player abilities and effects
+let ab_protectorsGlare_effect = new AbilityEffect("bullet", "", 1, pro_p_protectorsGlare, false, false, 0, 1);
 let ab_logicBomb = new PlayerAbility("Logic Bomb", 2, [ab_logicBomb_effect], "Throw a projectile", 32, "none", false, [[5, "hit"]], 1.5);
 let ab_backdoor_effect = new AbilityEffect("bullet", "", 5, pro_p_backdoor, false, false, 20, 1);
 let ab_backdoor_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);

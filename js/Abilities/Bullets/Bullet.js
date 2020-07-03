@@ -123,6 +123,13 @@ class Bullet {
           }, this.effects[i2][1]);
           console.log("stun");
           break;
+        // heal a character, either the user or the receiver
+        case "heal":
+          if (this.effects[i2][1] === "self") {
+            this.origin.health += this.effects[i2][2];
+          } else if (this.effects[i2][1] === "receiver") {
+            target.health += this.effects[i2][2];
+          }
         default:
       }
     }
