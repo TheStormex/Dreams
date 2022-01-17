@@ -20,6 +20,7 @@ class Player {
     // stat changes
     this.offenseChange = 0;
     this.defenseChange = 0;
+    this.bulletSpeed = 100;
     this.ultCharge = 0;
     this.frontlineTurns = 0;
     // if this char is tired (frontline for more than 2 turns)
@@ -37,6 +38,8 @@ class Player {
     this.abilities = abilities;
     // after taking a hit, the player is invincible for 0.25 seconds
     this.invincible = false;
+    // current status
+    this.status = ["none"];
   }
   move() {
     // if this char is not stunned

@@ -1,5 +1,5 @@
 class AbilityEffect {
-  constructor(type, canTargets, amount, bullet, step, aoe, delay, perDelay) {
+  constructor(type, canTargets, amount, bullet, step, aoe, delay, perDelay, whenHappen) {
     // type of the effect
     this.type = type;
     // what characters this ability effect can target, gets a list when used (player support)
@@ -19,5 +19,8 @@ class AbilityEffect {
     this.delay = delay;
     // how many bullets are created per delay time (per shot)
     this.perDelay = perDelay;
+    // after how many turns this effect happens (0 is now)
+    this.whenHappen = whenHappen;
+
   }
 }

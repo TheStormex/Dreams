@@ -12,6 +12,7 @@ class Enemy {
     this.angle = 0;
     this.offenseChange = 0;
     this.defenseChange = 0;
+    this.bulletSpeed = 100;
     this.contactDamage = contactDamage;
     this.size = size;
     this.abilities = abilities;
@@ -19,6 +20,7 @@ class Enemy {
     this.images = images;
     this.currentImage;
     this.alive = true;
+    this.status = ["none"];
   }
   draw() {
     push();

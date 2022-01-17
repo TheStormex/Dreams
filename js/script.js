@@ -13,7 +13,7 @@ and free the world from tyranny?
 // constants
 // dialogue given by the hacker characters as tutorial
 const TUTORIAL_TEXT = [
-  "Test",
+  "Test"
 ];
 
 const ENDING_SCREEN_TITLE = [
@@ -84,18 +84,20 @@ let whichScreen;
 let winLose;
 // players and enemy objects
 // players
-let main;
-let roller;
-let zaria;
-let grandma;
+let bolt;
+let nuts;
+let screws;
+let robot;
 // enemies
-let wallraiser;
-let bigBully;
-let twistedClock;
-let cardImp;
+let serpent;
+let serpent2;
+let agent;
+let agent2;
 
 let boltImages;
 let nutsImages;
+let screwsImages;
+let robotImages;
 let serpentImages;
 let agentImages;
 
@@ -124,26 +126,35 @@ let gameStarted = false;
 // change: what to change, how much to change total %, how long should it take to finish the change
 // change for spawn = spawn, what tp spawn, what can cause the spawn (time, hit) if time, then how long; if hit, then hit what
 // basic attacks
-let pro_p_main_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
-let pro_p_roller_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
-let pro_p_zaria_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
-let pro_p_grandma_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_nuts_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
+let pro_p_bolt_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_screws_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
+let pro_p_robot_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// let pro_p_zaria_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// let pro_p_grandma_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // abilities bullets
-// main
+// nuts
 let pro_p_confidenceBoost = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 2], ["heal", "self", 2]], 8, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_shockwave = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
-// roller
-let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// bolt
+
+// screws
+let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 100]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["stun", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// robot
+
 // zaria
-let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
-let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
-let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-// Grandma
-let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
-let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
-let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+// let pro_p_laserBlast = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// let pro_p_lightningBomb = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// let pro_p_ult_deathBeam = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+// let pro_p_backOff = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// // Grandma
+// let pro_p_berate = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 40]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// let pro_p_waltz = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+// let pro_p_opera = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 // enemy bullets
 // agent
 let pro_e_agentBullet = new BulletStats(0.8, "towards", "straight", "players", [["damage", 5]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
@@ -152,27 +163,39 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 
 
 // player abilities and effects
-let ab_protectorsGlare_effect = new AbilityEffect("bullet", "", 1, pro_p_protectorsGlare, false, false, 0, 1);
-let ab_logicBomb = new PlayerAbility("Logic Bomb", 2, [ab_logicBomb_effect], "Throw a projectile", 32, "none", false, [[5, "hit"]], 1.5);
+// main abilities effects
+let ab_protectorsGlare_effect = new AbilityEffect("bulletSpeed_change", "enemies", 40, "", false, false, 0, 1);
+let ab_protectorsGlare = new PlayerAbility("Protector's Glare", 2, [ab_protectorsGlare_effect], "Slow target enemy's projectiles this turn", 32, "none", false, [[5, "use"]], 0);
+let ab_energyShield_effect = new AbilityEffect("defense_change", "players", 30, "", false, false, 0, 0);
+let ab_energyShield = new PlayerAbility("Energy Shield", 2, [ab_energyShield_effect], "Give a friendly character +30% defense this turn", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
+let ab_confidenceBoost_effect = new AbilityEffect("bullet", "", 5, pro_p_confidenceBoost, false, false, 20, 1);
+let ab_confidenceBoost = new PlayerAbility("Confidence Boost", 1, [ab_confidenceBoost_effect], "Damage and weaken hit enemies", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
+let ab_shockwave_effect = new AbilityEffect("bullet", "players", 60, "", false, false, 0, 0);
+let ab_shockwave = new PlayerAbility("Shockwave",  3, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [[5, "use"], [5, "hit"]], 0);
+let ab_ult_guardianBarrier_effect = new AbilityEffect("defense_change", "players", 60, "", false, true, 0, 0);
+// bolt abilities effects
+let ab_logicBomb_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
+let ab_logicBomb = new PlayerAbility("Logic Bomb", 3, [ab_logicBomb_effect], "Throw a projectile", 32, "none", false, [[5, "hit"]], 3);
 let ab_backdoor_effect = new AbilityEffect("bullet", "", 5, pro_p_backdoor, false, false, 20, 1);
 let ab_backdoor_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
-let ab_backdoor = new PlayerAbility("Backdoor", 1, [ab_backdoor_effect, ab_backdoor_effect2], "Dash and leave behind dust", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
+let ab_backdoor = new PlayerAbility("Backdoor", 2, [ab_backdoor_effect, ab_backdoor_effect2], "Dash and leave behind dust", 32, "none", false, [[5, "hit"], [2, "use"]], 2);
 let ab_cleanupProtocol_effect = new AbilityEffect("heal", "players", 60, "", false, false, 0, 0);
 let ab_cleanupProtocol = new PlayerAbility("Cleanup Protocol",  3, [ab_cleanupProtocol_effect], "Heal 60 HP to a friendly character", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
 let ab_signalBoost_effect = new AbilityEffect("ramp", "players", 5, "", false, false, 0, 0);
 let ab_signalBoost = new PlayerAbility("Signal Boost", 4, [ab_signalBoost_effect], "Give 5 energy to a friendly character", 32, "none", false, [[10, "use"]], 0);
 let ab_ult_bitRotWorm_effect = new AbilityEffect("bullet", "", 20, pro_p_ult_bitRotWorm, false, false, 100, 1);
 let ab_ult_bitRotWorm = new PlayerAbility("Bitrot Worm", 0, [ab_ult_bitRotWorm_effect], "Shoot a powerful beam", 32, "none", true, [[5, "hit"]], 0);
-let ab_firewall_effect = new AbilityEffect("defense_up", "players", 25, "", false, false, 0);
+// nuts
+let ab_firewall_effect = new AbilityEffect("defense_change", "players", 25, "", false, false, 0);
 let ab_firewall = new PlayerAbility("Firewall", 3, [ab_firewall_effect], "Increase defense by 25% to a friendly character", 32, "none", false, [[10, "use"]], 0);
-let ab_targetExploits_effect = new AbilityEffect("defense_down", "enemies", 25, "", false, false, 0, 0);
+let ab_targetExploits_effect = new AbilityEffect("defense_change", "enemies", -25, "", false, false, 0, 0);
 let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Decrease defense by 25% to an enemy character", 32, "none", false, [[10, "use"]], 0);
 let ab_DOOS_effect = new AbilityEffect("bullet", "", 1, pro_p_DDOS, false, false, 0, 1);
 let ab_DDOS = new PlayerAbility("DDoS", 2, [ab_DOOS_effect], "Stun enemies hit for 0.5 seconds", 32, "none", false, [[5, "hit"]], 1);
 let ab_bruteForce_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 10);
 let ab_bruteForce_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
 let ab_bruteForce = new PlayerAbility("Brute Force Attack", 1, [ab_bruteForce_effect, ab_bruteForce_effect2], "Dash and shoot around you", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
-let ab_ult_vpn_effect = new AbilityEffect("offense_up", "players", 80, "", false, true, 0, 0);
+let ab_ult_vpn_effect = new AbilityEffect("offense_change", "players", 80, "", false, true, 0, 0);
 let ab_ult_vpn = new PlayerAbility("Activate VPN", 0, [ab_ult_vpn_effect], "Increase offence by 80% to all friendly characters", 32, "none", true, [[0, "use"]], 0);
 
 // the ability that is being activated right now
@@ -281,14 +304,10 @@ function setup() {
   soundsList.push(A_COMBAT_ULT);
 
   // add the image to each bullet's image slot and sounds slot
-  pro_p_main_basic.images = S_BOLT_BULLET_BASIC;
-  pro_p_main_basic.sounds = A_BOLT_BASIC;
-  pro_p_roller_basic.images = S_NUTS_BULLET_BASIC;
-  pro_p_roller_basic.sounds = A_NUTS_BASIC;
-  pro_p_zaria_basic.images = S_BOLT_BULLET_BASIC;
-  pro_p_zaria_basic.sounds = A_BOLT_BASIC;
-  pro_p_grandma_basic.images = S_NUTS_BULLET_BASIC;
-  pro_p_grandma_basic.sounds = A_NUTS_BASIC;
+  pro_p_bolt_basic.images = S_BOLT_BULLET_BASIC;
+  pro_p_bolt_basic.sounds = A_BOLT_BASIC;
+  pro_p_nuts_basic.images = S_NUTS_BULLET_BASIC;
+  pro_p_nuts_basic.sounds = A_NUTS_BASIC;
   pro_p_logicBomb.images = S_LOGIC_BOMB;
   pro_p_logicBomb.sounds = A_COMBAT;
   pro_p_backdoor.images = S_BACK_DOOR;
@@ -711,33 +730,33 @@ function initialisation() {
   // create the player characters and enemy characters
   // players
   boltImages = new Images(S_BOLT_LEFT, S_BOLT_RIGHT, S_BOLT_FRONT, S_BOLT_FACE);
-  main = new Player("Main", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_main_basic, boltImages);
-  roller = new Player("Roller", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_roller_basic, boltImages);
+  bolt = new Player("Bolt", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_bolt_basic, boltImages);
   nutsImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
-  zaria = new Player("Zaria", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_zaria_basic, nutsImages);
-  grandma = new Player("Grandma", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_grandma_basic, nutsImages);
-  // enemies
+  nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_nuts_basic, nutsImages);
+  screwsImages = new Images(S_BOLT_LEFT, S_BOLT_RIGHT, S_BOLT_FRONT, S_BOLT_FACE);
+  screws = new Player("Screws", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_bolt_basic, boltImages);
+  robotImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
+  robot = new Player("Robot", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_nuts_basic, nutsImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
-  wallraiser = new Enemy("Wallraiser", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages);
-  for (var i = 0; i < wallraiser.abilities.length; i++) {
-    wallraiser.abilities[i].user = wallraiser;
+  agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages);
+  for (var i = 0; i < agent.abilities.length; i++) {
+    agent.abilities[i].user = agent;
   }
-  bigBully = new Enemy("Big Bully", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages);
-  for (var i = 0; i < bigBully.abilities.length; i++) {
-    bigBully.abilities[i].user = bigBully;
-  }
-  serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
-  twistedClock = new Enemy("Twisted Clock", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages);
-  for (var i = 0; i < twistedClock.abilities.length; i++) {
-    twistedClock.abilities[i].user = twistedClock;
+  agent2 = new Enemy("Hackshield Agent", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages);
+  for (var i = 0; i < agent2.abilities.length; i++) {
+    agent2.abilities[i].user = agent2;
   }
   serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
-  cardImp = new Enemy("Card Imp", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages);
-  for (var i = 0; i < cardImp.abilities.length; i++) {
-    cardImp.abilities[i].user = cardImp;
+  serpent = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages);
+  for (var i = 0; i < serpent.abilities.length; i++) {
+    serpent.abilities[i].user = serpent;
   }
-  playersList = [main, roller, zaria, grandma];
-  enemiesList = [wallraiser, bigBully, twistedClock, cardImp];
+  serpent2 = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages);
+  for (var i = 0; i < serpent2.abilities.length; i++) {
+    serpent2.abilities[i].user = serpent2;
+  }
+  playersList = [bolt, nuts, screws, robot];
+  enemiesList = [agent, agent2, serpent, serpent2];
 // set the number of steps of each ability of each player
   for (let i = 0; i < playersList.length; i++) {
     for (let i2 = 0; i2 <  playersList[i].abilities[0].length; i2++) {
@@ -748,7 +767,7 @@ function initialisation() {
       }
     }
   }
-  frontline = main;
+  frontline = bolt;
   currentChar = "none";
   // enter the title state and starts the first turn
   whichScreen = PLAN_STATE;

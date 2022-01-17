@@ -35,8 +35,8 @@ class Bullet {
     // how will this bullet move
     switch (this.moveType) {
       case "straight":
-        this.vx = this.speed * cos(this.angle);
-        this.vy = this.speed * sin(this.angle);
+        this.vx = this.speed*this.origin.bulletSpeed/100 * cos(this.angle);
+        this.vy = this.speed*this.origin.bulletSpeed/100 * sin(this.angle);
         this.x += this.vx;
         this.y += this.vy;
         break;

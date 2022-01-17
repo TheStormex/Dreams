@@ -63,25 +63,14 @@ class PlayerAbility {
             }
           }
           break;
-        case "offense_up":
+        case "offense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].offenseChange += theEffect.amount;
-            console.log(  theEffect.targets[i2]);
-          }
-          break;
-        case "offense_down":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].offenseChange -= theEffect.amount;
           }
           break;
         case "defense_up":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i].defenseChange += theEffect.amount;
-          }
-          break;
-        case "defense_down":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].defenseChange -= theEffect.amount;
           }
           break;
         case "ramp":
@@ -90,6 +79,11 @@ class PlayerAbility {
             theEffect.targets[i2].energy = constrain(theEffect.targets[i2].energy, 0, theEffect.targets[i2].maxEnergy);
           }
           break;
+        case "bulletSpeed_change":
+          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+            theEffect.targets[i2].bulletSpeed += theEffect.amount;
+          }
+        break;
         // combat only effects
         case "bullet":
           shootBullets(theEffect, this);
