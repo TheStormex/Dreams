@@ -10,7 +10,7 @@ class FightState {
     this.drawSprites();
     this.drawUI();
     // remove the dialogs
-    $(`#dialogBox`).css(`display`, `none`);
+    // $(`#dialogBox`).css(`display`, `none`);
   }
   drawSprites() {
     // if screen is resized, move each char to new locations
@@ -121,7 +121,9 @@ class FightState {
         textAlign(CENTER, CENTER);
         textSize(width/80+height/80);
         text(frontline.abilities[1][i].name, width/3.75+(i*width/3.5), height-height/6);
-        let abilityCostText = "Cost: "  + frontline.abilities[1][i].cost + " Energy";
+        // apply any discounts
+        frontline.abilities[1][i].costCurrent = frontline.abilities[1][i].cost - frontline.abilityDiscount;
+        let abilityCostText = "Cost: "  + frontline.abilities[1][i].costCurrent + " Energy";
         text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
         textSize(width/150+height/150);
         text(frontline.abilities[1][i].description, width/3.75+(i*width/3.5), height-height/12);

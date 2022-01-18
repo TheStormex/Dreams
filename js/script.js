@@ -52,6 +52,8 @@ let S_NUTS_FACE;
 let S_NUTS_FRONT;
 let S_NUTS_LEFT;
 let S_NUTS_RIGHT;
+let S_ROBOT_FACE;
+let S_SCREWS_FACE;
 let S_AGENT_FRONT;
 let S_AGENT_LEFT;
 let S_AGENT_RIGHT;
@@ -115,10 +117,10 @@ let lingeringAbilities = []
 let turns = 1;
 
 // if the beginning tutorial is past yet
-let tutorial = true;
+let tutorial = false;
 
 // if the game has started
-let gameStarted = false;
+let gameStarted = true;
 
 // bullets characteristics
 // (speed, angle, moveType, targets, effects, size, changes, image, wall, ifHit, timer)
@@ -163,7 +165,7 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 
 
 // player abilities and effects
-// main abilities effects
+// screws abilities and effects
 let ab_protectorsGlare_effect = new AbilityEffect("bulletSpeed_change", "enemies", 40, "", false, false, 0, 1);
 let ab_protectorsGlare = new PlayerAbility("Protector's Glare", 2, [ab_protectorsGlare_effect], "Slow target enemy's projectiles this turn", 32, "none", false, [[5, "use"]], 0);
 let ab_energyShield_effect = new AbilityEffect("defense_change", "players", 30, "", false, false, 0, 0);
@@ -173,7 +175,8 @@ let ab_confidenceBoost = new PlayerAbility("Confidence Boost", 1, [ab_confidence
 let ab_shockwave_effect = new AbilityEffect("bullet", "players", 60, "", false, false, 0, 0);
 let ab_shockwave = new PlayerAbility("Shockwave",  3, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [[5, "use"], [5, "hit"]], 0);
 let ab_ult_guardianBarrier_effect = new AbilityEffect("defense_change", "players", 60, "", false, true, 0, 0);
-// bolt abilities effects
+let ab_ult_guardianBarrier = new PlayerAbility("Guardian Barrier",  0, [ab_ult_guardianBarrier_effect], "All Allies +60 DEF", 32, "none", true, [[0, "use"]], 0);
+// bolt abilities and effects
 let ab_logicBomb_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
 let ab_logicBomb = new PlayerAbility("Logic Bomb", 3, [ab_logicBomb_effect], "Throw a projectile", 32, "none", false, [[5, "hit"]], 3);
 let ab_backdoor_effect = new AbilityEffect("bullet", "", 5, pro_p_backdoor, false, false, 20, 1);
@@ -185,9 +188,9 @@ let ab_signalBoost_effect = new AbilityEffect("ramp", "players", 5, "", false, f
 let ab_signalBoost = new PlayerAbility("Signal Boost", 4, [ab_signalBoost_effect], "Give 5 energy to a friendly character", 32, "none", false, [[10, "use"]], 0);
 let ab_ult_bitRotWorm_effect = new AbilityEffect("bullet", "", 20, pro_p_ult_bitRotWorm, false, false, 100, 1);
 let ab_ult_bitRotWorm = new PlayerAbility("Bitrot Worm", 0, [ab_ult_bitRotWorm_effect], "Shoot a powerful beam", 32, "none", true, [[5, "hit"]], 0);
-// nuts
+// nuts abilities and effects
 let ab_firewall_effect = new AbilityEffect("defense_change", "players", 25, "", false, false, 0);
-let ab_firewall = new PlayerAbility("Firewall", 3, [ab_firewall_effect], "Increase defense by 25% to a friendly character", 32, "none", false, [[10, "use"]], 0);
+let ab_firewall = new PlayerAbility("Firewall", 3, [ab_firewall_effect], "+25 DEF to target ally", 32, "none", false, [[10, "use"]], 0);
 let ab_targetExploits_effect = new AbilityEffect("defense_change", "enemies", -25, "", false, false, 0, 0);
 let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Decrease defense by 25% to an enemy character", 32, "none", false, [[10, "use"]], 0);
 let ab_DOOS_effect = new AbilityEffect("bullet", "", 1, pro_p_DDOS, false, false, 0, 1);
@@ -196,7 +199,19 @@ let ab_bruteForce_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, 
 let ab_bruteForce_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
 let ab_bruteForce = new PlayerAbility("Brute Force Attack", 1, [ab_bruteForce_effect, ab_bruteForce_effect2], "Dash and shoot around you", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
 let ab_ult_vpn_effect = new AbilityEffect("offense_change", "players", 80, "", false, true, 0, 0);
-let ab_ult_vpn = new PlayerAbility("Activate VPN", 0, [ab_ult_vpn_effect], "Increase offence by 80% to all friendly characters", 32, "none", true, [[0, "use"]], 0);
+let ab_ult_vpn = new PlayerAbility("Activate VPN", 0, [ab_ult_vpn_effect], "All allies +80 ATK", 32, "none", true, [[0, "use"]], 0);
+// robot abilities and effects
+let ab_plasmaPulse_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
+let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 3, [ab_plasmaPulse_effect], "Throw a projectile", 32, "none", false, [[5, "hit"]], 3);
+let ab_escape_effect = new AbilityEffect("bullet", "", 5, pro_p_backdoor, false, false, 20, 1);
+let ab_escape_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
+let ab_escape = new PlayerAbility("Escape", 2, [ab_escape_effect, ab_escape_effect2], "Dash and leave behind dust", 32, "none", false, [[5, "hit"], [2, "use"]], 2);
+let ab_powerCharge_effect = new AbilityEffect("discount", "players", 1, "", false, false, 0, 0);
+let ab_powerCharge = new PlayerAbility("Power Charge",  3, [ab_powerCharge_effect], "Discount 1 to target ally", 32, "none", false, [[10, "use"]], 0);
+let ab_erraticStimulant_effect = new AbilityEffect("offense_change", "players", 30, "", false, false, 0, 0);
+let ab_erraticStimulant = new PlayerAbility("Erratic Stimulant", 4, [ab_erraticStimulant_effect], "+30 ATK to target ally", 32, "none", false, [[10, "use"]], 0);
+let ab_ult_restorationBlast_effect = new AbilityEffect("heal", "players", 50, "", false, true, 0, 0);
+let ab_ult_restorationBlast = new PlayerAbility("Restoration Blast", 0, [ab_ult_restorationBlast_effect], "Heal 50 HP to all allies", 32, "none", true, [[0, "use"]], 0);
 
 // the ability that is being activated right now
 let currentAbility;
@@ -255,6 +270,8 @@ function preload() {
   S_NUTS_FRONT = loadImage(`assets/images/nuts_front.png`);
   S_NUTS_LEFT = loadImage(`assets/images/nuts_left.png`);
   S_NUTS_RIGHT = loadImage(`assets/images/nuts_right.png`);
+  S_ROBOT_FACE = loadImage(`assets/images/robot.png`);
+  S_SCREWS_FACE = loadImage(`assets/images/screws_face.png`);
   S_AGENT_FRONT = loadImage(`assets/images/agent.png`);
   S_AGENT_LEFT = loadImage(`assets/images/agent_left.png`);
   S_AGENT_RIGHT = loadImage(`assets/images/agent_right.png`);
@@ -410,6 +427,7 @@ function newTurn() {
     // reset stat changes
     playersList[i].offenseChange = 0;
     playersList[i].defenseChange = 0;
+    playersList[i].abilityDiscount = 0;
     // if a player character did not use any abilities last turn, it gains refreshed this turn
     if (playersList[i].acted === false) {
       // if not the first turn, give the characters refreshed buff
@@ -436,12 +454,12 @@ function newTurn() {
       playersList[i].abilities[0][i2].used = false;
     }
   }
+  // reset enemies stats
   for (let i = 0; i < enemiesList.length; i++) {
     enemiesList[i].offenseChange = 0;
     enemiesList[i].defenseChange = 0;
   }
 }
-
 // check if all enemies and players are alive if all dead of 1 type, go to game end screen
 function checkAliveAll() {
   for (let i = 0; i < enemiesList.length; i++) {
@@ -474,6 +492,7 @@ function checkAliveAll() {
       A_CHAR_DEATH.play();
     }
   }
+  // if all players or enemies are dead, win or lose game
   if (enemiesList.length <= 0 && gameStarted === true) {
     winLose = "win";
     endGame()
@@ -682,25 +701,25 @@ function startGame() {
   currentDialogNumber = 0;
 }
 
-// last dialog
-function previousDialog() {
-  currentDialogNumber -= 1;
-  currentDialogNumber = constrain(currentDialogNumber, 0, currentDialog.length-1);
-}
-
-// next dialog
-function nextDialog() {
-  currentDialogNumber += 1;
-  currentDialogNumber = constrain(currentDialogNumber, 0, currentDialog.length-1);
-}
-
-// skip tutorial
-function skipDialog() {
-  tutorial = false;
-  $(`#skipButton`).css(`display`, `none`);
-  $(`#previousButton`).css(`display`, `none`);
-  $(`#nextButton`).css(`display`, `none`);
-}
+// // last dialog
+// function previousDialog() {
+//   currentDialogNumber -= 1;
+//   currentDialogNumber = constrain(currentDialogNumber, 0, currentDialog.length-1);
+// }
+//
+// // next dialog
+// function nextDialog() {
+//   currentDialogNumber += 1;
+//   currentDialogNumber = constrain(currentDialogNumber, 0, currentDialog.length-1);
+// }
+//
+// // skip tutorial
+// function skipDialog() {
+//   tutorial = false;
+//   $(`#skipButton`).css(`display`, `none`);
+//   $(`#previousButton`).css(`display`, `none`);
+//   $(`#nextButton`).css(`display`, `none`);
+// }
 
 // restart game
 // function restart() {
@@ -733,10 +752,10 @@ function initialisation() {
   bolt = new Player("Bolt", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_bolt_basic, boltImages);
   nutsImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
   nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_nuts_basic, nutsImages);
-  screwsImages = new Images(S_BOLT_LEFT, S_BOLT_RIGHT, S_BOLT_FRONT, S_BOLT_FACE);
-  screws = new Player("Screws", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_bolt_basic, boltImages);
-  robotImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
-  robot = new Player("Robot", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce]], pro_p_nuts_basic, nutsImages);
+  screwsImages = new Images(S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE);
+  screws = new Player("Screws", 200, 5, 20, [[ab_protectorsGlare, ab_energyShield, ab_ult_guardianBarrier], [ab_confidenceBoost, ab_shockwave]], pro_p_bolt_basic, screwsImages);
+  robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
+  robot = new Player("Robot", 300, 4, 15, [[ab_powerCharge, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse]], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
   agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages);
   for (var i = 0; i < agent.abilities.length; i++) {

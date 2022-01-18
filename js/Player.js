@@ -40,6 +40,8 @@ class Player {
     this.invincible = false;
     // current status
     this.status = ["none"];
+    // discount to abilities if applicable
+    this.abilityDiscount = 0;
   }
   move() {
     // if this char is not stunned

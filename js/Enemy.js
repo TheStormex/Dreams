@@ -45,6 +45,7 @@ class Enemy {
       this.y += this.vy;
     }
   }
+  // how this enemy move after touching a wall when moving
   wrap() {
     let wrapType = this.currentAbility.wrap;
     if (wrapType === "walls") {

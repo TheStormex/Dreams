@@ -3,6 +3,8 @@ class PlayerAbility {
     this.name = name;
     // how much energy this costs to activate
     this.cost = cost;
+    // the current cost of the ability
+    this.costCurrent = this.cost;
     // what this ability does
     this.effects = effects;
     // how this ability is descibed to the player
@@ -37,7 +39,8 @@ class PlayerAbility {
     let hitTarget = false;
     let healed = false;
     // remove the energy this costs and set the player's acted to yes
-    this.user.energy -= this.cost;
+    this.costCurrent = this.cost - this.user.abilityDiscount;
+    this.user.energy -= this.costCurrent;
     this.user.acted = true;
     if (this.ultimate === true) {
         this.user.ultCharge -= 100;
@@ -68,7 +71,7 @@ class PlayerAbility {
             theEffect.targets[i2].offenseChange += theEffect.amount;
           }
           break;
-        case "defense_up":
+        case "defense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i].defenseChange += theEffect.amount;
           }
@@ -83,7 +86,12 @@ class PlayerAbility {
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].bulletSpeed += theEffect.amount;
           }
-        break;
+          break;
+        case "discount":
+          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+            theEffect.targets[i2].abilityDiscount += theEffect.amount;
+          }
+          break;
         // combat only effects
         case "bullet":
           shootBullets(theEffect, this);

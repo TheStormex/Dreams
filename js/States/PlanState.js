@@ -265,7 +265,10 @@ class PlanState {
         textAlign(CENTER, CENTER);
         textSize(width/80+height/80);
         text(currentChar.abilities[0][i].name, width/3.75+(i*width/3.5), height-height/6);
-        let abilityCostText = "Cost: "  + currentChar.abilities[0][i].cost + " Energy";
+        // apply any discounts
+        currentChar.abilities[0][i].costCurrent = currentChar.abilities[0][i].cost - currentChar.abilityDiscount;
+        currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 0, 999);
+        let abilityCostText = "Cost: "  + currentChar.abilities[0][i].costCurrent + " Energy";
         text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
         textSize(width/150+height/150);
         text(currentChar.abilities[0][i].description, width/3.75+(i*width/3.5), height-height/12);
