@@ -48,7 +48,7 @@ class Bullet {
   }
   contact() {
     if (this.targets === "enemies") {
-      for (var i = 0; i < enemiesList.length; i++) {
+      for (let i = 0; i < enemiesList.length; i++) {
         let d = dist(this.x, this.y, enemiesList[i].x, enemiesList[i].y);
         if (d < enemiesList[i].size/2 + this.size/2) {
           this.effectHappens(enemiesList[i]);
@@ -100,11 +100,30 @@ class Bullet {
     pop();
   }
   effectHappens(target) {
-    for (var i2 = 0; i2 < this.effects.length; i2++) {
+    for (let i2 = 0; i2 < this.effects.length; i2++) {
       switch (this.effects[i2][0]) {
         case "damage":
-          target.hp -= round((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)));
-          target.hp = constrain(target.hp, 0, target.maxHp);
+        // if this is a player's bullet:
+          if (this.origin.type === "player") {
+            target.hp -= round((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)));
+            target.hp = constrain(target.hp, 0, target.maxHp);
+          } else if (this.origin.type === "enemy") {
+          // if this is an enemy's bullet:
+            target.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))/2);
+            target.hp = constrain(target.hp, 0, target.maxHp);
+            // look for the enemy's current aggro target player, then deal the other half damage to that player
+            let aggroedPlayerTarget;
+            for (let i = 0; i < playersList.length; i++) {
+              if (this.origin.currentAggro === playersList[i].name) {
+                aggroedPlayerTarget = playersList[i];
+              }
+            }
+            // the aggroed player takes other half of the damage
+            aggroedPlayerTarget.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))/2);
+            aggroedPlayerTarget.hp = constrain(aggroedPlayerTarget.hp, 0, aggroedPlayerTarget.maxHp);
+          }
+
+
           break;
         // spawn more bullets
         case "spawn":

@@ -69,6 +69,7 @@ class PlayerAbility {
         case "offense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].offenseChange += theEffect.amount;
+            console.log(this.user.offenseChange);
           }
           break;
         case "defense_change":

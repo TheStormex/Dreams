@@ -1,4 +1,5 @@
 class EnemyAbility {
+  // both combat routines and start of turn talents
   constructor(moves, effects, loopRate, wrap, timer, user) {
     // how the enemy moves during this ability (noise, straight line, direction)
     this.moves = moves;
@@ -35,24 +36,14 @@ class EnemyAbility {
             }
           }
           break;
-        case "offense_up":
+        case "offense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i].offenseChange += theEffect.amount;
           }
           break;
-        case "offense_down":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].offenseChange -= theEffect.amount;
-          }
-          break;
-        case "defense_up":
+        case "defense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i].defenseChange += theEffect.amount;
-          }
-          break;
-        case "defense_down":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].defenseChange -= theEffect.amount;
           }
           break;
         case "ramp":

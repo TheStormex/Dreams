@@ -1,6 +1,7 @@
 class Player {
   constructor(name, maxHp, energyTurn, maxEnergy, abilities, basicBullet, images) {
     this.name = name;
+    this.type  = "player";
     this.maxHp = maxHp;
     this.hp = maxHp;
     this.stun = false;

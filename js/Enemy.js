@@ -1,6 +1,7 @@
 class Enemy {
-  constructor(name, maxHp, size, contactDamage, abilities, images) {
+  constructor(name, maxHp, size, contactDamage, abilities, images, talents, talentRate) {
     this.name = name;
+    this.type = "enemy";
     this.hp = maxHp;
     this.maxHp = maxHp;
     this.speed = width/250+height/250;
@@ -16,7 +17,14 @@ class Enemy {
     this.contactDamage = contactDamage;
     this.size = size;
     this.abilities = abilities;
+    this.talents = talents;
+    this.talentRate = talentRate;
     this.currentAbility;
+    this.currentAggro = "none";
+    // names of all alive player characters
+    this.aggroList = [];
+    // amount of aggro for each character in order
+    this.aggroAmount = [];
     this.images = images;
     this.currentImage;
     this.alive = true;
@@ -103,8 +111,11 @@ class Enemy {
   }
   // if this is still alive
   checkAlive() {
+    // if dead, remove it and the frontline gains ult charge
     if (this.hp <= 0) {
       this.alive = false;
+      frontline.ultCharge += 20;
+      frontline.ultChage = constrain(frontline.ultChage, 0, 100);
     }
   }
 }

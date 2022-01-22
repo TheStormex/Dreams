@@ -47,7 +47,7 @@ class PlanState {
           }
         }
         // check if mousing over the fight button
-        if (mouseX > width-width/10-width/20 && mouseX < width-width/10+width/10-width/20 && mouseY > height/2-height/30 && mouseY < height/2+height/15-height/30) {
+        if (mouseX > width-width/10-width/20 && mouseX < width-width/10+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
           mouseOver = "fight"
         }
         break;
@@ -64,7 +64,7 @@ class PlanState {
           }
         }
         // check if mousing over the cancel button
-        if (mouseX > width-width/10-width/20 && mouseX < width-width/10+width/10-width/20 && mouseY > height/2-height/30 && mouseY < height/2+height/15-height/30) {
+        if (mouseX > width-width/10-width/20 && mouseX < width-width/10+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
           mouseOver = "cancel"
         }
         break;
@@ -214,10 +214,10 @@ class PlanState {
         let offenseText2;
         if (enemiesList[i].offenseChange > 0) {
           offenseText2 = "+" + enemiesList[i].offenseChange + "%";
-        } else if (playersList[i].offenseChange < 0) {
+        } else if (enemiesList[i].offenseChange < 0) {
           offenseText2 = enemiesList[i].offenseChange + "%";
         }
-        text(offenseText, width*(i+1)/(enemiesList.length+1)+width/12, height/2-height/23);
+        text(offenseText2, width*(i+1)/(enemiesList.length+1)+width/12, height/5-height/18+height/80);
       }
       if (enemiesList[i].defenseChange !== 0) {
         fill(0, 255, 0)
@@ -233,6 +233,20 @@ class PlanState {
         }
         text(defenseText2, width*(i+1)/(enemiesList.length+1)+width/12, height/5+height/80);
       }
+      // draw the enemies' aggro targets
+      fill(255, 255, 255);
+      rect(width*(i+1)/(enemiesList.length+1)-width/15, height/5-height/10, width/40, height/25);
+      imageMode(CENTER);
+      let aggroedPlayer = enemiesList[i].currentAggro;
+      // check the list of players that are alive to see if a player's name is hte same as the
+      // name of the enemy's current aggro to fetch that player's face image
+      let aggroedPlayerIndex;
+      for (let i2 = 0; i2 < playersList.length; i2++) {
+        if (playersList[i2].name === aggroedPlayer) {
+          aggroedPlayerIndex = i2;
+        }
+      }
+      image(playersList[aggroedPlayerIndex].images.face, width*(i+1)/(enemiesList.length+1)-width/15, height/5-height/10, width/40, height/25);
     }
     pop();
   }
@@ -294,7 +308,7 @@ class PlanState {
     }
   }
 
-  // draw the buttons for canceling abilities, for going to the fight mode
+  // draw the buttons for canceling abilities, for going to the fight mode;
   drawExtraUI() {
     // draw the button for canceling ability if an ability is being used if it has not been used partly
     if (this.situation === "ability") {
@@ -308,7 +322,7 @@ class PlanState {
         } else {
           fill(255,50,0);
         }
-        rect(width-width/15, height/2, width/10, height/15);
+        rect(width-width/15, height/2-height/6, width/10, height/15);
         // if moused over, it is highlighted
         if (mouseOver === "cancel") {
           fill(255, 0, 0);
@@ -317,7 +331,7 @@ class PlanState {
         }
         textAlign(CENTER, CENTER);
         textSize(width/120+height/120);
-        text("Cancel Ability", width-width/15, height/2);
+        text("Cancel Ability", width-width/15, height/2-height/6);
         pop();
       }
     }
@@ -332,7 +346,7 @@ class PlanState {
       } else {
         fill(255,255,0);
       }
-      rect(width-width/15, height/2, width/10, height/15);
+      rect(width-width/15, height/2-height/6, width/10, height/15);
       // if moused over, it is highlighted
       if (mouseOver === "fight") {
         fill(255, 255, 0);
@@ -341,9 +355,14 @@ class PlanState {
       }
       textAlign(CENTER, CENTER);
       textSize(width/80+height/50);
-      text("Fight!", width-width/15, height/2);
+      text("Fight!", width-width/15, height/2-height/6);
       pop();
     }
+  }
+
+  // draw the portraits of characters each enemy is targetting
+  drawAggro() {
+
   }
 
   // if mouse is down and a player character is not using an ability,
@@ -496,7 +515,9 @@ class PlanState {
     currentFightTime = 0;
     fightTimer = setInterval(function() {
       currentFightTime++;
+      console.log(currentFightTime);
       if (currentFightTime/100 >= fightTime) {
+        console.log("go back");
         fightToPlan();
       }
     }, 10);
