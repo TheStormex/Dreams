@@ -102,7 +102,6 @@ class PlanState {
           rect(width*(i+1)/(playersList.length+1), height/2, width/7, height/3);
         }
       }
-
       // if this is the frontline character, mark it
       if (frontline.name === playersList[i].name) {
         fill(255, 150, 0);
@@ -128,7 +127,13 @@ class PlanState {
       if (playersList[i].name === frontline.name) {
         text("Frontline", width*(i+1)/(playersList.length+1), height/2+height/9);
       } else {
-        text("Click to make Frontline", width*(i+1)/(playersList.length+1), height/2+height/9);
+        // if has enough energy to become Frontline
+        if (playersList[i].energy >= 3) {
+          text("Click to make Frontline", width*(i+1)/(playersList.length+1), height/2+height/9);
+        } else {
+          text("Can't be Frontline", width*(i+1)/(playersList.length+1), height/2+height/9);
+          text("Need more Energy", width*(i+1)/(playersList.length+1), height/2+height/7);
+        }
       }
       // if this character is tired of being frontline, show it
       if (playersList[i].tired === true) {
@@ -254,6 +259,18 @@ class PlanState {
 
   // draw the supporting skills the characters can use in the UI box
   drawPlayerMenu() {
+    // tell player cost of changing frontline
+    push();
+    stroke(0);
+    fill(255);
+    rectMode(CENTER, CENTER);
+    rect(width/15, height/3+height/7, width/10, height/10);
+    textSize(width/80);
+    noStroke();
+    fill(0);
+    text("Change Frontline", width/50, height/3 + height/8);
+    text("Cost = 3 Energy", width/50, height/2);
+    pop();
     if (currentChar != "none") {
       push();
       // 2 supporting skills
@@ -377,7 +394,11 @@ class PlanState {
         }
         // if a player is moused over, that player character is now the front line
          else if (playersList.includes(mouseOver)) {
-          frontline = mouseOver;
+           // if would be frontline has 3 or more energy, before frontline, else, no.
+           if (mouseOver.energy >= 3) {
+             mouseOver.energy-= 3;
+             frontline = mouseOver;
+           }
           // if a player's ability is moused over, then clicking selects that ability to be used
         } else if (currentChar.abilities[0].includes(mouseOver)) {
           // if this ability is not an ultimate, and if they have enough energy to use it, and it has not been used this turn then it works
