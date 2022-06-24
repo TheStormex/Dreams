@@ -5,7 +5,7 @@ class PlanState {
     this.currentAbilityStepNumber = 0;
   }
   draw() {
-    background(100);
+    background(150);
     // draw players, enemies, selected player stats on bottom, click on support skills to use it, mouse over to see what it does
     // ult charge, health, energy,
     this.drawChars();
@@ -93,7 +93,12 @@ class PlanState {
       // if ability, then those who can be selected will glow and those moused over will have another square
       if (this.situation === "choose") {
         if (currentChar.name === playersList[i].name) {
-          fill(0, 100, 255);
+          // if can be frontline or not
+          if (currentChar.energy >= 3) {
+            fill(0, 200, 255);
+          } else {
+            fill(0, 100, 200);
+          }
           rect(width*(i+1)/(playersList.length+1), height/2, width/7, height/3);
         }
       } else if (this.situation === "ability") {
