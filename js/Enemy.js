@@ -115,7 +115,7 @@ class Enemy {
     if (this.hp <= 0) {
       this.alive = false;
       frontline.ultCharge += 20;
-      frontline.ultChage = constrain(frontline.ultChage, 0, 100);
+      frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
     }
   }
 }

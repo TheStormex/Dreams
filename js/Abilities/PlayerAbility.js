@@ -77,10 +77,23 @@ class PlayerAbility {
             theEffect.targets[i].defenseChange += theEffect.amount;
           }
           break;
+        case "ultCharge_change":
+          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+            theEffect.targets[i].ultCharge += theEffect.amount;
+            theEffect.targets[i2].ultCharge = constrain(theEffect.targets[i2].ultCharge, 0, 100);
+          }
+          break;
         case "ramp":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].energy += theEffect.amount;
             theEffect.targets[i2].energy = constrain(theEffect.targets[i2].energy, 0, theEffect.targets[i2].maxEnergy);
+          }
+          break;
+        case "abilityRenew":
+          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+            for (let i3 = 0; i3 < theEffect.targets[i2].abilities[0].length; i3++) {
+              theEffect.targets[i2].abilities[0][i3].used = false;
+            }
           }
           break;
         case "bulletSpeed_change":
