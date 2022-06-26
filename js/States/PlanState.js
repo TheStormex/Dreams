@@ -400,20 +400,21 @@ class PlanState {
         // if a player is moused over, that player character is now the front line
          else if (playersList.includes(mouseOver)) {
            // if would be frontline has 3 or more energy, before frontline, else, no.
-           if (mouseOver.energy >= 3) {
+           if (mouseOver.energy >= 3 && frontline != mouseOver) {
              mouseOver.energy-= 3;
              frontline = mouseOver;
            }
           // if a player's ability is moused over, then clicking selects that ability to be used
         } else if (currentChar.abilities[0].includes(mouseOver)) {
           // if this ability is not an ultimate, and if they have enough energy to use it, and it has not been used this turn then it works
-          if (mouseOver.ultimate === false && currentChar.energy - mouseOver.cost >= 0 && mouseOver.used === false) {
+          if (mouseOver.ultimate === false && currentChar.energy - mouseOver.costCurrent >= 0 && mouseOver.used === false) {
             this.selectAbility();
           } else if (mouseOver.ultimate === true && currentChar.ultCharge === 100) {
             this.selectAbility();
           } else {
             console.log("not enough");
             console.log(mouseOver.ultimate);
+            console.log(mouseOver.costCurrent);
             console.log(currentChar.energy - mouseOver.cost)
             console.log(mouseOver.used);
           }

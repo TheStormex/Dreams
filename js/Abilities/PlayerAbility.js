@@ -69,12 +69,11 @@ class PlayerAbility {
         case "offense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].offenseChange += theEffect.amount;
-            console.log(this.user.offenseChange);
           }
           break;
         case "defense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].defenseChange += theEffect.amount;
+            theEffect.targets[i2].defenseChange += theEffect.amount;
           }
           break;
         case "ultCharge_change":
@@ -92,7 +91,9 @@ class PlayerAbility {
         case "abilityRenew":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             for (let i3 = 0; i3 < theEffect.targets[i2].abilities[0].length; i3++) {
+              console.log(theEffect.targets[i2].abilities[0][i3]);
               theEffect.targets[i2].abilities[0][i3].used = false;
+              console.log(theEffect.targets[i2].abilities[0][i3].used);
             }
           }
           break;

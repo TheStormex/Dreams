@@ -192,7 +192,7 @@ let ab_signalBoost_effect = new AbilityEffect("ramp", "players", 5, "", false, f
 let ab_signalBoost = new PlayerAbility("Signal Boost", 4, [ab_signalBoost_effect], "Target ally gets +5 Energy", 32, "none", false, [[10, "use"]], 0);
 let ab_ult_bitRotWorm_effect = new AbilityEffect("bullet", "", 20, pro_p_ult_bitRotWorm, false, false, 100, 1);
 let ab_ult_bitRotWorm = new PlayerAbility("Bitrot Worm", 0, [ab_ult_bitRotWorm_effect], "Shoot a powerful beam", 32, "none", true, [[5, "hit"]], 0);
-let ab_ult_ransomBot_effect = new AbilityEffect("defense_change", "enemies", 50, "", false, true, 0, 0);
+let ab_ult_ransomBot_effect = new AbilityEffect("defense_change", "enemies", -50, "", false, true, 0, 0);
 let ab_ult_ransomBot = new PlayerAbility("Ransom Bot", 0, [ab_ult_ransomBot_effect], "All enemies get -50 DEF", 32, "none", true, [[0, "use"]], 0);
 // nuts abilities and effects
 let ab_firewall_effect = new AbilityEffect("defense_change", "players", 25, "", false, false, 0);
