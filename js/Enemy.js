@@ -4,7 +4,7 @@ class Enemy {
     this.type = "enemy";
     this.hp = maxHp;
     this.maxHp = maxHp;
-    this.speed = width/250+height/250;
+    this.speed = width/400+height/400;
     this.stun = false;
     this.x = width/2;
     this.y = height/4;

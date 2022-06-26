@@ -204,8 +204,8 @@ let ab_DDOS = new PlayerAbility("DDoS", 2, [ab_DOOS_effect], "Stun enemies hit f
 let ab_bruteForce_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 10);
 let ab_bruteForce_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
 let ab_bruteForce = new PlayerAbility("Brute Force Attack", 1, [ab_bruteForce_effect, ab_bruteForce_effect2], "Dash and shoot around you", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
-let ab_ult_vpn_effect = new AbilityEffect("offense_change", "players", 80, "", false, true, 0, 0);
-let ab_ult_vpn = new PlayerAbility("Activate VPN", 0, [ab_ult_vpn_effect], "All allies get +80 ATK", 32, "none", true, [[0, "use"]], 0);
+let ab_ult_vpn_effect = new AbilityEffect("ramp", "players", 6, "", false, true, 0, 0);
+let ab_ult_vpn = new PlayerAbility("Activate VPN", 0, [ab_ult_vpn_effect], "All allies get +6 Energy", 32, "none", true, [[0, "use"]], 0);
 let ab_ult_EMP_effect = new AbilityEffect("bullet", "", 10, pro_p_DDOS, false, false, 100, 1);
 let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stunning waves", 32, "none", true, [[5, "hit"]], 0);
 // robot abilities and effects
@@ -828,21 +828,21 @@ function initialisation() {
   robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
   robot = new Player("Robot", 300, 4, 15, [[ab_powerCharge, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
-  agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce], 60);
+  agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce], 60);
   for (var i = 0; i < agent.abilities.length; i++) {
     agent.abilities[i].user = agent;
   }
-  agent2 = new Enemy("Hackshield Agent", 800, width/20+height/20, 2, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce], 60);
+  agent2 = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce], 60);
   for (var i = 0; i < agent2.abilities.length; i++) {
     agent2.abilities[i].user = agent2;
   }
   serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
-  serpent = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
+  serpent = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
    ta_e_serpent_spray], 50);
   for (var i = 0; i < serpent.abilities.length; i++) {
     serpent.abilities[i].user = serpent;
   }
-  serpent2 = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 4, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
+  serpent2 = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
    ta_e_serpent_spray], 50);
   for (var i = 0; i < serpent2.abilities.length; i++) {
     serpent2.abilities[i].user = serpent2;

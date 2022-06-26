@@ -47,7 +47,7 @@ class PlanState {
           }
         }
         // check if mousing over the fight button
-        if (mouseX > width-width/10-width/20 && mouseX < width-width/10+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
+        if (mouseX > width-width/15-width/20 && mouseX < width-width/15+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
           mouseOver = "fight"
         }
         break;
@@ -64,11 +64,15 @@ class PlanState {
           }
         }
         // check if mousing over the cancel button
-        if (mouseX > width-width/10-width/20 && mouseX < width-width/10+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
+        if (mouseX > width-width/15-width/20 && mouseX < width-width/15+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
           mouseOver = "cancel"
         }
         break;
       case "happen":
+
+        break;
+      // start of turn, each enemy does a random skill (self buff, debuff, stun, become immune to debuffs)
+      case "enemySkill":
 
         break;
       default:
