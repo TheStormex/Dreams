@@ -247,14 +247,10 @@ let ab_e_serpent_shoot = new EnemyAbility("line", [ab_e_serpent_shoot_effect], [
 let ab_e_serpent_wave = new EnemyAbility("line", [ab_e_serpent_wave_effect], [1800], "walls", 8);
 let ab_e_serpent_gatling = new EnemyAbility("noise", [ab_e_serpent_gatling_effect], [1800], "through", 8);
 // enemies talents
-let ta_e_agent_block_effect =  new AbilityEffect("defense_change", "", 1, pro_e_serpentBullet, false, false, 0, 6);
-let ta_e_agent_block = new EnemyAbility("line", [ab_e_serpent_shoot_effect], [1800], "through", 8);
-let ta_e_agent_pierce_effect = new AbilityEffect("bullet", "", 1, pro_e_serpentBullet, false, false, 0, 6);
-let ta_e_agent_pierce = new EnemyAbility("line", [ab_e_serpent_shoot_effect], [1800], "through", 8);
-let ta_e_serpent_swipe_effect = new AbilityEffect("bullet", "", 1, pro_e_serpentBullet, false, false, 0, 6);
-let ta_e_serpent_swipe = new EnemyAbility("line", [ab_e_serpent_shoot_effect], [1800], "through", 8);
-let ta_e_serpent_spray_effect = new AbilityEffect("bullet", "", 1, pro_e_serpentBullet, false, false, 0, 6);
-let ta_e_serpent_spray = new EnemyAbility("line", [ab_e_serpent_shoot_effect], [1800], "through", 8);
+let ta_e_agent_block = new EnemyTalent("Block", "enemies", "defense_change", 30);
+let ta_e_agent_pierce = new EnemyTalent("Pierce", "players", "defense_change", -30);
+let ta_e_serpent_swipe = new EnemyTalent("Swipe", "players", "offense_change", -40);
+let ta_e_serpent_spray = new EnemyTalent("Spray", "enemies", "offense_change", 30);
 
 let projectilesList = [];
 
@@ -525,8 +521,10 @@ function newTurn() {
     // if within the chance, do a talent
     if (randomNumber <= talentChance) {
       chosenTalent = random(enemiesList[i].talents);
+      chosenTalent.user = enemiesList[i];
+      console.log(chosenTalent);
       // do the talent
-
+      chosenTalent.enemyTalentHappens();
     }
   }
 }

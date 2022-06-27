@@ -68,13 +68,6 @@ class PlanState {
           mouseOver = "cancel"
         }
         break;
-      case "happen":
-
-        break;
-      // start of turn, each enemy does a random skill (self buff, debuff, stun, become immune to debuffs)
-      case "enemySkill":
-
-        break;
       default:
         console.log("error");
     }
