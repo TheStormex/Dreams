@@ -140,7 +140,6 @@ class Bullet {
             target.stun = false;
             clearInterval(stunTimer)
           }, this.effects[i2][1]);
-          console.log("stun");
           break;
         // heal a character, either the user or the receiver
         case "heal":

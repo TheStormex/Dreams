@@ -88,12 +88,19 @@ class PlayerAbility {
             theEffect.targets[i2].energy = constrain(theEffect.targets[i2].energy, 0, theEffect.targets[i2].maxEnergy);
           }
           break;
+        case "cleanse":
+          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+            theEffect.targets[i2].stun = false;
+            let negatedOffenseDebuff = abs(theEffect.targets[i2].offenseDebuff);
+            let negatedDefenseDebuff = abs(theEffect.targets[i2].defenseDebuff);
+            theEffect.targets[i2].offenseChange += negatedOffenseDebuff;
+            theEffect.targets[i2].defenseChange += negatedDefenseDebuff;
+          }
+          break;
         case "abilityRenew":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             for (let i3 = 0; i3 < theEffect.targets[i2].abilities[0].length; i3++) {
-              console.log(theEffect.targets[i2].abilities[0][i3]);
               theEffect.targets[i2].abilities[0][i3].used = false;
-              console.log(theEffect.targets[i2].abilities[0][i3].used);
             }
           }
           break;

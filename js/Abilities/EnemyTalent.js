@@ -14,35 +14,56 @@ class EnemyTalent {
     this.amount = amount;
   }
   enemyTalentHappens() {
-    // who can this talent affect
-    
-    // who does htis ability affect
-
+    // who can this talent affect, then chose target from that list
+    switch (this.targets) {
+      case "self":
+        this.chosenTarget = this.user;
+        break;
+      case "enemies":
+        this.chosenTarget = random(enemiesList);
+        break;
+      case "players":
+        for (let i = 0; i < playersList.length; i++) {
+          if (playersList[i].name === this.user.currentAggro) {
+            this.chosenTarget = playersList[i];
+        }
+        break;
+      case "frontline":
+        this.chosenTarget = frontline;
+        break;
+      default:
+      console.log("error");
+    }
     // for each effect, apply
     for (let i = 0; i < this.effects.length; i++) {
       let theEffect = this.effects[i];
-      switch (this.effects[i].type) {
+      switch (theEffect) {
         case "heal":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            let targetOldHp = theEffect.targets[i2].hp;
-            theEffect.targets[i2].hp += theEffect.amount;
-            theEffect.targets[i2].hp = constrain(theEffect.targets[i2].hp, 0, theEffect.targets[i2].maxHp);
-          }
+          let targetOldHp = this.chosenTarget.hp;
+          this.chosenTarget.hp += this.amount[i];
+          this.chosenTarget.hp = constrain(this.chosenTarget.hp, 0, this.chosenTarget.maxHp);
           break;
         case "offense_change":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].offenseChange += theEffect.amount;
-          }
+          this.chosenTarget.offenseChange += this.amount[i];
+          this.chosenTarget.offenseDebuff += this.amount[i];
           break;
         case "defense_change":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].defenseChange += theEffect.amount;
-          }
+          this.chosenTarget.defenseChange += this.amount[i];
+          this.chosenTarget.defenseDebuff += this.amount[i];
           break;
         case "stun":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].stun = true;
+          this.chosenTarget.stun = true;
+          break;
+        case "drain":
+          this.chosenTarget.energy -= this.amount[i];
+          this.chosenTarget.energy = constrain(this.chosenTarget.energy, 0, this.chosenTarget.maxEnergy);
+          break;
+        // make a diff char frontline
+        case "switch":
+          while (this.chosenTarget.name === frontline.name) {
+            this.chosenTarget = random(playersList);
           }
+          frontline = this.chosenTarget;
           break;
         default: console.log("error");
       }

@@ -100,7 +100,7 @@ class FightState {
         let abilityButton = combatButtons[i][1];
         // if activated, it is highlighted
         for (var i2 = 0; i2 < combatButtons.length; i2++) {
-          if (currentCombatAbilityKey === abilityButton) {
+          if (currentCombatAbilityKey === abilityButton && frontline.stun === false) {
             fill(0);
           } else {
             fill(255);
@@ -112,7 +112,7 @@ class FightState {
         // name, cost and ability, cooldown
         // if activated, it is highlighted
         for (var i2 = 0; i2 < combatButtons.length; i2++) {
-          if (currentCombatAbilityKey === abilityButton) {
+          if (currentCombatAbilityKey === abilityButton && frontline.stun === false) {
             fill(255);
           } else {
             fill(0);
@@ -150,12 +150,22 @@ class FightState {
         }
       }
     pop();
+    //  if char is stunned
+      if (frontline.stun === true) {
+        push();
+        fill(255, 255, 0);
+        stroke(0);
+        textAlign(CENTER, CENTER);
+        textSize(width/10+height/12);
+        text("STUNNED", width/2+width/25, height-height/8.5)
+        pop();
+      }
     }
   }
   // if mouse is down, check if an ability is clicked, if not, shoot basic bullets
   // if an ability is clicked then shoot that ability in that direction / location
   mouseDown() {
-    if (this.situation === "shoot") {
+    if (this.situation === "shoot" && frontline.stun === false) {
       if (frontline.basicBulletCooldown === false) {
         let playerBasicBullet = new Bullet(frontline, frontline.x, frontline.y, width*(frontline.basicBullet.speed/2)/100+height*(frontline.basicBullet.speed/2)/100,
         frontline.angle, frontline.basicBullet.moveType, frontline.basicBullet.targets, frontline.basicBullet.effects,
@@ -166,7 +176,7 @@ class FightState {
         frontline.basicBulletCooldown = true;
         setTimeout(function() {frontline.basicBulletCooldown = false}, frontline.basicBullet[11]);
       }
-    } else if (this.situation === "ability") {
+    } else if (this.situation === "ability" && frontline.stun === false) {
       currentAbility.user = frontline;
       currentAbility.happens();
       // if this is a combat ability with a cooldown, then after use, set the timer (old)
@@ -192,7 +202,7 @@ class FightState {
   keyDown() {
     // if is ctrl, shift or space, set the current ability to the ability that
     // is assigned to that key, if already activated, then clicking will cancel it
-    if (currentKeyPressed === 32 || currentKeyPressed === 16 || currentKeyPressed === 17) {
+    if (currentKeyPressed === 32 || currentKeyPressed === 16 || currentKeyPressed === 17 && frontline.stun === false) {
       if (currentCombatAbilityKey !== currentKeyPressed) {
         if (this.situation === "shoot") {
           this.setAbility();
@@ -224,9 +234,6 @@ class FightState {
         } else {
           currentAbility = 0;
           currentCombatAbilityKey = 0;
-          console.log(abilityToBeActivated.cooldownLeft);
-          console.log(currentChar.energy);
-          console.log(abilityToBeActivated.cost);
         }
       }
     }

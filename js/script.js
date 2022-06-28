@@ -145,6 +145,7 @@ let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["d
 let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["stun", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+let pro_p_emp = new BulletStats(1, "angles", "straight", "enemies", [["damage", 2], ["stun", 1500]], 3, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // robot
 
@@ -166,8 +167,8 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 
 // player abilities and effects
 // screws abilities and effects
-let ab_protectorsGlare_effect = new AbilityEffect("offense_change", "enemies", -60, "", false, false, 0, 1);
-let ab_protectorsGlare = new PlayerAbility("Protector's Glare", 2, [ab_protectorsGlare_effect], "Target enemy gets -60 ATK", 32, "none", false, [[5, "use"]], 0);
+let ab_factoryReset_effect = new AbilityEffect("cleanse", "players", 0, "", false, false, 0, 1);
+let ab_factoryReset = new PlayerAbility("Factory Reset", 2, [ab_factoryReset_effect], "Target ally is Cleansed", 32, "none", false, [[5, "use"]], 0);
 let ab_energyRecharge_effect = new AbilityEffect("abilityRenew", "players", 0, "", false, false, 0, 0);
 let ab_energyRecharge = new PlayerAbility("Energy Recharge", 2, [ab_energyRecharge_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
 let ab_confidenceBoost_effect = new AbilityEffect("bullet", "", 5, pro_p_bruteForce, false, false, 100, 5);
@@ -179,7 +180,7 @@ let ab_ult_hexcodeDeflector = new PlayerAbility("Hexcode Deflector", 0, [ab_ult_
 // let ab_ult_guardianBarrier_effect = new AbilityEffect("defense_change", "players", 60, "", false, true, 0, 0);
 // let ab_ult_guardianBarrier = new PlayerAbility("Guardian Barrier",  0, [ab_ult_guardianBarrier_effect], "All Allies +60 DEF", 32, "none", true, [[0, "use"]], 0);
 let ab_ult_explosion_effect = new AbilityEffect("bullet", "", 10, pro_p_bruteForce, false, false, 100, 10);
-let ab_ult_explosion =  new PlayerAbility("Explosion", 0, [ab_ult_explosion_effect], "Shoot a powerful beam", 32, "none", true, [[5, "hit"]], 0);
+let ab_ult_explosion =  new PlayerAbility("Explosion", 0, [ab_ult_explosion_effect], "Discharge explosive blasts", 32, "none", true, [[5, "hit"]], 0);
 // bolt abilities and effects
 let ab_logicBomb_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
 let ab_logicBomb = new PlayerAbility("Logic Bomb", 3, [ab_logicBomb_effect], "Throw a projectile", 32, "none", false, [[5, "hit"]], 1);
@@ -206,7 +207,7 @@ let ab_bruteForce_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0
 let ab_bruteForce = new PlayerAbility("Brute Force Attack", 1, [ab_bruteForce_effect, ab_bruteForce_effect2], "Dash and shoot around you", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
 let ab_ult_vpn_effect = new AbilityEffect("ramp", "players", 6, "", false, true, 0, 0);
 let ab_ult_vpn = new PlayerAbility("Activate VPN", 0, [ab_ult_vpn_effect], "All allies get +6 Energy", 32, "none", true, [[0, "use"]], 0);
-let ab_ult_EMP_effect = new AbilityEffect("bullet", "", 10, pro_p_DDOS, false, false, 100, 1);
+let ab_ult_EMP_effect = new AbilityEffect("bullet", "", 10, pro_p_emp, false, false, 100, 1);
 let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stunning waves", 32, "none", true, [[5, "hit"]], 0);
 // robot abilities and effects
 let ab_plasmaPulse_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
@@ -247,10 +248,12 @@ let ab_e_serpent_shoot = new EnemyAbility("line", [ab_e_serpent_shoot_effect], [
 let ab_e_serpent_wave = new EnemyAbility("line", [ab_e_serpent_wave_effect], [1800], "walls", 8);
 let ab_e_serpent_gatling = new EnemyAbility("noise", [ab_e_serpent_gatling_effect], [1800], "through", 8);
 // enemies talents
-let ta_e_agent_block = new EnemyTalent("Block", "enemies", "defense_change", 30);
-let ta_e_agent_pierce = new EnemyTalent("Pierce", "players", "defense_change", -30);
-let ta_e_serpent_swipe = new EnemyTalent("Swipe", "players", "offense_change", -40);
-let ta_e_serpent_spray = new EnemyTalent("Spray", "enemies", "offense_change", 30);
+let ta_e_agent_block = new EnemyTalent("Block", "self", ["defense_change"], [50]);
+let ta_e_agent_pierce = new EnemyTalent("Pierce", "players", ["defense_change"], [-30]);
+let ta_e_agent_taunt = new EnemyTalent("Taunt", "players", ["switch", "drain"], [0, 3]);
+let ta_e_serpent_swipe = new EnemyTalent("Swipe", "frontline", ["offense_change"], [-40]);
+let ta_e_serpent_spray = new EnemyTalent("Spray", "enemies", ["heal"], [50]);
+let ta_e_serpent_gaze = new EnemyTalent("Gaze", "players", ["stun"], [0]);
 
 let projectilesList = [];
 
@@ -442,29 +445,31 @@ function newTurn() {
     // reset stat changes
     playersList[i].offenseChange = 0;
     playersList[i].defenseChange = 0;
+    playersList[i].offenseDebuff = 0;
+    playersList[i].defenseDebuff = 0;
     playersList[i].abilityDiscount = 0;
-    // // if a player character did not use any abilities last turn, it gains refreshed this turn
-    // if (playersList[i].acted === false) {
-    //   // if not the first turn, give the characters refreshed buff
-    //   if (turns > 1) {
-    //     playersList[i].energyBoost = 3;
-    //     playersList[i].offenseChange = 10;
-    //     playersList[i].defenseChange = 10;
-    //     playersList[i].refreshed = true;
-    //   }
-    // } else if (playersList[i].acted === true) {
-    //   playersList[i].energyBoost = 0;
-    //   playersList[i].refreshed = false;
-    // }
-    // // if the frontline is tired, get debuffs
+    // if a player character did not use any abilities last turn, it gains refreshed this turn
+    if (playersList[i].acted === false && playersList[i].stun === false) {
+      // if not the first turn, give the characters refreshed buff
+      if (turns > 1) {
+        playersList[i].energyBoost = 1;
+        playersList[i].offenseChange = 10;
+        playersList[i].defenseChange = 10;
+        playersList[i].refreshed = true;
+      }
+    } else if (playersList[i].acted === true) {
+      playersList[i].energyBoost = 0;
+      playersList[i].refreshed = false;
+    }
+    // if the frontline is tired, get debuffs
     // if (frontline.tired === true) {
     //   frontline.offenseChange = -10;
     //   frontline.defenseChange = -10;
     // }
     playersList[i].energy += playersList[i].energyTurn + playersList[i].energyBoost;
-    console.log(playersList[i].name + " " + playersList[i].energyTurn);
     playersList[i].energy = constrain(playersList[i].energy, 0, playersList[i].maxEnergy);
     playersList[i].acted = false;
+    playersList[i].stun = false;
     // all abilities are no used yet
     for (let i2 = 0; i2 < playersList[i].abilities[0].length; i2++) {
       playersList[i].abilities[0][i2].used = false;
@@ -483,6 +488,7 @@ function newTurn() {
     // how many players have the highest amount together
     let manyHighestAggro = [];
     // for each living player character that can be aggroed
+    enemiesList.aggroList = playersList;
     for (let i2 = 0; i2 < enemiesList[i].aggroList.length; i2++) {
       // record their aggro amount and compare it to the highest
       let currentPlayerAggro = enemiesList[i].aggroAmount[i2];
@@ -514,15 +520,18 @@ function newTurn() {
   }
   // each enemy randomly choose whether to use talents, then if
   // they do, randomly choose a talent to activate
+  // reset talentUsed variable
   for (let i = 0; i < enemiesList.length; i++) {
+    enemiesList[i].talentUsed = false;
     let talentChance = enemiesList[i].talentRate;
-    let randomNumber = random(0, 101);
+    let randomNumber = random(0, 100);
     let chosenTalent;
     // if within the chance, do a talent
     if (randomNumber <= talentChance) {
       chosenTalent = random(enemiesList[i].talents);
       chosenTalent.user = enemiesList[i];
-      console.log(chosenTalent);
+      enemiesList[i].talentUsed = true;
+      enemiesList[i].talentUsedName = chosenTalent.name;
       // do the talent
       chosenTalent.enemyTalentHappens();
     }
@@ -549,6 +558,7 @@ function checkAliveAll() {
             winLose = "lose";
             endGame();
           } else if (playersList.length > 1) {
+            frontline = random(playersList);
             fightToPlan();
           }
         }
@@ -741,7 +751,6 @@ function endGame() {
   } else if (winLose === "lose") {
     endingScreenParts = 1;
   }
-  console.log(endingScreenParts);
   $(`#endingTitle`).text(ENDING_SCREEN_TITLE[endingScreenParts]);
   $(`#endingText`).text(ENDING_SCREEN_TEXT[endingScreenParts]);
 }
@@ -822,26 +831,26 @@ function initialisation() {
   nutsImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
   nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce, ab_ult_EMP]], pro_p_nuts_basic, nutsImages);
   screwsImages = new Images(S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE);
-  screws = new Player("Screws", 200, 5, 20, [[ab_protectorsGlare, ab_energyRecharge, ab_ult_hexcodeDeflector], [ab_confidenceBoost, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
+  screws = new Player("Screws", 200, 5, 20, [[ab_factoryReset, ab_energyRecharge, ab_ult_hexcodeDeflector], [ab_confidenceBoost, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
   robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
   robot = new Player("Robot", 300, 4, 15, [[ab_powerCharge, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
-  agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce], 60);
+  agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt], 70);
   for (var i = 0; i < agent.abilities.length; i++) {
     agent.abilities[i].user = agent;
   }
-  agent2 = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce], 60);
+  agent2 = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt], 70);
   for (var i = 0; i < agent2.abilities.length; i++) {
     agent2.abilities[i].user = agent2;
   }
   serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
   serpent = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
-   ta_e_serpent_spray], 50);
+   ta_e_serpent_spray, ta_e_serpent_gaze], 60);
   for (var i = 0; i < serpent.abilities.length; i++) {
     serpent.abilities[i].user = serpent;
   }
   serpent2 = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
-   ta_e_serpent_spray], 50);
+   ta_e_serpent_spray, ta_e_serpent_gaze], 60);
   for (var i = 0; i < serpent2.abilities.length; i++) {
     serpent2.abilities[i].user = serpent2;
   }

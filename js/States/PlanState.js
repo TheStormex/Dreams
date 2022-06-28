@@ -41,11 +41,10 @@ class PlanState {
           }
         }
         // if mouseover a character's head, show the passives this character has
-        if (currentChar !== "none") {
-          if (mouseX > width/18-width/20 && mouseX < width/18-width/20+width/10 && mouseY > height-height/7-height/12 && mouseY < height-height/7-height/12+height/6) {
-            console.log("yes");
-          }
-        }
+        // if (currentChar !== "none") {
+        //   if (mouseX > width/18-width/20 && mouseX < width/18-width/20+width/10 && mouseY > height-height/7-height/12 && mouseY < height-height/7-height/12+height/6) {
+        //   }
+        // }
         // check if mousing over the fight button
         if (mouseX > width-width/15-width/20 && mouseX < width-width/15+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
           mouseOver = "fight"
@@ -84,7 +83,7 @@ class PlanState {
     fill(255);
     // check enemy / player amount, for each enemy / player, draw name, sprites and stats
     for (let i = 0; i < playersList.length; i++) {
-      textSize(width/200+height/100);
+      textSize(width/100+height/100);
       rectMode(CENTER, CENTER);
       // mark the selected character with a square depending on the situation, if choose, then friendly only (can be selected to act)
       // if ability, then those who can be selected will glow and those moused over will have another square
@@ -126,15 +125,15 @@ class PlanState {
       fill(0);
       text(healthText, width*(i+1)/(playersList.length+1), height/2-height/10);
       // if is frontline, show it, if not, say click to make front line
+      textSize(width/80, height/80);
       if (playersList[i].name === frontline.name) {
-        text("Frontline", width*(i+1)/(playersList.length+1), height/2+height/9);
+        text("Frontline", width*(i+1)/(playersList.length+1), height/2+height/11);
       } else {
         // if has enough energy to become Frontline
         if (playersList[i].energy >= 3) {
-          text("Click to make Frontline", width*(i+1)/(playersList.length+1), height/2+height/9);
+          text("Click to make Frontline", width*(i+1)/(playersList.length+1), height/2+height/11);
         } else {
-          text("Can't be Frontline", width*(i+1)/(playersList.length+1), height/2+height/9);
-          text("Need more Energy", width*(i+1)/(playersList.length+1), height/2+height/7);
+          text("Can't be Frontline", width*(i+1)/(playersList.length+1), height/2+height/11);
         }
       }
       // if this character is tired of being frontline, show it
@@ -142,13 +141,13 @@ class PlanState {
         strokeWeight(3);
         stroke(100, 0, 100);
         fill(255, 0, 0);
-        text("Tired!", width*(i+1)/(playersList.length+1), height/2+height/7);
+        text("Tired!", width*(i+1)/(playersList.length+1), height/2+height/7.1);
         noStroke();
       }  else if (playersList[i].refreshed === true) { // if this character is refreshed by not using any abilities last turn and was not frontline
         strokeWeight(3);
         stroke(0, 150, 0);
         fill(0, 255, 100);
-        text("Refreshed!", width*(i+1)/(playersList.length+1), height/2+height/7);
+        text("Refreshed!", width*(i+1)/(playersList.length+1), height/2+height/7.1);
         noStroke();
       }
       // draw the status changes of each character if they are not 0
@@ -181,6 +180,15 @@ class PlanState {
         }
         text(defenseText, width*(i+1)/(playersList.length+1)+width/12, height/2+height/80);
       }
+      // if stunned
+      if (playersList[i].stun === true) {
+        push();
+        fill(255, 255, 0);
+        stroke(0);
+        textSize(width/80, height/80);
+        text("STUNNED", width*(i+1)/(playersList.length+1), height/2+height/8.5);
+        pop();
+      }
     }
     // draw the enemy sprites
     for (let i = 0; i < enemiesList.length; i++) {
@@ -210,6 +218,14 @@ class PlanState {
       text(enemiesList[i].name, width*(i+1)/(enemiesList.length+1), height/5-height/7);
       fill(0);
       text(healthText, width*(i+1)/(enemiesList.length+1), height/5-height/10);
+      // if used a talent, show name of talent
+      if (enemiesList[i].talentUsed === true) {
+        push();
+        textSize(width/100, height/100);
+        fill(0);
+        text("Talent: " + enemiesList[i].talentUsedName + "!", width*(i+1)/(enemiesList.length+1), height/3.3);
+        pop();
+      }
       // draw the status changes of each character if they are not 0
       rectMode(CENTER);
       if (enemiesList[i].offenseChange !== 0) {
@@ -268,10 +284,11 @@ class PlanState {
     rectMode(CENTER, CENTER);
     rect(width/15, height/3+height/7, width/10, height/10);
     textSize(width/80);
+    textAlign(CENTER, CENTER);
     noStroke();
     fill(0);
-    text("Change Frontline", width/50, height/3 + height/8);
-    text("Cost = 3 Energy", width/50, height/2);
+    text("Change Frontline", width/15, height/3 + height/8);
+    text("Cost = 3 Energy", width/15, height/2);
     pop();
     if (currentChar != "none") {
       push();
@@ -280,7 +297,7 @@ class PlanState {
         strokeWeight(3);
         stroke(0);
         // if moused over, it is highlighted
-        if (mouseOver.name === currentChar.abilities[0][i].name) {
+        if (mouseOver.name === currentChar.abilities[0][i].name && currentChar.stun === false) {
           fill(0);
         } else {
           fill(255);
@@ -290,7 +307,7 @@ class PlanState {
         // name, cost and ability
         noStroke();
         // if moused over, it is highlighted
-        if (mouseOver.name === currentChar.abilities[0][i].name) {
+        if (mouseOver.name === currentChar.abilities[0][i].name && currentChar.stun === false) {
           fill(255);
         } else {
           fill(0);
@@ -323,7 +340,15 @@ class PlanState {
           text("Used This Turn", width/3.75+(i*width/3.5), height-height/5);
         }
       }
-    pop();
+    //  if char is stunned
+      if (currentChar.stun === true) {
+        fill(255, 255, 0);
+        stroke(0);
+        textAlign(CENTER, CENTER);
+        textSize(width/10+height/12);
+        text("STUNNED", width/2+width/25, height-height/8.5)
+        pop();
+      }
     }
   }
 
@@ -402,18 +427,13 @@ class PlanState {
              frontline = mouseOver;
            }
           // if a player's ability is moused over, then clicking selects that ability to be used
-        } else if (currentChar.abilities[0].includes(mouseOver)) {
+        } else if (currentChar.abilities[0].includes(mouseOver) && currentChar.stun === false) {
           // if this ability is not an ultimate, and if they have enough energy to use it, and it has not been used this turn then it works
           if (mouseOver.ultimate === false && currentChar.energy - mouseOver.costCurrent >= 0 && mouseOver.used === false) {
             this.selectAbility();
           } else if (mouseOver.ultimate === true && currentChar.ultCharge === 100) {
             this.selectAbility();
           } else {
-            console.log("not enough");
-            console.log(mouseOver.ultimate);
-            console.log(mouseOver.costCurrent);
-            console.log(currentChar.energy - mouseOver.cost)
-            console.log(mouseOver.used);
           }
         }
       }
@@ -539,13 +559,13 @@ class PlanState {
     currentFightTime = 0;
     fightTimer = setInterval(function() {
       currentFightTime++;
-      console.log(currentFightTime);
       if (currentFightTime/100 >= fightTime) {
         console.log("go back");
         fightToPlan();
       }
     }, 10);
     intervalsList.push(fightTimer);
+    console.log("go to fight");
     whichScreen = FIGHT_STATE;
   }
   // what text appears in the dialog, in order of importance (least-most) - ready - enemy almost dead - refreshed - ultimate ready - tired - almost dead

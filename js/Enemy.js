@@ -19,6 +19,8 @@ class Enemy {
     this.abilities = abilities;
     this.talents = talents;
     this.talentRate = talentRate;
+    this.talentUsed = false;
+    this.talentUsedName = "";
     this.currentAbility;
     this.currentAggro = "none";
     // names of all alive player characters
