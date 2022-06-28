@@ -93,8 +93,13 @@ class PlayerAbility {
             theEffect.targets[i2].stun = false;
             let negatedOffenseDebuff = abs(theEffect.targets[i2].offenseDebuff);
             let negatedDefenseDebuff = abs(theEffect.targets[i2].defenseDebuff);
+            let negatedCostDebuff = abs(theEffect.targets[i2].costDebuff);
             theEffect.targets[i2].offenseChange += negatedOffenseDebuff;
             theEffect.targets[i2].defenseChange += negatedDefenseDebuff;
+            theEffect.targets[i2].abilityDiscount += negatedCostDebuff;
+            theEffect.targets[i2].offenseDebuff = 0;
+            theEffect.targets[i2].defenseDebuff = 0;
+            theEffect.targets[i2].costDebuff = 0;
           }
           break;
         case "abilityRenew":

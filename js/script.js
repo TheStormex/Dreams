@@ -216,7 +216,7 @@ let ab_escape_effect = new AbilityEffect("bullet", "", 5, pro_p_backdoor, false,
 let ab_escape_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
 let ab_escape = new PlayerAbility("Escape", 2, [ab_escape_effect, ab_escape_effect2], "Dash and leave behind dust", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
 let ab_powerCharge_effect = new AbilityEffect("discount", "players", 1, "", false, false, 0, 0);
-let ab_powerCharge = new PlayerAbility("Power Charge",  3, [ab_powerCharge_effect], "Target ally gets Discount 1", 32, "none", false, [[10, "use"]], 0);
+let ab_powerCharge = new PlayerAbility("Power Charge",  3, [ab_powerCharge_effect], "Target ally gets Discount 1 (costs: min 1)", 32, "none", false, [[10, "use"]], 0);
 let ab_erraticStimulant_effect = new AbilityEffect("ultCharge_change", "players", 20, "", false, false, 0, 0);
 let ab_erraticStimulant = new PlayerAbility("Erratic Stimulant", 4, [ab_erraticStimulant_effect], "Target ally gets +20 Ult Charge", 32, "none", false, [[10, "use"]], 0);
 let ab_ult_restorationBlast_effect = new AbilityEffect("heal", "players", 50, "", false, true, 0, 0);
@@ -251,9 +251,11 @@ let ab_e_serpent_gatling = new EnemyAbility("noise", [ab_e_serpent_gatling_effec
 let ta_e_agent_block = new EnemyTalent("Block", "self", ["defense_change"], [50]);
 let ta_e_agent_pierce = new EnemyTalent("Pierce", "players", ["defense_change"], [-30]);
 let ta_e_agent_taunt = new EnemyTalent("Taunt", "players", ["switch", "drain"], [0, 3]);
+let ta_e_agent_overload = new EnemyTalent("Overload", "players", ["tax"], [-1]);
 let ta_e_serpent_swipe = new EnemyTalent("Swipe", "frontline", ["offense_change"], [-40]);
 let ta_e_serpent_spray = new EnemyTalent("Spray", "enemies", ["heal"], [50]);
 let ta_e_serpent_gaze = new EnemyTalent("Gaze", "players", ["stun"], [0]);
+let ta_e_serpent_swat = new EnemyTalent("Swat", "enemies", ["defense_change"], [30]);
 
 let projectilesList = [];
 
@@ -448,6 +450,7 @@ function newTurn() {
     playersList[i].offenseDebuff = 0;
     playersList[i].defenseDebuff = 0;
     playersList[i].abilityDiscount = 0;
+    playersList[i].costDebuff = 0;
     // if a player character did not use any abilities last turn, it gains refreshed this turn
     if (playersList[i].acted === false && playersList[i].stun === false) {
       // if not the first turn, give the characters refreshed buff
@@ -835,22 +838,22 @@ function initialisation() {
   robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
   robot = new Player("Robot", 300, 4, 15, [[ab_powerCharge, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
-  agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt], 70);
+  agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt, ta_e_agent_overload], 70);
   for (var i = 0; i < agent.abilities.length; i++) {
     agent.abilities[i].user = agent;
   }
-  agent2 = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt], 70);
+  agent2 = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt, ta_e_agent_overload], 70);
   for (var i = 0; i < agent2.abilities.length; i++) {
     agent2.abilities[i].user = agent2;
   }
   serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
   serpent = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
-   ta_e_serpent_spray, ta_e_serpent_gaze], 60);
+   ta_e_serpent_spray, ta_e_serpent_gaze, ta_e_serpent_swat], 60);
   for (var i = 0; i < serpent.abilities.length; i++) {
     serpent.abilities[i].user = serpent;
   }
   serpent2 = new Enemy("Serverspy Serpent", 1000, width/20+height/20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
-   ta_e_serpent_spray, ta_e_serpent_gaze], 60);
+   ta_e_serpent_spray, ta_e_serpent_gaze, ta_e_serpent_swat], 60);
   for (var i = 0; i < serpent2.abilities.length; i++) {
     serpent2.abilities[i].user = serpent2;
   }

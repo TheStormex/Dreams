@@ -123,6 +123,7 @@ class FightState {
         text(frontline.abilities[1][i].name, width/3.75+(i*width/3.5), height-height/6);
         // apply any discounts
         frontline.abilities[1][i].costCurrent = frontline.abilities[1][i].cost - frontline.abilityDiscount;
+        frontline.abilities[1][i].costCurrent = constrain(frontline.abilities[1][i].costCurrent, 1, 999);
         let abilityCostText = "Cost: "  + frontline.abilities[1][i].costCurrent + " Energy";
         text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
         textSize(width/150+height/150);

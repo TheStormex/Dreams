@@ -26,6 +26,7 @@ class EnemyTalent {
         for (let i = 0; i < playersList.length; i++) {
           if (playersList[i].name === this.user.currentAggro) {
             this.chosenTarget = playersList[i];
+          }
         }
         break;
       case "frontline":
@@ -57,6 +58,10 @@ class EnemyTalent {
         case "drain":
           this.chosenTarget.energy -= this.amount[i];
           this.chosenTarget.energy = constrain(this.chosenTarget.energy, 0, this.chosenTarget.maxEnergy);
+          break;
+        case "tax":
+          this.chosenTarget.abilityDiscount += this.amount[i];
+          this.chosenTarget.costDebuff += this.amount[i];
           break;
         // make a diff char frontline
         case "switch":

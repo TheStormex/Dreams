@@ -21,9 +21,12 @@ class Player {
     // stat changes
     this.offenseChange = 0;
     this.defenseChange = 0;
+    // discount to abilities if applicable
+    this.abilityDiscount = 0;
     // negative changes
     this.offenseDebuff = 0;
     this.defenseDebuff = 0;
+    this.costDebuff = 0;
     this.bulletSpeed = 100;
     this.ultCharge = 0;
     this.frontlineTurns = 0;
@@ -44,8 +47,6 @@ class Player {
     this.invincible = false;
     // current status
     this.status = ["none"];
-    // discount to abilities if applicable
-    this.abilityDiscount = 0;
   }
   move() {
     // apply tired penalty if tired
