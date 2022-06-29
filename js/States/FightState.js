@@ -121,10 +121,26 @@ class FightState {
         textAlign(CENTER, CENTER);
         textSize(width/80+height/80);
         text(frontline.abilities[1][i].name, width/3.75+(i*width/3.5), height-height/6);
+        // apply any discounts to non ultimates
+        if (frontline.abilities[0][i].ultimate === false) {
+          frontline.abilities[0][i].costCurrent = frontline.abilities[0][i].cost - frontline.abilityDiscount;
+          frontline.abilities[0][i].costCurrent = constrain(frontline.abilities[0][i].costCurrent, 0, 999);
+        }
+        let abilityCostNumber = frontline.abilities[0][i].costCurrent;
+        let abilityCostText;
+        if (frontline.abilities[0][i].ultimate === false) {
+          abilityCostText = "Cost:  " + "  Energy";
+          text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+        } else {
+          abilityCostText = "ULTIMATE";
+          push();
+          fill(255,200,0);
+          text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+          pop();
+        }
         // apply any discounts
         frontline.abilities[1][i].costCurrent = frontline.abilities[1][i].cost - frontline.abilityDiscount;
         frontline.abilities[1][i].costCurrent = constrain(frontline.abilities[1][i].costCurrent, 1, 999);
-        let abilityCostText = "Cost: "  + frontline.abilities[1][i].costCurrent + " Energy";
         text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
         textSize(width/150+height/150);
         text(frontline.abilities[1][i].description, width/3.75+(i*width/3.5), height-height/12);
@@ -134,7 +150,33 @@ class FightState {
         textSize(width/60+height/60);
         text(abilityButtonText, width/7+(i*width/3.5), height-height/5);
         // if this is an ultimate, then let the player know
-        if (frontline.abilities[1][i].ultimate === true) {
+        // if (frontline.abilities[1][i].ultimate === true) {
+        //   textAlign(CENTER, CENTER);
+        //   textSize(width/100+height/100);
+        //   if (frontline.ultCharge === 100) {
+        //     fill(0, 255, 0);
+        //     text("Ultimate Ready!", width/3.75+(i*width/3.5), height-height/5);
+        //   } else {
+        //     fill(255, 0, 0);
+        //     text("Ultimate Charging", width/3.75+(i*width/3.5), height-height/5);
+        //   }
+        // }
+        // if there is a discount or tax
+        if (frontline.abilities[0][i].costCurrent > frontline.abilities[0][i].cost) {
+          fill(255, 0, 0);
+        } else if (frontline.abilities[0][i].costCurrent < frontline.abilities[0][i].cost) {
+          fill(0, 255, 0);
+        }
+        textSize(width/80+height/80);
+        if (frontline.abilities[0][i].ultimate === false) {
+          text(abilityCostNumber, width/3.95+(i*width/3.5), height-height/8);
+        }
+        // the cooldown of each ability if it is on cooldown
+        if (frontline.abilities[1][i].onCooldown === true) {
+          text(frontline.abilities[1][i].cooldownLeft, width/3.75+(i*width/3.5), height-height/5);
+        }
+        // if this is an ultimate, then let the player know
+        if (frontline.abilities[0][i].ultimate === true) {
           textAlign(CENTER, CENTER);
           textSize(width/100+height/100);
           if (frontline.ultCharge === 100) {
@@ -145,9 +187,11 @@ class FightState {
             text("Ultimate Charging", width/3.75+(i*width/3.5), height-height/5);
           }
         }
-        // the cooldown of each ability if it is on cooldown
-        if (frontline.abilities[1][i].onCooldown === true) {
-          text(frontline.abilities[1][i].cooldownLeft, width/3.75+(i*width/3.5), height-height/5);
+        // if this non-ultimate ability has been used this turn and cannot be used again
+        if (frontline.abilities[0][i].used === true && frontline.abilities[0][i].ultimate === false) {
+          textSize(width/100+height/100);
+          fill(255, 0, 0);
+          text("Used This Turn", width/3.75+(i*width/3.5), height-height/5);
         }
       }
     pop();
@@ -226,7 +270,7 @@ class FightState {
       if (currentCombatAbilityKey === abilityButton) {
         let abilityToBeActivated = frontline.abilities[1][i];
         // if this ability is not an ultimate and the player character does not have enough to use it, and if they have enough energy to use it, and it is not on cooldown then it works
-        if (abilityToBeActivated.ultimate === false && currentChar.energy - abilityToBeActivated.cost >= 0 && abilityToBeActivated.cooldownLeft === 0) {
+        if (abilityToBeActivated.ultimate === false && frontline.energy - abilityToBeActivated.cost >= 0 && abilityToBeActivated.cooldownLeft === 0) {
           currentAbility = frontline.abilities[1][i];
           this.situation = "ability";
         } else if (abilityToBeActivated.ultimate === true && frontline.ultCharge === 100) {

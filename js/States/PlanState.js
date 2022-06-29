@@ -315,12 +315,40 @@ class PlanState {
         textAlign(CENTER, CENTER);
         textSize(width/80+height/80);
         text(currentChar.abilities[0][i].name, width/3.75+(i*width/3.5), height-height/6);
-        // apply any discounts
-        currentChar.abilities[0][i].costCurrent = currentChar.abilities[0][i].cost - currentChar.abilityDiscount;
-        currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 0, 999);
-        let abilityCostText = "Cost: "  + currentChar.abilities[0][i].costCurrent + " Energy";
-        text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+        // apply any discounts to non ultimates
+        if (currentChar.abilities[0][i].ultimate === false) {
+          currentChar.abilities[0][i].costCurrent = currentChar.abilities[0][i].cost - currentChar.abilityDiscount;
+          currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 0, 999);
+        }
+        let abilityCostNumber = currentChar.abilities[0][i].costCurrent;
+        let abilityCostText;
+        if (currentChar.abilities[0][i].ultimate === false) {
+          abilityCostText = "Cost:  " + "  Energy";
+          text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+        } else {
+          abilityCostText = "ULTIMATE";
+          push();
+          fill(255,200,0);
+          text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+          pop();
+        }
+
+        // if there is a discount or tax
+        if (currentChar.abilities[0][i].costCurrent > currentChar.abilities[0][i].cost) {
+          fill(255, 0, 0);
+        } else if (currentChar.abilities[0][i].costCurrent < currentChar.abilities[0][i].cost) {
+          fill(0, 255, 0);
+        }
+        if (currentChar.abilities[0][i].ultimate === false) {
+          text(abilityCostNumber, width/3.85+(i*width/3.5), height-height/8);
+        }
         textSize(width/150+height/150);
+        // if moused over, it is highlighted
+        if (mouseOver.name === currentChar.abilities[0][i].name && currentChar.stun === false) {
+          fill(255);
+        } else {
+          fill(0);
+        }
         text(currentChar.abilities[0][i].description, width/3.75+(i*width/3.5), height-height/12);
         // if this is an ultimate, then let the player know
         if (currentChar.abilities[0][i].ultimate === true) {

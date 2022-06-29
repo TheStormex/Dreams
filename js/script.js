@@ -145,7 +145,7 @@ let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["d
 let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["stun", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-let pro_p_emp = new BulletStats(1, "angles", "straight", "enemies", [["damage", 2], ["stun", 1500]], 3, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+let pro_p_ult_emp = new BulletStats(1, "angles", "straight", "enemies", [["damage", 1], ["stun", 1500]], 3, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // robot
 
@@ -207,7 +207,7 @@ let ab_bruteForce_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0
 let ab_bruteForce = new PlayerAbility("Brute Force Attack", 1, [ab_bruteForce_effect, ab_bruteForce_effect2], "Dash and shoot around you", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
 let ab_ult_vpn_effect = new AbilityEffect("ramp", "players", 6, "", false, true, 0, 0);
 let ab_ult_vpn = new PlayerAbility("Activate VPN", 0, [ab_ult_vpn_effect], "All allies get +6 Energy", 32, "none", true, [[0, "use"]], 0);
-let ab_ult_EMP_effect = new AbilityEffect("bullet", "", 10, pro_p_emp, false, false, 100, 1);
+let ab_ult_EMP_effect = new AbilityEffect("bullet", "", 1, pro_p_ult_emp, false, false, 100, 30);
 let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stunning waves", 32, "none", true, [[5, "hit"]], 0);
 // robot abilities and effects
 let ab_plasmaPulse_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
@@ -355,6 +355,8 @@ function setup() {
   pro_p_DDOS.sounds = A_COMBAT;
   pro_p_bruteForce.images = S_BRUTE_FORCE;
   pro_p_bruteForce.sounds = A_COMBAT;
+  pro_p_ult_emp.images = S_DDOS;
+  pro_p_ult_emp.sounds = A_COMBAT_ULT;
   // enemy bullets
   // agent
   pro_e_agentBullet.images = S_AGENT_BULLET;

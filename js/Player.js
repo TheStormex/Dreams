@@ -28,7 +28,7 @@ class Player {
     this.defenseDebuff = 0;
     this.costDebuff = 0;
     this.bulletSpeed = 100;
-    this.ultCharge = 0;
+    this.ultCharge = 100;
     this.frontlineTurns = 0;
     // if this char is tired (frontline for more than 2 turns)
     this.tired = false;
