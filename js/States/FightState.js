@@ -42,7 +42,7 @@ class FightState {
     }
     noStroke();
     // draw the player frontline character
-    fill(0,255,0);
+    fill(0, 255, 0);
     frontline.move();
     let vector1 = createVector(frontline.x, frontline.y);
     let vector2 = createVector(mouseX - frontline.x, mouseY - frontline.y);
@@ -60,8 +60,8 @@ class FightState {
     noStroke();
     fill(250, 0, 0);
     translate(frontline.x, frontline.y);
-    rotate(frontline.angle+PI/2);
-    triangle(0, -height/10, -width/80, -height/18, width/80, -height/18);
+    rotate(frontline.angle + PI / 2);
+    triangle(0, -height / 10, -width / 80, -height / 18, width / 80, -height / 18);
     pop();
     // draw enemies health bar
     // health bar
@@ -69,11 +69,11 @@ class FightState {
       push();
       rectMode(CENTER);
       fill(255);
-      rect(enemiesList[i].x, enemiesList[i].y-height/10, width/10, height/40);
-      fill(255, 0 ,0);
+      rect(enemiesList[i].x, enemiesList[i].y - height / 10, width / 10, height / 40);
+      fill(255, 0, 0);
       rectMode(CORNER);
-      let healthBarLength = map(enemiesList[i].hp, 0, enemiesList[i].maxHp, 0, width/10);
-      rect(enemiesList[i].x-width/20, enemiesList[i].y-height/10-height/80, healthBarLength, height/40);
+      let healthBarLength = map(enemiesList[i].hp, 0, enemiesList[i].maxHp, 0, width / 10);
+      rect(enemiesList[i].x - width / 20, enemiesList[i].y - height / 10 - height / 80, healthBarLength, height / 40);
       pop();
     }
     // draw progess bar of the fight until go back to plan state
@@ -81,12 +81,12 @@ class FightState {
     rectMode(CORNER);
     fill(255);
     noStroke();
-    rect(0, height-height/3, width, height/50);
-    let progressBarLength = map(currentFightTime/100, 0, fightTime, 0, width);
+    rect(0, height - height / 3, width, height / 50);
+    let progressBarLength = map(currentFightTime / 100, 0, fightTime, 0, width);
     colorMode(HSB, 100);
-    let colorOfBar = map(currentFightTime/100, 0, fightTime, 0, 100);
+    let colorOfBar = map(currentFightTime / 100, 0, fightTime, 0, 100);
     fill(colorOfBar, 100, 100);
-    rect(0, height-height/3, progressBarLength, height/50);
+    rect(0, height - height / 3, progressBarLength, height / 50);
     pop();
   }
   // draw the combat skills the characters can use in the UI box
@@ -107,7 +107,7 @@ class FightState {
           }
         }
         rectMode(CORNER);
-        rect(width/7+(i*width/3.5), height-height/4.5, width/4, height/6);
+        rect(width / 7 + (i * width / 3.5), height - height / 4.5, width / 4, height / 6);
         noStroke();
         // name, cost and ability, cooldown
         // if activated, it is highlighted
@@ -119,8 +119,8 @@ class FightState {
           }
         }
         textAlign(CENTER, CENTER);
-        textSize(width/80+height/80);
-        text(frontline.abilities[1][i].name, width/3.75+(i*width/3.5), height-height/6);
+        textSize(width / 80 + height / 80);
+        text(frontline.abilities[1][i].name, width / 3.75 + (i * width / 3.5), height - height / 6);
         // apply any discounts to non ultimates
         if (frontline.abilities[0][i].ultimate === false) {
           frontline.abilities[0][i].costCurrent = frontline.abilities[0][i].cost - frontline.abilityDiscount;
@@ -130,25 +130,24 @@ class FightState {
         let abilityCostText;
         if (frontline.abilities[0][i].ultimate === false) {
           abilityCostText = "Cost:  " + "  Energy";
-          text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+          text(abilityCostText, width / 3.75 + (i * width / 3.5), height - height / 8);
         } else {
-          abilityCostText = "ULTIMATE";
           push();
-          fill(255,200,0);
-          text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+          abilityCostText = "ULTIMATE";
+          fill(255, 200, 0);
+          text(abilityCostText, width / 3.75 + (i * width / 3.5), height - height / 8);
           pop();
         }
         // apply any discounts
         frontline.abilities[1][i].costCurrent = frontline.abilities[1][i].cost - frontline.abilityDiscount;
         frontline.abilities[1][i].costCurrent = constrain(frontline.abilities[1][i].costCurrent, 1, 999);
-        text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
-        textSize(width/150+height/150);
-        text(frontline.abilities[1][i].description, width/3.75+(i*width/3.5), height-height/12);
+        textSize(width / 150 + height / 150);
+        text(frontline.abilities[1][i].description, width / 3.75 + (i * width / 3.5), height - height / 12);
         // what button to press to activate this ability
         let abilityButtonText = combatButtons[i][0];
         textAlign(LEFT, CENTER);
-        textSize(width/60+height/60);
-        text(abilityButtonText, width/7+(i*width/3.5), height-height/5);
+        textSize(width / 60 + height / 60);
+        text(abilityButtonText, width / 7 + (i * width / 3.5), height - height / 5);
         // if this is an ultimate, then let the player know
         // if (frontline.abilities[1][i].ultimate === true) {
         //   textAlign(CENTER, CENTER);
@@ -167,42 +166,36 @@ class FightState {
         } else if (frontline.abilities[0][i].costCurrent < frontline.abilities[0][i].cost) {
           fill(0, 255, 0);
         }
-        textSize(width/80+height/80);
+        textSize(width / 80 + height / 80);
         if (frontline.abilities[0][i].ultimate === false) {
-          text(abilityCostNumber, width/3.95+(i*width/3.5), height-height/8);
+          text(abilityCostNumber, width / 3.95 + (i * width / 3.5), height - height / 8);
         }
         // the cooldown of each ability if it is on cooldown
         if (frontline.abilities[1][i].onCooldown === true) {
-          text(frontline.abilities[1][i].cooldownLeft, width/3.75+(i*width/3.5), height-height/5);
+          text(frontline.abilities[1][i].cooldownLeft, width / 3.75 + (i * width / 3.5), height - height / 5);
         }
         // if this is an ultimate, then let the player know
         if (frontline.abilities[0][i].ultimate === true) {
           textAlign(CENTER, CENTER);
-          textSize(width/100+height/100);
+          textSize(width / 100 + height / 100);
           if (frontline.ultCharge === 100) {
             fill(0, 255, 0);
-            text("Ultimate Ready!", width/3.75+(i*width/3.5), height-height/5);
+            text("Ultimate Ready!", width / 3.75 + (i * width / 3.5), height - height / 5);
           } else {
             fill(255, 0, 0);
-            text("Ultimate Charging", width/3.75+(i*width/3.5), height-height/5);
+            text("Ultimate Charging", width / 3.75 + (i * width / 3.5), height - height / 5);
           }
         }
-        // if this non-ultimate ability has been used this turn and cannot be used again
-        if (frontline.abilities[0][i].used === true && frontline.abilities[0][i].ultimate === false) {
-          textSize(width/100+height/100);
-          fill(255, 0, 0);
-          text("Used This Turn", width/3.75+(i*width/3.5), height-height/5);
-        }
       }
-    pop();
-    //  if char is stunned
+      pop();
+      //  if char is stunned
       if (frontline.stun === true) {
         push();
         fill(255, 255, 0);
         stroke(0);
         textAlign(CENTER, CENTER);
-        textSize(width/10+height/12);
-        text("STUNNED", width/2+width/25, height-height/8.5)
+        textSize(width / 10 + height / 12);
+        text("STUNNED", width / 2 + width / 25, height - height / 8.5)
         pop();
       }
     }
@@ -212,14 +205,16 @@ class FightState {
   mouseDown() {
     if (this.situation === "shoot" && frontline.stun === false) {
       if (frontline.basicBulletCooldown === false) {
-        let playerBasicBullet = new Bullet(frontline, frontline.x, frontline.y, width*(frontline.basicBullet.speed/2)/100+height*(frontline.basicBullet.speed/2)/100,
-        frontline.angle, frontline.basicBullet.moveType, frontline.basicBullet.targets, frontline.basicBullet.effects,
-        width*(frontline.basicBullet.size/2)/100+height*(frontline.basicBullet.size/2)/100, frontline.basicBullet.changes,
-        frontline.basicBullet.images, frontline.basicBullet.sounds, frontline.basicBullet.wall, frontline.basicBullet.ifHit, frontline.basicBullet.timer);
+        let playerBasicBullet = new Bullet(frontline, frontline.x, frontline.y, width * (frontline.basicBullet.speed / 2) / 100 + height * (frontline.basicBullet.speed / 2) / 100,
+          frontline.angle, frontline.basicBullet.moveType, frontline.basicBullet.targets, frontline.basicBullet.effects,
+          width * (frontline.basicBullet.size / 2) / 100 + height * (frontline.basicBullet.size / 2) / 100, frontline.basicBullet.changes,
+          frontline.basicBullet.images, frontline.basicBullet.sounds, frontline.basicBullet.wall, frontline.basicBullet.ifHit, frontline.basicBullet.timer);
         frontline.basicBullet.sounds.play();
         projectilesList.push(playerBasicBullet);
         frontline.basicBulletCooldown = true;
-        setTimeout(function() {frontline.basicBulletCooldown = false}, frontline.basicBullet[11]);
+        setTimeout(function() {
+          frontline.basicBulletCooldown = false
+        }, frontline.basicBullet[11]);
       }
     } else if (this.situation === "ability" && frontline.stun === false) {
       currentAbility.user = frontline;

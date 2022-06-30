@@ -167,13 +167,13 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 
 // player abilities and effects
 // screws abilities and effects
-let ab_factoryReset_effect = new AbilityEffect("cleanse", "players", 0, "", false, false, 0, 1);
-let ab_factoryReset = new PlayerAbility("Factory Reset", 2, [ab_factoryReset_effect], "Target ally is Cleansed", 32, "none", false, [[5, "use"]], 0);
+let ab_targetExploits_effect = new AbilityEffect("defense_change", "enemies", -25, "", false, false, 0, 0);
+let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Target enemy gets - 25 DEF", 32, "none", false, [[10, "use"]], 0);
 let ab_energyRecharge_effect = new AbilityEffect("abilityRenew", "players", 0, "", false, false, 0, 0);
 let ab_energyRecharge = new PlayerAbility("Energy Recharge", 2, [ab_energyRecharge_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
 let ab_confidenceBoost_effect = new AbilityEffect("bullet", "", 5, pro_p_bruteForce, false, false, 100, 5);
 let ab_confidenceBoost = new PlayerAbility("Confidence Boost", 1, [ab_confidenceBoost_effect], "Buff self", 32, "none", false, [[10, "use"]], 1);
-let ab_shockwave_effect = new AbilityEffect("bullet", "", 5, pro_p_bruteForce, false, false, 100, 5);
+let ab_shockwave_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 20);
 let ab_shockwave = new PlayerAbility("Shockwave",  3, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [[5, "use"], [5, "hit"]], 0);
 let ab_ult_hexcodeDeflector_effect = new AbilityEffect("defense_change", "players", 70, "", false, true, 0, 0);
 let ab_ult_hexcodeDeflector = new PlayerAbility("Hexcode Deflector", 0, [ab_ult_hexcodeDeflector_effect], "All allies get +70 DEF", 32, "none", true, [[0, "use"]], 0);
@@ -198,8 +198,8 @@ let ab_ult_ransomBot = new PlayerAbility("Ransom Bot", 0, [ab_ult_ransomBot_effe
 // nuts abilities and effects
 let ab_firewall_effect = new AbilityEffect("defense_change", "players", 25, "", false, false, 0);
 let ab_firewall = new PlayerAbility("Firewall", 3, [ab_firewall_effect], "Target ally gets +25 DEF", 32, "none", false, [[10, "use"]], 0);
-let ab_targetExploits_effect = new AbilityEffect("defense_change", "enemies", -25, "", false, false, 0, 0);
-let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Target enemy gets - 25 DEF", 32, "none", false, [[10, "use"]], 0);
+let ab_factoryReset_effect = new AbilityEffect("cleanse", "players", 0, "", false, false, 0, 1);
+let ab_factoryReset = new PlayerAbility("Factory Reset", 2, [ab_factoryReset_effect], "Target ally is Cleansed", 32, "none", false, [[5, "use"]], 0);
 let ab_DOOS_effect = new AbilityEffect("bullet", "", 1, pro_p_DDOS, false, false, 0, 1);
 let ab_DDOS = new PlayerAbility("DDoS", 2, [ab_DOOS_effect], "Stun enemies hit for 0.5 seconds", 32, "none", false, [[5, "hit"]], 1);
 let ab_bruteForce_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 10);
@@ -834,9 +834,9 @@ function initialisation() {
   boltImages = new Images(S_BOLT_LEFT, S_BOLT_RIGHT, S_BOLT_FRONT, S_BOLT_FACE);
   bolt = new Player("Bolt", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost, ab_ult_ransomBot], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_bolt_basic, boltImages);
   nutsImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
-  nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_targetExploits, ab_ult_vpn], [ab_DDOS, ab_bruteForce, ab_ult_EMP]], pro_p_nuts_basic, nutsImages);
+  nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_factoryReset, ab_ult_vpn], [ab_DDOS, ab_bruteForce, ab_ult_EMP]], pro_p_nuts_basic, nutsImages);
   screwsImages = new Images(S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE);
-  screws = new Player("Screws", 200, 5, 20, [[ab_factoryReset, ab_energyRecharge, ab_ult_hexcodeDeflector], [ab_confidenceBoost, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
+  screws = new Player("Screws", 200, 5, 20, [[ab_targetExploits, ab_energyRecharge, ab_ult_hexcodeDeflector], [ab_confidenceBoost, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
   robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
   robot = new Player("Robot", 300, 4, 15, [[ab_powerCharge, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
