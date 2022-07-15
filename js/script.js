@@ -417,7 +417,7 @@ function drawCommonUI() {
     // energy
     let energyText = "Energy: " + currentChar.energy + "/" + currentChar.maxEnergy;
     fill(0);
-    textSize(width/80+height/60)
+    textSize(width/90+height/90)
     text(energyText, width-width/4.5, height-height/3.6);
     // ult charge
     let ultChargeText = "Ult Charge: " + currentChar.ultCharge + "%";
@@ -454,6 +454,7 @@ function newTurn() {
     playersList[i].defenseDebuff = 0;
     playersList[i].abilityDiscount = 0;
     playersList[i].costDebuff = 0;
+    playersList[i].bottleUsed = false;
     // if a player character did not use any abilities last turn, it gains refreshed this turn
     if (playersList[i].acted === false && playersList[i].stun === false) {
       // if not the first turn, give the characters refreshed buff

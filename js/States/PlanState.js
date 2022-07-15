@@ -27,7 +27,7 @@ class PlanState {
     switch (this.situation) {
       case "choose":
         for (let i = 0; i < playersList.length; i++) {
-          if (mouseX > width*(i+1)/(playersList.length+1)-width/12 && mouseX < width*(i+1)/(playersList.length+1)-width/12+width/6  && mouseY > height/2-height/6 && mouseY < height/2-height/6+height/3) {
+          if (mouseX > width * (i + 1) / (playersList.length + 1) - width / 12 && mouseX < width * (i + 1) / (playersList.length + 1) - width / 12 + width / 6 && mouseY > height / 2 - height / 6 && mouseY < height / 2 - height / 6 + height / 3) {
             mouseOver = playersList[i];
             currentChar = playersList[i];
           }
@@ -35,12 +35,12 @@ class PlanState {
         // if a character is selected, then if mouse over one of their abilities, put it into the mouse over
         if (currentChar !== "none") {
           for (let i = 0; i < currentChar.abilities[0].length; i++) {
-            if (mouseX > width/7+(i*width/3.5) && mouseX < width/7+(i*width/3.5)+width/4 && mouseY > height-height/4.5 && mouseY < height-height/4.5+height/6) {
+            if (mouseX > width / 7 + (i * width / 3.5) && mouseX < width / 7 + (i * width / 3.5) + width / 4 && mouseY > height - height / 4.5 && mouseY < height - height / 4.5 + height / 6) {
               mouseOver = currentChar.abilities[0][i];
             }
           }
           // check if mousing over the use bottle button
-          if (mouseX > width-width/3-width/30 && mouseX < width-width/3+width/30 && mouseY > height-height/3.63-height/40 && mouseY < height-height/3.63+height/40) {
+          if (mouseX > width - width / 3 - width / 30 && mouseX < width - width / 3 + width / 30 && mouseY > height - height / 3.63 - height / 40 && mouseY < height - height / 3.63 + height / 40) {
             mouseOver = "bottle"
           }
         }
@@ -50,24 +50,24 @@ class PlanState {
         //   }
         // }
         // check if mousing over the fight button
-        if (mouseX > width-width/15-width/20 && mouseX < width-width/15+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
+        if (mouseX > width - width / 15 - width / 20 && mouseX < width - width / 15 + width / 10 - width / 20 && mouseY > height / 2 - height / 30 - height / 6 && mouseY < height / 2 + height / 15 - height / 30 - height / 6) {
           mouseOver = "fight"
         }
         break;
       case "ability":
         // check what is being moused over, player or enemy
         for (let i = 0; i < playersList.length; i++) {
-          if (mouseX > width*(i+1)/(playersList.length+1)-width/12 && mouseX < width*(i+1)/(playersList.length+1)-width/12+width/6  && mouseY > height/2-height/6 && mouseY < height/2-height/6+height/3) {
+          if (mouseX > width * (i + 1) / (playersList.length + 1) - width / 12 && mouseX < width * (i + 1) / (playersList.length + 1) - width / 12 + width / 6 && mouseY > height / 2 - height / 6 && mouseY < height / 2 - height / 6 + height / 3) {
             mouseOver = playersList[i];
           }
         }
         for (let i = 0; i < enemiesList.length; i++) {
-          if (mouseX > width*(i+1)/(enemiesList.length+1)-width/12 && mouseX < width*(i+1)/(enemiesList.length+1)-width/12+width/6  && mouseY > height/5-height/6 && mouseY < height/5-height/6+height/3) {
+          if (mouseX > width * (i + 1) / (enemiesList.length + 1) - width / 12 && mouseX < width * (i + 1) / (enemiesList.length + 1) - width / 12 + width / 6 && mouseY > height / 5 - height / 6 && mouseY < height / 5 - height / 6 + height / 3) {
             mouseOver = enemiesList[i];
           }
         }
         // check if mousing over the cancel button
-        if (mouseX > width-width/15-width/20 && mouseX < width-width/15+width/10-width/20 && mouseY > height/2-height/30-height/6 && mouseY < height/2+height/15-height/30-height/6) {
+        if (mouseX > width - width / 15 - width / 20 && mouseX < width - width / 15 + width / 10 - width / 20 && mouseY > height / 2 - height / 30 - height / 6 && mouseY < height / 2 + height / 15 - height / 30 - height / 6) {
           mouseOver = "cancel"
         }
         break;
@@ -81,13 +81,13 @@ class PlanState {
   drawChars() {
     push();
     noStroke();
-    textSize(width/100+height/100);
+    textSize(width / 100 + height / 100);
     textAlign(CENTER, CENTER);
     rectMode(CENTER, CENTER);
     fill(255);
     // check enemy / player amount, for each enemy / player, draw name, sprites and stats
     for (let i = 0; i < playersList.length; i++) {
-      textSize(width/100+height/100);
+      textSize(width / 100 + height / 100);
       rectMode(CENTER, CENTER);
       // mark the selected character with a square depending on the situation, if choose, then friendly only (can be selected to act)
       // if ability, then those who can be selected will glow and those moused over will have another square
@@ -99,45 +99,45 @@ class PlanState {
           } else {
             fill(0, 100, 200);
           }
-          rect(width*(i+1)/(playersList.length+1), height/2, width/7, height/3);
+          rect(width * (i + 1) / (playersList.length + 1), height / 2, width / 7, height / 3);
         }
       } else if (this.situation === "ability") {
         if (currentAbility.currentEffect.canTargetsList.includes(playersList[i])) {
           fill(255, 200, 50);
-          rect(width*(i+1)/(playersList.length+1), height/2, width/7, height/3);
+          rect(width * (i + 1) / (playersList.length + 1), height / 2, width / 7, height / 3);
         }
       }
       // if this is the frontline character, mark it
       if (frontline.name === playersList[i].name) {
         fill(255, 150, 0);
-        rect(width*(i+1)/(playersList.length+1), height/2, width/9, height/3.2);
+        rect(width * (i + 1) / (playersList.length + 1), height / 2, width / 9, height / 3.2);
       }
       // images of the player's front
       imageMode(CENTER);
-      image(playersList[i].images.front, width*(i+1)/(playersList.length+1), height/2, width/10, height/7);
+      image(playersList[i].images.front, width * (i + 1) / (playersList.length + 1), height / 2, width / 10, height / 7);
       // health bar
       fill(255);
-      rect(width*(i+1)/(playersList.length+1), height/2-height/10, width/10, height/40);
-      fill(255, 0 ,0);
+      rect(width * (i + 1) / (playersList.length + 1), height / 2 - height / 10, width / 10, height / 40);
+      fill(255, 0, 0);
       rectMode(CORNER);
-      rect(width*(i+1)/(playersList.length+1)-width/20, height/2-height/10-height/80, playersList[i].hp*(width/10)/playersList[i].maxHp, height/40);
+      rect(width * (i + 1) / (playersList.length + 1) - width / 20, height / 2 - height / 10 - height / 80, playersList[i].hp * (width / 10) / playersList[i].maxHp, height / 40);
       // names and hp amount
       fill(255)
       let healthText = playersList[i].hp + " " + "/" + " " + playersList[i].maxHp;
       textAlign(CENTER, CENTER);
-      text(playersList[i].name, width*(i+1)/(playersList.length+1), height/2-height/7);
+      text(playersList[i].name, width * (i + 1) / (playersList.length + 1), height / 2 - height / 7);
       fill(0);
-      text(healthText, width*(i+1)/(playersList.length+1), height/2-height/10);
+      text(healthText, width * (i + 1) / (playersList.length + 1), height / 2 - height / 10);
       // if is frontline, show it, if not, say click to make front line
-      textSize(width/80, height/80);
+      textSize(width / 80, height / 80);
       if (playersList[i].name === frontline.name) {
-        text("Frontline", width*(i+1)/(playersList.length+1), height/2+height/11);
+        text("Frontline", width * (i + 1) / (playersList.length + 1), height / 2 + height / 11);
       } else {
         // if has enough energy to become Frontline
         if (playersList[i].energy >= 3) {
-          text("Click to make Frontline", width*(i+1)/(playersList.length+1), height/2+height/11);
+          text("Click to make Frontline", width * (i + 1) / (playersList.length + 1), height / 2 + height / 11);
         } else {
-          text("Can't be Frontline", width*(i+1)/(playersList.length+1), height/2+height/11);
+          text("Can't be Frontline", width * (i + 1) / (playersList.length + 1), height / 2 + height / 11);
         }
       }
       // if this character is tired of being frontline, show it
@@ -145,124 +145,124 @@ class PlanState {
         strokeWeight(3);
         stroke(100, 0, 100);
         fill(255, 0, 0);
-        text("Tired!", width*(i+1)/(playersList.length+1), height/2+height/7.1);
+        text("Tired!", width * (i + 1) / (playersList.length + 1), height / 2 + height / 7.1);
         noStroke();
-      }  else if (playersList[i].refreshed === true) { // if this character is refreshed by not using any abilities last turn and was not frontline
+      } else if (playersList[i].refreshed === true) { // if this character is refreshed by not using any abilities last turn and was not frontline
         strokeWeight(3);
         stroke(0, 150, 0);
         fill(0, 255, 100);
-        text("Refreshed!", width*(i+1)/(playersList.length+1), height/2+height/7.1);
+        text("Refreshed!", width * (i + 1) / (playersList.length + 1), height / 2 + height / 7.1);
         noStroke();
       }
       // draw the status changes of each character if they are not 0
       rectMode(CENTER);
       if (playersList[i].offenseChange !== 0) {
         fill(255, 0, 0)
-        rect(width*(i+1)/(playersList.length+1)+width/12, height/2-height/18, width/20, height/20);
+        rect(width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 - height / 18, width / 20, height / 20);
         fill(0);
-        textSize(width/80, height/80);
-        text("ATK", width*(i+1)/(playersList.length+1)+width/12, height/2-height/18-height/80);
+        textSize(width / 80, height / 80);
+        text("ATK", width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 - height / 18 - height / 80);
         let offenseText;
         if (playersList[i].offenseChange > 0) {
           offenseText = "+" + playersList[i].offenseChange + "%";
         } else if (playersList[i].offenseChange < 0) {
           offenseText = playersList[i].offenseChange + "%";
         }
-        text(offenseText, width*(i+1)/(playersList.length+1)+width/12, height/2-height/23);
+        text(offenseText, width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 - height / 23);
       }
       if (playersList[i].defenseChange !== 0) {
         fill(0, 255, 0)
-        rect(width*(i+1)/(playersList.length+1)+width/12, height/2, width/20, height/20);
+        rect(width * (i + 1) / (playersList.length + 1) + width / 12, height / 2, width / 20, height / 20);
         fill(0);
-        textSize(width/80, height/80);
-        text("DEF", width*(i+1)/(playersList.length+1)+width/12, height/2-height/80);
+        textSize(width / 80, height / 80);
+        text("DEF", width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 - height / 80);
         let defenseText;
         if (playersList[i].defenseChange > 0) {
           defenseText = "+" + playersList[i].defenseChange + "%";
         } else if (playersList[i].defenseChange < 0) {
           defenseText = playersList[i].defenseChange + "%";
         }
-        text(defenseText, width*(i+1)/(playersList.length+1)+width/12, height/2+height/80);
+        text(defenseText, width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 + height / 80);
       }
       // if stunned
       if (playersList[i].stun === true) {
         push();
         fill(255, 255, 0);
         stroke(0);
-        textSize(width/80, height/80);
-        text("STUNNED", width*(i+1)/(playersList.length+1), height/2+height/8.5);
+        textSize(width / 80, height / 80);
+        text("STUNNED", width * (i + 1) / (playersList.length + 1), height / 2 + height / 8.5);
         pop();
       }
     }
     // draw the enemy sprites
     for (let i = 0; i < enemiesList.length; i++) {
-      textSize(width/100+height/100);
+      textSize(width / 100 + height / 100);
       fill(255);
       rectMode(CENTER, CENTER);
       // if the current ability can select enemies, mark them
       if (this.situation === "ability") {
         if (currentAbility.currentEffect.canTargetsList.includes(enemiesList[i])) {
           fill(255, 200, 50);
-          rect(width*(i+1)/(enemiesList.length+1), height/6, width/7, height/3.4);
+          rect(width * (i + 1) / (enemiesList.length + 1), height / 6, width / 7, height / 3.4);
         }
       }
       fill(255);
       imageMode(CENTER);
-      image(enemiesList[i].images.front, width*(i+1)/(enemiesList.length+1), height/5, width/10, height/7);
+      image(enemiesList[i].images.front, width * (i + 1) / (enemiesList.length + 1), height / 5, width / 10, height / 7);
       // health bar
       fill(255);
-      rect(width*(i+1)/(enemiesList.length+1), height/5-height/10, width/10, height/40);
-      fill(255, 0 ,0);
+      rect(width * (i + 1) / (enemiesList.length + 1), height / 5 - height / 10, width / 10, height / 40);
+      fill(255, 0, 0);
       rectMode(CORNER);
-      rect(width*(i+1)/(enemiesList.length+1)-width/20, height/5-height/10-height/80, enemiesList[i].hp*(width/10)/enemiesList[i].maxHp, height/40);
+      rect(width * (i + 1) / (enemiesList.length + 1) - width / 20, height / 5 - height / 10 - height / 80, enemiesList[i].hp * (width / 10) / enemiesList[i].maxHp, height / 40);
       // names and hp amount
       fill(255)
       let healthText = enemiesList[i].hp + " " + "/" + " " + enemiesList[i].maxHp;
       textAlign(CENTER, CENTER);
-      text(enemiesList[i].name, width*(i+1)/(enemiesList.length+1), height/5-height/7);
+      text(enemiesList[i].name, width * (i + 1) / (enemiesList.length + 1), height / 5 - height / 7);
       fill(0);
-      text(healthText, width*(i+1)/(enemiesList.length+1), height/5-height/10);
+      text(healthText, width * (i + 1) / (enemiesList.length + 1), height / 5 - height / 10);
       // if used a talent, show name of talent
       if (enemiesList[i].talentUsed === true) {
         push();
-        textSize(width/100, height/100);
+        textSize(width / 100, height / 100);
         fill(0);
-        text("Talent: " + enemiesList[i].talentUsedName + "!", width*(i+1)/(enemiesList.length+1), height/3.3);
+        text("Talent: " + enemiesList[i].talentUsedName + "!", width * (i + 1) / (enemiesList.length + 1), height / 3.3);
         pop();
       }
       // draw the status changes of each character if they are not 0
       rectMode(CENTER);
       if (enemiesList[i].offenseChange !== 0) {
         fill(255, 0, 0)
-        rect(width*(i+1)/(enemiesList.length+1)+width/12, height/5-height/18, width/20, height/20);
+        rect(width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5 - height / 18, width / 20, height / 20);
         fill(0);
-        textSize(width/80, height/80);
-        text("ATK", width*(i+1)/(enemiesList.length+1)+width/12, height/5-height/18-height/80);
+        textSize(width / 80, height / 80);
+        text("ATK", width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5 - height / 18 - height / 80);
         let offenseText2;
         if (enemiesList[i].offenseChange > 0) {
           offenseText2 = "+" + enemiesList[i].offenseChange + "%";
         } else if (enemiesList[i].offenseChange < 0) {
           offenseText2 = enemiesList[i].offenseChange + "%";
         }
-        text(offenseText2, width*(i+1)/(enemiesList.length+1)+width/12, height/5-height/18+height/80);
+        text(offenseText2, width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5 - height / 18 + height / 80);
       }
       if (enemiesList[i].defenseChange !== 0) {
         fill(0, 255, 0)
-        rect(width*(i+1)/(enemiesList.length+1)+width/12, height/5, width/20, height/20);
+        rect(width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5, width / 20, height / 20);
         fill(0);
-        textSize(width/80, height/80);
-        text("DEF", width*(i+1)/(enemiesList.length+1)+width/12, height/5-height/80);
+        textSize(width / 80, height / 80);
+        text("DEF", width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5 - height / 80);
         let defenseText2;
         if (enemiesList[i].defenseChange > 0) {
           defenseText2 = "+" + enemiesList[i].defenseChange + "%";
         } else if (enemiesList[i].defenseChange < 0) {
           defenseText2 = enemiesList[i].defenseChange + "%";
         }
-        text(defenseText2, width*(i+1)/(enemiesList.length+1)+width/12, height/5+height/80);
+        text(defenseText2, width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5 + height / 80);
       }
       // draw the enemies' aggro targets
       fill(255, 255, 255);
-      rect(width*(i+1)/(enemiesList.length+1)-width/15, height/5-height/10, width/40, height/25);
+      rect(width * (i + 1) / (enemiesList.length + 1) - width / 15, height / 5 - height / 10, width / 40, height / 25);
       imageMode(CENTER);
       let aggroedPlayer = enemiesList[i].currentAggro;
       // check the list of players that are alive to see if a player's name is hte same as the
@@ -273,7 +273,7 @@ class PlanState {
           aggroedPlayerIndex = i2;
         }
       }
-      image(playersList[aggroedPlayerIndex].images.face, width*(i+1)/(enemiesList.length+1)-width/15, height/5-height/10, width/40, height/25);
+      image(playersList[aggroedPlayerIndex].images.face, width * (i + 1) / (enemiesList.length + 1) - width / 15, height / 5 - height / 10, width / 40, height / 25);
     }
     pop();
   }
@@ -286,13 +286,13 @@ class PlanState {
     stroke(0);
     fill(255);
     rectMode(CENTER, CENTER);
-    rect(width/15, height/3+height/7, width/10, height/10);
-    textSize(width/80);
+    rect(width / 15, height / 3 + height / 7, width / 10, height / 10);
+    textSize(width / 80);
     textAlign(CENTER, CENTER);
     noStroke();
     fill(0);
-    text("Change Frontline", width/15, height/3 + height/8);
-    text("Cost = 3 Energy", width/15, height/2);
+    text("Change Frontline", width / 15, height / 3 + height / 8);
+    text("Cost = 3 Energy", width / 15, height / 2);
     pop();
     if (currentChar != "none") {
       push();
@@ -307,7 +307,7 @@ class PlanState {
           fill(255);
         }
         rectMode(CORNER);
-        rect(width/7+(i*width/3.5), height-height/4.5, width/4, height/6);
+        rect(width / 7 + (i * width / 3.5), height - height / 4.5, width / 4, height / 6);
         // name, cost and ability
         noStroke();
         // if moused over, it is highlighted
@@ -317,8 +317,8 @@ class PlanState {
           fill(0);
         }
         textAlign(CENTER, CENTER);
-        textSize(width/80+height/80);
-        text(currentChar.abilities[0][i].name, width/3.75+(i*width/3.5), height-height/6);
+        textSize(width / 80 + height / 80);
+        text(currentChar.abilities[0][i].name, width / 3.75 + (i * width / 3.5), height - height / 6);
         // apply any discounts to non ultimates
         if (currentChar.abilities[0][i].ultimate === false) {
           currentChar.abilities[0][i].costCurrent = currentChar.abilities[0][i].cost - currentChar.abilityDiscount;
@@ -328,12 +328,12 @@ class PlanState {
         let abilityCostText;
         if (currentChar.abilities[0][i].ultimate === false) {
           abilityCostText = "Cost:  " + "  Energy";
-          text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+          text(abilityCostText, width / 3.75 + (i * width / 3.5), height - height / 8);
         } else {
           abilityCostText = "ULTIMATE";
           push();
-          fill(255,200,0);
-          text(abilityCostText, width/3.75+(i*width/3.5), height-height/8);
+          fill(255, 200, 0);
+          text(abilityCostText, width / 3.75 + (i * width / 3.5), height - height / 8);
           pop();
         }
 
@@ -344,92 +344,104 @@ class PlanState {
           fill(0, 255, 0);
         }
         if (currentChar.abilities[0][i].ultimate === false) {
-          text(abilityCostNumber, width/3.85+(i*width/3.5), height-height/8);
+          text(abilityCostNumber, width / 3.85 + (i * width / 3.5), height - height / 8);
         }
-        textSize(width/150+height/150);
+        textSize(width / 150 + height / 150);
         // if moused over, it is highlighted
         if (mouseOver.name === currentChar.abilities[0][i].name && currentChar.stun === false) {
           fill(255);
         } else {
           fill(0);
         }
-        text(currentChar.abilities[0][i].description, width/3.75+(i*width/3.5), height-height/12);
+        text(currentChar.abilities[0][i].description, width / 3.75 + (i * width / 3.5), height - height / 12);
         // if this is an ultimate, then let the player know
         if (currentChar.abilities[0][i].ultimate === true) {
-          textSize(width/100+height/100);
+          textSize(width / 100 + height / 100);
           if (currentChar.ultCharge === 100) {
             fill(0, 255, 0);
-            text("Ultimate Ready!", width/3.75+(i*width/3.5), height-height/5);
+            text("Ultimate Ready!", width / 3.75 + (i * width / 3.5), height - height / 5);
           } else {
             fill(255, 0, 0);
-            text("Ultimate Charging", width/3.75+(i*width/3.5), height-height/5);
+            text("Ultimate Charging", width / 3.75 + (i * width / 3.5), height - height / 5);
           }
         }
         // if this non-ultimate ability has been used this turn and cannot be used again
         if (currentChar.abilities[0][i].used === true && currentChar.abilities[0][i].ultimate === false) {
-          textSize(width/100+height/100);
+          textSize(width / 100 + height / 100);
           fill(255, 0, 0);
-          text("Used This Turn", width/3.75+(i*width/3.5), height-height/5);
+          text("Used This Turn", width / 3.75 + (i * width / 3.5), height - height / 5);
         }
       }
-    //  if char is stunned
+      //  if char is stunned
       if (currentChar.stun === true) {
         fill(255, 255, 0);
         stroke(0);
         textAlign(CENTER, CENTER);
-        textSize(width/10+height/12);
-        text("STUNNED", width/2+width/25, height-height/8.7)
+        textSize(width / 10 + height / 12);
+        text("STUNNED", width / 2 + width / 25, height - height / 8.7)
         pop();
       }
-    // draw the bottle UI
-    rectMode(CENTER, CENTER);
-    fill(0);
-    strokeWeight(5);
-    stroke(0);
-    rect(width-width/2.3, height-height/3.63, width/10, height/20);
-    fill(255);
-    noStroke();
-    rect(width-width/2.3, height-height/3.63, width/10, height/20);
-    fill(0,0,255);
-    let bottleBarLength = map(currentChar.bottleCharges, 0, 3, 0, width/10);
-    rectMode(CORNER);
-    rect(width-width/2.3-width/20, height-height/3.63-height/40, bottleBarLength, height/20);
-    push();
-    stroke(255);
-    strokeWeight(3);
-    line((width-width/2.3)-width/60, height-height/3.63-height/42, (width-width/2.3)-width/60, height-height/3.63+height/42);
-    line((width-width/2.3)+width/60, height-height/3.63-height/42, (width-width/2.3)+width/60, height-height/3.63+height/42);
-    pop();
-    // if mouse is over the bottle button
-    if (mouseOver === "bottle") {
-      // bottle
-
+      // draw the bottle UI
       rectMode(CENTER, CENTER);
       fill(0);
       strokeWeight(5);
       stroke(0);
-      rect(width-width/3, height-height/3.63, width/15, height/20);
+      rect(width - width / 2.3, height - height / 3.63, width / 10, height / 20);
       fill(255);
       noStroke();
-      rect(width-width/3, height-height/3.63, width/15, height/20);
+      rect(width - width / 2.3, height - height / 3.63, width / 10, height / 20);
+      fill(0, 0, 255);
+      let bottleBarLength = map(currentChar.bottleCharges, 0, 3, 0, width / 10);
+      rectMode(CORNER);
+      rect(width - width / 2.3 - width / 20, height - height / 3.63 - height / 40, bottleBarLength, height / 20);
+      push();
+      stroke(255);
+      strokeWeight(3);
+      line((width - width / 2.3) - width / 60, height - height / 3.63 - height / 42, (width - width / 2.3) - width / 60, height - height / 3.63 + height / 42);
+      line((width - width / 2.3) + width / 60, height - height / 3.63 - height / 42, (width - width / 2.3) + width / 60, height - height / 3.63 + height / 42);
+      pop();
+      // bottle
+      rectMode(CENTER, CENTER);
       fill(0);
+      strokeWeight(5);
+      stroke(0);
+      // if mouse is over the bottle button draw box
+      if (currentChar.bottleUsed === true || currentChar.bottleCharges < 1) {
+        fill(255, 0, 0);
+      } else {
+        if (mouseOver === "bottle" && currentChar.stun === false) {
+          fill(0);
+        } else {
+          fill(255);
+        }
+      }
+      rect(width - width / 3, height - height / 3.63, width / 15, height / 20);
+      noStroke();
+      rect(width - width / 3, height - height / 3.63, width / 15, height / 20);
       let bottleEffects;
       let bottleText;
-      textSize(width/120+height/120);
+      textSize(width / 150 + height / 120);
+      // if mouse is over the bottle button write the text
+      if (mouseOver === "bottle" && currentChar.stun === false && currentChar.bottleCharges > 0 && currentChar.bottleUsed === false) {
+        fill(255);
+      } else {
+        fill(0);
+      }
       if (currentChar.bottleCharges > 0) {
         if (currentChar.bottleUsed === false) {
           bottleEffects = "Heal 40"; // currentChar.bottleEffectText();
           bottleText = bottleEffects;
+          text("Drink", width - width / 3, height - height / 3.5);
+          text(bottleEffects, width - width / 3, height - height / 3.8);
         } else {
-          fill(255,0,0);
-          bottleText = "Used this Turn"
+          text("Used", width - width / 3, height - height / 3.5);
+          text("this turn", width - width / 3, height - height / 3.8);
         }
       } else {
         bottleText = "Bottle Empty";
+        text(bottleText, width - width / 3, height - height / 3.6);
       }
-      text("Drink", width-width/3, height-height/3.5);
-      text(bottleText, width-width/3, height-height/3.8);
-      }
+
     }
   }
 
@@ -445,9 +457,9 @@ class PlanState {
         if (mouseOver === "cancel") {
           fill(0);
         } else {
-          fill(255,50,0);
+          fill(255, 50, 0);
         }
-        rect(width-width/15, height/2-height/6, width/10, height/15);
+        rect(width - width / 15, height / 2 - height / 6, width / 10, height / 15);
         // if moused over, it is highlighted
         if (mouseOver === "cancel") {
           fill(255, 0, 0);
@@ -455,8 +467,8 @@ class PlanState {
           fill(0);
         }
         textAlign(CENTER, CENTER);
-        textSize(width/120+height/120);
-        text("Cancel Ability", width-width/15, height/2-height/6);
+        textSize(width / 120 + height / 120);
+        text("Cancel Ability", width - width / 15, height / 2 - height / 6);
         pop();
       }
     }
@@ -469,9 +481,9 @@ class PlanState {
       if (mouseOver === "fight") {
         fill(0);
       } else {
-        fill(255,255,0);
+        fill(255, 255, 0);
       }
-      rect(width-width/15, height/2-height/6, width/10, height/15);
+      rect(width - width / 15, height / 2 - height / 6, width / 10, height / 15);
       // if moused over, it is highlighted
       if (mouseOver === "fight") {
         fill(255, 255, 0);
@@ -479,8 +491,8 @@ class PlanState {
         fill(0);
       }
       textAlign(CENTER, CENTER);
-      textSize(width/80+height/50);
-      text("Fight!", width-width/15, height/2-height/6);
+      textSize(width / 80 + height / 50);
+      text("Fight!", width - width / 15, height / 2 - height / 6);
       pop();
     }
   }
@@ -501,12 +513,12 @@ class PlanState {
           this.goToFight();
         }
         // if a player is moused over, that player character is now the front line
-         else if (playersList.includes(mouseOver)) {
-           // if would be frontline has 3 or more energy, before frontline, else, no.
-           if (mouseOver.energy >= 3 && frontline != mouseOver) {
-             mouseOver.energy-= 3;
-             frontline = mouseOver;
-           }
+        else if (playersList.includes(mouseOver)) {
+          // if would be frontline has 3 or more energy, before frontline, else, no.
+          if (mouseOver.energy >= 3 && frontline != mouseOver) {
+            mouseOver.energy -= 3;
+            frontline = mouseOver;
+          }
           // if a player's ability is moused over, then clicking selects that ability to be used
         } else if (currentChar.abilities[0].includes(mouseOver) && currentChar.stun === false) {
           // if this ability is not an ultimate, and if they have enough energy to use it, and it has not been used this turn then it works
@@ -514,7 +526,14 @@ class PlanState {
             this.selectAbility();
           } else if (mouseOver.ultimate === true && currentChar.ultCharge === 100) {
             this.selectAbility();
-          } else {
+          } else {}
+          // if the bottle's use button is moused over
+        } else if (mouseOver === "bottle") {
+          if (currentChar.stun === false && currentChar.bottleCharges > 0 && currentChar.bottleUsed === false && currentChar.hp < currentChar.maxHp) {
+            currentChar.bottleCharges--;
+            currentChar.bottleUsed = true;
+            currentChar.hp += 40;
+            currentChar.hp = constrain(currentChar.hp, 0, currentChar.maxHp);
           }
         }
       }
@@ -524,7 +543,7 @@ class PlanState {
           if (currentAbility.currentEffect.aoe === false) {
             // if this ability can target this moused over character activate ability
             if (mouseOver !== 0) {
-            if (currentAbility.currentEffect.canTargetsList.includes(mouseOver)) {
+              if (currentAbility.currentEffect.canTargetsList.includes(mouseOver)) {
                 currentAbility.currentEffect.targets.push(mouseOver);
                 currentAbility.user = currentChar;
                 if (currentAbility.ultimate === true) {
@@ -535,24 +554,24 @@ class PlanState {
                 }
                 currentAbility.happens();
                 this.situation = "choose";
-              // if the cancel button is moused over, cancel the ability
+                // if the cancel button is moused over, cancel the ability
               } else if (mouseOver === "cancel") {
                 this.situation = "choose";
               }
             }
           } else if (currentAbility.currentEffect.aoe === true) {
-              for (var i2 = 0; i2 < currentAbility.currentEffect.canTargetsList.length; i2++) {
-                currentAbility.currentEffect.targets.push(currentAbility.currentEffect.canTargetsList[i2]);
-              }
-              currentAbility.user = currentChar;
-              if (currentAbility.ultimate === true) {
-                A_SUPPORT_ULT.play();
-                currentAbility.user.ultCharge -= 100;
-              } else {
-                A_SUPPORT.play();
-              }
-              currentAbility.happens();
-              this.situation = "choose";
+            for (var i2 = 0; i2 < currentAbility.currentEffect.canTargetsList.length; i2++) {
+              currentAbility.currentEffect.targets.push(currentAbility.currentEffect.canTargetsList[i2]);
+            }
+            currentAbility.user = currentChar;
+            if (currentAbility.ultimate === true) {
+              A_SUPPORT_ULT.play();
+              currentAbility.user.ultCharge -= 100;
+            } else {
+              A_SUPPORT.play();
+            }
+            currentAbility.happens();
+            this.situation = "choose";
           }
         }
       }
@@ -594,7 +613,7 @@ class PlanState {
         highestTime = enemiesList[i].currentAbility.timer;
       }
       // if line then set it here
-      if (enemiesList[i].currentAbility.moves === "line")  {
+      if (enemiesList[i].currentAbility.moves === "line") {
         enemiesList[i].angle = random(0, 360);
       }
       let currentAbilityEffects = enemiesList[i].currentAbility.effects;
@@ -640,7 +659,7 @@ class PlanState {
     currentFightTime = 0;
     fightTimer = setInterval(function() {
       currentFightTime++;
-      if (currentFightTime/100 >= fightTime) {
+      if (currentFightTime / 100 >= fightTime) {
         console.log("go back");
         fightToPlan();
       }
@@ -654,94 +673,94 @@ class PlanState {
     // if tutorial is no longer active, give dialog based on most important thing player needs to know
     if (tutorial === false) {
       // if chars are ready to act (nothing special happening)
-        let allCharsNames = "";
-          for (var i = 0; i < playersList.length; i++) {
-            if (allCharsNames === "") {
-              allCharsNames = allCharsNames.concat(playersList[i].name);
-            } else {
-              allCharsNames = allCharsNames.concat(" and ", playersList[i].name);
-            }
-          }
-        currentDialogText = allCharsNames + ": I am ready to move!";
+      let allCharsNames = "";
+      for (var i = 0; i < playersList.length; i++) {
+        if (allCharsNames === "") {
+          allCharsNames = allCharsNames.concat(playersList[i].name);
+        } else {
+          allCharsNames = allCharsNames.concat(" and ", playersList[i].name);
+        }
+      }
+      currentDialogText = allCharsNames + ": I am ready to move!";
       // if an enemy is almost dead
       let lowestHealthEnemy;
       for (var i = 0; i < enemiesList.length; i++) {
-          if (enemiesList[i].hp < enemiesList[i].maxHp/5) {
-            if (lowestHealthEnemy === undefined) {
+        if (enemiesList[i].hp < enemiesList[i].maxHp / 5) {
+          if (lowestHealthEnemy === undefined) {
+            lowestHealthEnemy = enemiesList[i];
+          } else {
+            if (enemiesList[i].hp < lowestHealthEnemy.hp) {
               lowestHealthEnemy = enemiesList[i];
-            } else {
-              if (enemiesList[i].hp < lowestHealthEnemy.hp) {
-                lowestHealthEnemy = enemiesList[i];
-              }
             }
+          }
           currentDialogText = "Nuts: " + lowestHealthEnemy.name + "'s health is low! Press the attack!";
         }
       }
       // if a / many friendly character{s} is / are refreshed
       let refreshedChars = [];
       for (var i = 0; i < playersList.length; i++) {
-          if (playersList[i].refreshed === true) {
-            refreshedChars.push(playersList[i].name);
-          }
+        if (playersList[i].refreshed === true) {
+          refreshedChars.push(playersList[i].name);
         }
+      }
       if (refreshedChars.length > 0) {
         let refreshedCharNames = "";
-          for (var i = 0; i < refreshedChars.length; i++) {
-            if (refreshedCharNames === "") {
-              refreshedCharNames = refreshedCharNames.concat(refreshedChars[i]);
-            } else {
-              refreshedCharNames = refreshedCharNames.concat(" and ", refreshedChars[i]);
-            }
+        for (var i = 0; i < refreshedChars.length; i++) {
+          if (refreshedCharNames === "") {
+            refreshedCharNames = refreshedCharNames.concat(refreshedChars[i]);
+          } else {
+            refreshedCharNames = refreshedCharNames.concat(" and ", refreshedChars[i]);
           }
+        }
         currentDialogText = refreshedCharNames + ": I am energized and refreshed! I will do great this turn!";
       }
       // if a friendly char has their ultimate ready
       let hasUltChars = [];
       for (var i = 0; i < playersList.length; i++) {
-          if (playersList[i].ultCharge === 100) {
-            hasUltChars.push(playersList[i].name);
-          }
+        if (playersList[i].ultCharge === 100) {
+          hasUltChars.push(playersList[i].name);
         }
+      }
       if (hasUltChars.length > 0) {
         let hasUltCharNames = "";
-          for (var i = 0; i < hasUltChars.length; i++) {
-            if (hasUltCharNames === "") {
-              hasUltCharNames = hasUltCharNames.concat(hasUltChars[i]);
-            } else {
-              hasUltCharNames = hasUltCharNames.concat(" and ", hasUltChars[i]);
-            }
+        for (var i = 0; i < hasUltChars.length; i++) {
+          if (hasUltCharNames === "") {
+            hasUltCharNames = hasUltCharNames.concat(hasUltChars[i]);
+          } else {
+            hasUltCharNames = hasUltCharNames.concat(" and ", hasUltChars[i]);
           }
+        }
         currentDialogText = hasUltCharNames + ": My ultimate ability is ready! Let me unleash true power!";
       }
       // if a friendly char is tired
       let tiredChars = [];
       for (var i = 0; i < playersList.length; i++) {
-          if (playersList[i].tired === true) {
-            tiredChars.push(playersList[i].name);
-          }
+        if (playersList[i].tired === true) {
+          tiredChars.push(playersList[i].name);
         }
+      }
       if (tiredChars.length > 0) {
         let tiredCharNames = "";
-          for (var i = 0; i < tiredChars.length; i++) {
-            if (tiredCharNames === "") {
-              tiredCharNames = tiredCharNames.concat(tiredChars[i]);
-            } else {
-              tiredCharNames = tiredCharNames.concat(" and ", tiredChars[i]);
-            }
+        for (var i = 0; i < tiredChars.length; i++) {
+          if (tiredCharNames === "") {
+            tiredCharNames = tiredCharNames.concat(tiredChars[i]);
+          } else {
+            tiredCharNames = tiredCharNames.concat(" and ", tiredChars[i]);
           }
+        }
         currentDialogText = tiredCharNames + ": I am tired! Select another character to be the frontline for better performance!";
       }
       // if a friendly char is near death
       let lowestHealthChar;
       for (var i = 0; i < playersList.length; i++) {
-          if (playersList[i].hp < playersList[i].maxHp/5) {
-            if (lowestHealthChar === undefined) {
+        if (playersList[i].hp < playersList[i].maxHp / 5) {
+          if (lowestHealthChar === undefined) {
+            lowestHealthChar = playersList[i];
+          } else {
+            if (playersList[i].hp < lowestHealthChar.hp) {
               lowestHealthChar = playersList[i];
-            } else {
-              if (playersList[i].hp < lowestHealthChar.hp) {
-                lowestHealthChar = playersList[i];
-              }
             }
+          }
           currentDialogText = lowestHealthChar.name + ":" + " My health is low! Heal me and / or pick another frontline!";
         }
       }
