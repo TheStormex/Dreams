@@ -47,6 +47,15 @@ class Player {
     this.invincible = false;
     // current status
     this.status = ["none"];
+    // bottle stats
+    // used this turn?
+    this.bottleUsed = false;
+    // charges left
+    this.bottleCharges = 3;
+    // base restore of health
+    this.bottleBase = 40;
+    // bonus restores and gains
+    this.bottleBonuses = [];
   }
   move() {
     // apply tired penalty if tired
@@ -84,5 +93,19 @@ class Player {
     if (this.y + this.size / 2 > height - height / 3) {
       this.y = height - height / 3 - this.size / 2;
     }
+  }
+  // for every bottle's bonus effects, make the text appear
+  bottleEffectText() {
+    let effectText = "";
+    for (let i = 0; i < this.bottleBonuses.length; i++) {
+      switch (this.bottleBonuses) {
+        case expression:
+
+          break;
+        default:
+
+      }
+    }
+    return effectText;
   }
 }

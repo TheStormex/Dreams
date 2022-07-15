@@ -396,17 +396,18 @@ function drawCommonUI() {
     textAlign(CENTER);
     fill(0);
     // name
-    text(currentChar.name, width/20, height-height/3.8);
+    text(currentChar.name, width/20, height-height/3.6);
     fill(255);
     strokeWeight(5);
     stroke(0);
     // health bar
-    rect(width/2.8, height-height/3.63, width/2, height/20);
+    rectMode(CENTER, CENTER);
+    rect(width/3.1, height-height/3.63, width/2.8, height/20);
     noStroke();
     fill(255, 0 , 0);
     rectMode(CORNER);
-    let healthBarLength = map(currentChar.hp, 0, currentChar.maxHp, 0, width/2);
-    rect(width/2.8-width/4, height-height/3.63-height/40, healthBarLength, height/20);
+    let healthBarLength = map(currentChar.hp, 0, currentChar.maxHp, 0, width/2.8);
+    rect(width/3.1-width/5.6, height-height/3.63-height/40, healthBarLength, height/20);
     // health text
     fill(0);
     let healthText = currentChar.hp + " " + "/" + " " + currentChar.maxHp;
@@ -417,10 +418,10 @@ function drawCommonUI() {
     let energyText = "Energy: " + currentChar.energy + "/" + currentChar.maxEnergy;
     fill(0);
     textSize(width/80+height/60)
-    text(energyText, width-width/3.2, height-height/3.6);
+    text(energyText, width-width/4.5, height-height/3.6);
     // ult charge
     let ultChargeText = "Ult Charge: " + currentChar.ultCharge + "%";
-    text(ultChargeText, width-width/8, height-height/3.6);
+    text(ultChargeText, width-width/12, height-height/3.6);
     // character head image
     imageMode(CENTER, CENTER);
     image(currentChar.images.face, width/18, height-height/7, width/10, height/6);

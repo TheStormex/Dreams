@@ -195,7 +195,7 @@ class FightState {
         stroke(0);
         textAlign(CENTER, CENTER);
         textSize(width / 10 + height / 12);
-        text("STUNNED", width / 2 + width / 25, height - height / 8.5)
+        text("STUNNED", width / 2 + width / 25, height - height / 8.7)
         pop();
       }
     }

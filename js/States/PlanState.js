@@ -39,6 +39,10 @@ class PlanState {
               mouseOver = currentChar.abilities[0][i];
             }
           }
+          // check if mousing over the use bottle button
+          if (mouseX > width-width/3-width/30 && mouseX < width-width/3+width/30 && mouseY > height-height/3.63-height/40 && mouseY < height-height/3.63+height/40) {
+            mouseOver = "bottle"
+          }
         }
         // if mouseover a character's head, show the passives this character has
         // if (currentChar !== "none") {
@@ -374,8 +378,57 @@ class PlanState {
         stroke(0);
         textAlign(CENTER, CENTER);
         textSize(width/10+height/12);
-        text("STUNNED", width/2+width/25, height-height/8.5)
+        text("STUNNED", width/2+width/25, height-height/8.7)
         pop();
+      }
+    // draw the bottle UI
+    rectMode(CENTER, CENTER);
+    fill(0);
+    strokeWeight(5);
+    stroke(0);
+    rect(width-width/2.3, height-height/3.63, width/10, height/20);
+    fill(255);
+    noStroke();
+    rect(width-width/2.3, height-height/3.63, width/10, height/20);
+    fill(0,0,255);
+    let bottleBarLength = map(currentChar.bottleCharges, 0, 3, 0, width/10);
+    rectMode(CORNER);
+    rect(width-width/2.3-width/20, height-height/3.63-height/40, bottleBarLength, height/20);
+    push();
+    stroke(255);
+    strokeWeight(3);
+    line((width-width/2.3)-width/60, height-height/3.63-height/42, (width-width/2.3)-width/60, height-height/3.63+height/42);
+    line((width-width/2.3)+width/60, height-height/3.63-height/42, (width-width/2.3)+width/60, height-height/3.63+height/42);
+    pop();
+    // if mouse is over the bottle button
+    if (mouseOver === "bottle") {
+      // bottle
+
+      rectMode(CENTER, CENTER);
+      fill(0);
+      strokeWeight(5);
+      stroke(0);
+      rect(width-width/3, height-height/3.63, width/15, height/20);
+      fill(255);
+      noStroke();
+      rect(width-width/3, height-height/3.63, width/15, height/20);
+      fill(0);
+      let bottleEffects;
+      let bottleText;
+      textSize(width/120+height/120);
+      if (currentChar.bottleCharges > 0) {
+        if (currentChar.bottleUsed === false) {
+          bottleEffects = "Heal 40"; // currentChar.bottleEffectText();
+          bottleText = bottleEffects;
+        } else {
+          fill(255,0,0);
+          bottleText = "Used this Turn"
+        }
+      } else {
+        bottleText = "Bottle Empty";
+      }
+      text("Drink", width-width/3, height-height/3.5);
+      text(bottleText, width-width/3, height-height/3.8);
       }
     }
   }
