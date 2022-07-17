@@ -212,9 +212,10 @@ class FightState {
         frontline.basicBullet.sounds.play();
         projectilesList.push(playerBasicBullet);
         frontline.basicBulletCooldown = true;
+        // set cooldown timer of that basic bullet, cannot shoot again until over
         setTimeout(function() {
           frontline.basicBulletCooldown = false
-        }, frontline.basicBullet[11]);
+        }, frontline.basicBullet.timer);
       }
     } else if (this.situation === "ability" && frontline.stun === false) {
       currentAbility.user = frontline;

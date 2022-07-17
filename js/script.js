@@ -128,10 +128,10 @@ let gameStarted = true;
 // change: what to change, how much to change total %, how long should it take to finish the change
 // change for spawn = spawn, what tp spawn, what can cause the spawn (time, hit) if time, then how long; if hit, then hit what
 // basic attacks
-let pro_p_nuts_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
-let pro_p_bolt_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
-let pro_p_screws_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
-let pro_p_robot_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_nuts_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 5], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 200);
+let pro_p_bolt_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 6], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 250);
+let pro_p_screws_basic = new BulletStats(1.2, "origin", "straight", "enemies", [["damage", 4], ["ultCharge", 1]], 3, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_robot_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 7], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 300);
 // let pro_p_zaria_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // let pro_p_grandma_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // abilities bullets
@@ -370,6 +370,7 @@ function setup() {
 // p5 draw
 function draw() {
   clear();
+  outputVolume(0.3);
   if (gameStarted === true) {
     checkAliveAll();
     whichScreen.draw();
