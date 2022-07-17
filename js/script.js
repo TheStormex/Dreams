@@ -168,7 +168,7 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 // player abilities and effects
 // screws abilities and effects
 let ab_targetExploits_effect = new AbilityEffect("defense_change", "enemies", -25, "", false, false, 0, 0);
-let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Target enemy gets - 25 DEF", 32, "none", false, [[10, "use"]], 0);
+let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Target enemy gets -25 DEF", 32, "none", false, [[10, "use"]], 0);
 let ab_energyRecharge_effect = new AbilityEffect("abilityRenew", "players", 0, "", false, false, 0, 0);
 let ab_energyRecharge = new PlayerAbility("Energy Recharge", 2, [ab_energyRecharge_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
 let ab_confidenceBoost_effect = new AbilityEffect("bullet", "", 5, pro_p_bruteForce, false, false, 100, 5);
@@ -370,7 +370,7 @@ function setup() {
 // p5 draw
 function draw() {
   clear();
-  outputVolume(0.3);
+//  outputVolume(0.3);
   if (gameStarted === true) {
     checkAliveAll();
     whichScreen.draw();
@@ -438,6 +438,15 @@ function drawCommonUI() {
 // when returning to PlanState, give player characters new energy, if a character has not moved, they gain bonus energy
 // reset the buffs and debuffs of all characters
 function newTurn() {
+  // stop all sounds
+  for (var i = 0; i < soundsList.length; i++) {
+    if (soundsList[i].isPlaying()) {
+      soundsList[i].stop();
+    }
+  }
+  soundsList.length = 0;
+  // delete all projectiles if any are left
+  projectilesList = [];
   // the frontline who fought last turn gets 1 more turn as frontline, if too many, then they are now fatigued
   // if was frontline, then cannot have refreshed
   if (turns > 1) {
@@ -456,6 +465,7 @@ function newTurn() {
     playersList[i].abilityDiscount = 0;
     playersList[i].costDebuff = 0;
     playersList[i].bottleUsed = false;
+    playersList[i].basicBulletCooldown = false;
     // if a player character did not use any abilities last turn, it gains refreshed this turn
     if (playersList[i].acted === false && playersList[i].stun === false) {
       // if not the first turn, give the characters refreshed buff
