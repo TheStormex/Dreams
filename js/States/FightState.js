@@ -122,13 +122,13 @@ class FightState {
         textSize(width / 80 + height / 80);
         text(frontline.abilities[1][i].name, width / 3.75 + (i * width / 3.5), height - height / 6);
         // apply any discounts to non ultimates
-        if (frontline.abilities[0][i].ultimate === false) {
-          frontline.abilities[0][i].costCurrent = frontline.abilities[0][i].cost - frontline.abilityDiscount;
-          frontline.abilities[0][i].costCurrent = constrain(frontline.abilities[0][i].costCurrent, 0, 999);
+        if (frontline.abilities[1][i].ultimate === false) {
+          frontline.abilities[1][i].costCurrent = frontline.abilities[1][i].cost - frontline.abilityDiscount;
+          frontline.abilities[1][i].costCurrent = constrain(frontline.abilities[1][i].costCurrent, 0, 999);
         }
-        let abilityCostNumber = frontline.abilities[0][i].costCurrent;
+        let abilityCostNumber = frontline.abilities[1][i].costCurrent;
         let abilityCostText;
-        if (frontline.abilities[0][i].ultimate === false) {
+        if (frontline.abilities[1][i].ultimate === false) {
           abilityCostText = "Cost:  " + "  Energy";
           text(abilityCostText, width / 3.75 + (i * width / 3.5), height - height / 8);
         } else {
@@ -161,21 +161,22 @@ class FightState {
         //   }
         // }
         // if there is a discount or tax
-        if (frontline.abilities[0][i].costCurrent > frontline.abilities[0][i].cost) {
+        if (frontline.abilities[1][i].costCurrent > frontline.abilities[1][i].cost) {
           fill(255, 0, 0);
-        } else if (frontline.abilities[0][i].costCurrent < frontline.abilities[0][i].cost) {
+        } else if (frontline.abilities[1][i].costCurrent < frontline.abilities[1][i].cost) {
           fill(0, 255, 0);
         }
         textSize(width / 80 + height / 80);
-        if (frontline.abilities[0][i].ultimate === false) {
+        if (frontline.abilities[1][i].ultimate === false) {
           text(abilityCostNumber, width / 3.95 + (i * width / 3.5), height - height / 8);
+          console.log(frontline.abilities[1][i].name + abilityCostNumber);
         }
         // the cooldown of each ability if it is on cooldown
         if (frontline.abilities[1][i].onCooldown === true) {
           text(frontline.abilities[1][i].cooldownLeft, width / 3.75 + (i * width / 3.5), height - height / 5);
         }
         // if this is an ultimate, then let the player know
-        if (frontline.abilities[0][i].ultimate === true) {
+        if (frontline.abilities[1][i].ultimate === true) {
           textAlign(CENTER, CENTER);
           textSize(width / 100 + height / 100);
           if (frontline.ultCharge === 100) {
