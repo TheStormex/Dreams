@@ -138,6 +138,14 @@ class PlayerAbility {
             }
           }, 10);
           break;
+        case "tank_ult":
+          this.user.tankUltAmount = theEffect.amount;
+          this.user.tankUltActive = true;
+          let duration = theEffect.perDelay;
+          let buffInterval = setInterval(() => {
+            this.user.tankUltActive = false;
+          }, duration);
+          break;
         default: console.log("error");
       }
       for (let i4 = 0; i4 < this.chargeGive.length; i4++) {

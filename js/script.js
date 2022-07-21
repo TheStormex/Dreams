@@ -136,7 +136,7 @@ let pro_p_robot_basic = new BulletStats(2, "origin", "straight", "enemies", [["d
 // let pro_p_grandma_basic = new BulletStats(2, "origin", "straight", "enemies", [["damage", 10], ["ultCharge", 1]], 1.5, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // abilities bullets
 // nuts
-let pro_p_confidenceBoost = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 2], ["heal", "self", 2]], 8, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+// let pro_p_confidenceBoost = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 2], ["heal", "self", 2]], 8, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_shockwave = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // bolt
 
@@ -171,8 +171,8 @@ let ab_targetExploits_effect = new AbilityEffect("defense_change", "enemies", -2
 let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Target enemy gets -25 DEF", 32, "none", false, [[10, "use"]], 0);
 let ab_energyRecharge_effect = new AbilityEffect("abilityRenew", "players", 0, "", false, false, 0, 0);
 let ab_energyRecharge = new PlayerAbility("Energy Recharge", 2, [ab_energyRecharge_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
-let ab_confidenceBoost_effect = new AbilityEffect("bullet", "", 5, pro_p_bruteForce, false, false, 100, 5);
-let ab_confidenceBoost = new PlayerAbility("Confidence Boost", 1, [ab_confidenceBoost_effect], "Buff self", 32, "none", false, [[10, "use"]], 1);
+let ab_magnetize_effect = new AbilityEffect("tank_ult", "", 5, "", false, false, 100, 2000, 0);
+let ab_magnetize = new PlayerAbility("Magnetize", 1, [ab_magnetize_effect], "Taking damage gains Ult charge", 32, "none", false, [[10, "use"]], 1);
 let ab_shockwave_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 20);
 let ab_shockwave = new PlayerAbility("Shockwave",  3, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [[5, "use"], [5, "hit"]], 0);
 let ab_ult_hexcodeDeflector_effect = new AbilityEffect("defense_change", "players", 70, "", false, true, 0, 0);
@@ -849,7 +849,7 @@ function initialisation() {
   nutsImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
   nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_factoryReset, ab_ult_vpn], [ab_DDOS, ab_bruteForce, ab_ult_EMP]], pro_p_nuts_basic, nutsImages);
   screwsImages = new Images(S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE);
-  screws = new Player("Screws", 200, 5, 20, [[ab_targetExploits, ab_energyRecharge, ab_ult_hexcodeDeflector], [ab_confidenceBoost, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
+  screws = new Player("Screws", 200, 5, 20, [[ab_targetExploits, ab_energyRecharge, ab_ult_hexcodeDeflector], [ab_magnetize, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
   robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
   robot = new Player("Robot", 300, 4, 15, [[ab_powerCharge, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");

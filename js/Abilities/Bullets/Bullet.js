@@ -121,6 +121,11 @@ class Bullet {
             // the aggroed player takes other half of the damage
             aggroedPlayerTarget.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))/2);
             aggroedPlayerTarget.hp = constrain(aggroedPlayerTarget.hp, 0, aggroedPlayerTarget.maxHp);
+            // if the damaged character has activated tank ult ability
+            if (target.tankUltActive === true) {
+              target.ultCharge += target.tankUltAmount;
+              target.ultCharge = constrain(target.ultCharge, 0, 100);
+            }
           }
 
 

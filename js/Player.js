@@ -56,6 +56,9 @@ class Player {
     this.bottleBase = 40;
     // bonus restores and gains
     this.bottleBonuses = [];
+    // If have the tank buff active
+    this.tankUltActive = false;
+    this.tankUltAmount = 0;
   }
   move() {
     // apply tired penalty if tired

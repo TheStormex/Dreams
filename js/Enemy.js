@@ -101,6 +101,11 @@ class Enemy {
       if (frontline.invincible === false) {
           frontline.hp -= round((this.contactDamage*(1+this.offenseChange/100)/(1+frontline.defenseChange/100)));
           frontline.hp = constrain(frontline.hp, 0, frontline.maxHp);
+          if (frontline.tankUltActive === true) {
+            console.log("touch enemy");
+            frontline.ultCharge += frontline.tankUltAmount;
+            frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
+          }
           A_HIT_PLAYER.play();
           frontline.invincible = true;
           setTimeout(function() {frontline.invincible = false}, 100);
