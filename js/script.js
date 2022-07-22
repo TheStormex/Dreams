@@ -372,11 +372,53 @@ function draw() {
   clear();
 //  outputVolume(0.3);
   if (gameStarted === true) {
+    statusEffects();
     checkAliveAll();
     whichScreen.draw();
     framecount++;
   }
   // console.log(framecount);
+}
+
+// check for status effects and apply the effects of them
+function statusEffects() {
+  // start by removing all status effects
+  // for each status effect, apply / reapply for this step their effects
+  for (let i = 0; i < playersList.length; i++) {
+    playersList[i].canMove = true;
+    playersList[i].canShoot = true;
+    playersList[i].canAbility = true;
+
+    for (let i2 = 0; i2 < playersList[i].status.length; i2++) {
+      switch (playersList[i].status[i2]) {
+        case "stun":
+          playersList[i].canShoot = false;
+          playersList[i].canAbility = false;
+          break;
+        case "root":
+          playersList[i].canMove = false;
+          break;
+        default:
+      }
+    }
+  }
+  for (let i = 0; i < enemiesList.length; i++) {
+    enemiesList[i].canMove = true;
+    enemiesList[i].canShoot = true;
+    enemiesList[i].canAbility = true;
+    for (let i2 = 0; i2 < enemiesList[i].status.length; i2++) {
+      switch (enemiesList[i].status[i2]) {
+        case "stun":
+          enemiesList[i].canShoot = false;
+          enemiesList[i].canAbility = false;
+          break;
+        case "root":
+          enemiesList[i].canMove = false;
+          break;
+        default:
+      }
+    }
+  }
 }
 
 function windowResized() {
@@ -467,7 +509,7 @@ function newTurn() {
     playersList[i].bottleUsed = false;
     playersList[i].basicBulletCooldown = false;
     // if a player character did not use any abilities last turn, it gains refreshed this turn
-    if (playersList[i].acted === false && playersList[i].stun === false) {
+    if (playersList[i].acted === false && !playersList[i].status.includes("stun")) {
       // if not the first turn, give the characters refreshed buff
       if (turns > 1) {
         playersList[i].energyBoost = 1;

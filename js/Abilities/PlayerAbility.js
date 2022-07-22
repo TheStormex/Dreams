@@ -90,7 +90,8 @@ class PlayerAbility {
           break;
         case "cleanse":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i2].stun = false;
+            // remove negative status
+            theEffect.targets[i2].status = [];
             let negatedOffenseDebuff = abs(theEffect.targets[i2].offenseDebuff);
             let negatedDefenseDebuff = abs(theEffect.targets[i2].defenseDebuff);
             let negatedCostDebuff = abs(theEffect.targets[i2].costDebuff);

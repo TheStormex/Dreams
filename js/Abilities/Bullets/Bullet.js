@@ -109,7 +109,7 @@ class Bullet {
             target.hp = constrain(target.hp, 0, target.maxHp);
           } else if (this.origin.type === "enemy") {
           // if this is an enemy's bullet:
-            target.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))/2);
+            target.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))*0.5);
             target.hp = constrain(target.hp, 0, target.maxHp);
             // look for the enemy's current aggro target player, then deal the other half damage to that player
             let aggroedPlayerTarget;
@@ -119,7 +119,7 @@ class Bullet {
               }
             }
             // the aggroed player takes other half of the damage
-            aggroedPlayerTarget.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))/2);
+            aggroedPlayerTarget.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))*0.5);
             aggroedPlayerTarget.hp = constrain(aggroedPlayerTarget.hp, 0, aggroedPlayerTarget.maxHp);
             // if the damaged character has activated tank ult ability
             if (target.tankUltActive === true) {
@@ -127,8 +127,6 @@ class Bullet {
               target.ultCharge = constrain(target.ultCharge, 0, 100);
             }
           }
-
-
           break;
         // spawn more bullets
         case "spawn":
@@ -138,13 +136,31 @@ class Bullet {
           this.origin.ultCharge += this.effects[i2][1];
           this.origin.ultCharge = constrain(this.origin.ultCharge, 0, 100);
           break;
-        // stun the target
+        // stun the target (cannot use abilities or attack)
         case "stun":
-          target.stun = true;
+          target.status.push("stun");
           let stunTimer = setInterval(() => {
-            target.stun = false;
+            // if the target is still stunned when timer runs out, remove it
+            if (target.status.includes("stun")) {
+              let index = target.status.indexOf("stun");
+              target.status.splice(index, 1);
+            }
             clearInterval(stunTimer)
           }, this.effects[i2][1]);
+          intervalsList.push(stunTimer);
+          break;
+        // root the target (cannot move)
+        case "root":
+          target.status.push("root");
+          let rootTimer = setInterval(() => {
+            // if the target is still stunned when timer runs out, remove it
+            if (target.status.includes("root")) {
+              let index = target.status.indexOf("root");
+              target.status.splice(index, 1);
+            }
+            clearInterval(rootTimer)
+          }, this.effects[i2][1]);
+          intervalsList.push(rootTimer);
           break;
         // heal a character, either the user or the receiver
         case "heal":

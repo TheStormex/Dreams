@@ -53,7 +53,7 @@ class EnemyTalent {
           this.chosenTarget.defenseDebuff += this.amount[i];
           break;
         case "stun":
-          this.chosenTarget.stun = true;
+          this.chosenTarget.status.push("stun");
           break;
         case "drain":
           this.chosenTarget.energy -= this.amount[i];

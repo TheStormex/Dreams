@@ -185,7 +185,7 @@ class PlanState {
         text(defenseText, width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 + height / 80);
       }
       // if stunned
-      if (playersList[i].stun === true) {
+      if (playersList[i].status.includes("stun")) {
         push();
         fill(255, 255, 0);
         stroke(0);
@@ -301,7 +301,7 @@ class PlanState {
         strokeWeight(3);
         stroke(0);
         // if moused over, it is highlighted
-        if (mouseOver.name === currentChar.abilities[0][i].name && currentChar.stun === false) {
+        if (mouseOver.name === currentChar.abilities[0][i].name && !currentChar.status.includes("stun")) {
           fill(0);
         } else {
           fill(255);
@@ -311,7 +311,7 @@ class PlanState {
         // name, cost and ability
         noStroke();
         // if moused over, it is highlighted
-        if (mouseOver.name === currentChar.abilities[0][i].name && currentChar.stun === false) {
+        if (mouseOver.name === currentChar.abilities[0][i].name && !currentChar.status.includes("stun")) {
           fill(255);
         } else {
           fill(0);
@@ -348,7 +348,7 @@ class PlanState {
         }
         textSize(width / 150 + height / 150);
         // if moused over, it is highlighted
-        if (mouseOver.name === currentChar.abilities[0][i].name && currentChar.stun === false) {
+        if (mouseOver.name === currentChar.abilities[0][i].name && !currentChar.status.includes("stun")) {
           fill(255);
         } else {
           fill(0);
@@ -373,7 +373,7 @@ class PlanState {
         }
       }
       //  if char is stunned
-      if (currentChar.stun === true) {
+      if (currentChar.status.includes("stun")) {
         fill(255, 255, 0);
         stroke(0);
         textAlign(CENTER, CENTER);
@@ -409,7 +409,7 @@ class PlanState {
       if (currentChar.bottleUsed === true || currentChar.bottleCharges < 1) {
         fill(255, 0, 0);
       } else {
-        if (mouseOver === "bottle" && currentChar.stun === false) {
+        if (mouseOver === "bottle" && !currentChar.canAbility === false) {
           fill(0);
         } else {
           fill(255);
@@ -422,7 +422,7 @@ class PlanState {
       let bottleText;
       textSize(width / 150 + height / 120);
       // if mouse is over the bottle button write the text
-      if (mouseOver === "bottle" && currentChar.stun === false && currentChar.bottleCharges > 0 && currentChar.bottleUsed === false) {
+      if (mouseOver === "bottle" && !currentChar.canAbility === false && currentChar.bottleCharges > 0 && currentChar.bottleUsed === false) {
         fill(255);
       } else {
         fill(0);
@@ -520,7 +520,7 @@ class PlanState {
             frontline = mouseOver;
           }
           // if a player's ability is moused over, then clicking selects that ability to be used
-        } else if (currentChar.abilities[0].includes(mouseOver) && currentChar.stun === false) {
+        } else if (currentChar.abilities[0].includes(mouseOver) && !currentChar.status.includes("stun")) {
           // if this ability is not an ultimate, and if they have enough energy to use it, and it has not been used this turn then it works
           if (mouseOver.ultimate === false && currentChar.energy - mouseOver.costCurrent >= 0 && mouseOver.used === false) {
             this.selectAbility();
@@ -529,7 +529,7 @@ class PlanState {
           } else {}
           // if the bottle's use button is moused over
         } else if (mouseOver === "bottle") {
-          if (currentChar.stun === false && currentChar.bottleCharges > 0 && currentChar.bottleUsed === false && currentChar.hp < currentChar.maxHp) {
+          if (!currentChar.status.includes("stun") && currentChar.bottleCharges > 0 && currentChar.bottleUsed === false && currentChar.hp < currentChar.maxHp) {
             currentChar.bottleCharges--;
             currentChar.bottleUsed = true;
             currentChar.hp += 40;
@@ -656,16 +656,15 @@ class PlanState {
     }
     // set timer for going back to plan state
     fightTime = highestTime;
+    console.log(highestTime);
     currentFightTime = 0;
     fightTimer = setInterval(function() {
       currentFightTime++;
       if (currentFightTime / 100 >= fightTime) {
-        console.log("go back");
         fightToPlan();
       }
     }, 10);
     intervalsList.push(fightTimer);
-    console.log("go to fight");
     whichScreen = FIGHT_STATE;
   }
   // what text appears in the dialog, in order of importance (least-most) - ready - enemy almost dead - refreshed - ultimate ready - tired - almost dead

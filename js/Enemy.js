@@ -4,10 +4,10 @@ class Enemy {
     this.type = "enemy";
     this.hp = maxHp;
     this.maxHp = maxHp;
-    this.speed = width/400+height/400;
-    this.stun = false;
-    this.x = width/2;
-    this.y = height/4;
+    this.speed = width / 400 + height / 400;
+    //    this.stun = false;
+    this.x = width / 2;
+    this.y = height / 4;
     this.vx = 0;
     this.vy = 0;
     this.angle = 0;
@@ -31,6 +31,10 @@ class Enemy {
     this.currentImage;
     this.alive = true;
     this.status = ["none"];
+    // capabilities
+    this.canMove = true;
+    this.canShoot = true;
+    this.canAbility = true;
   }
   draw() {
     push();
@@ -42,13 +46,11 @@ class Enemy {
   }
   move() {
     // if not stunned, move
-    if (this.stun === false) {
+    if (this.canMove === true) {
       let moveType = this.currentAbility.moves;
-      if (moveType === "noise")  {
+      if (moveType === "noise") {
         this.angle += random(-0.2, 0.2);
-      }
-      else if (moveType === "line") {
-      }
+      } else if (moveType === "line") {}
       this.vx = this.speed * cos(this.angle);
       this.vy = this.speed * sin(this.angle);
       this.x += this.vx;
@@ -60,37 +62,36 @@ class Enemy {
     let wrapType = this.currentAbility.wrap;
     if (wrapType === "walls") {
       // prevent going outside of walls
-      if (this.x-this.size/2 <= 0) {
-        this.x = this.size/2;
+      if (this.x - this.size / 2 <= 0) {
+        this.x = this.size / 2;
         this.angle = random(-30, 30);
       }
-      if (this.x+this.size/2 > width) {
-        this.x = width-this.size/2;
+      if (this.x + this.size / 2 > width) {
+        this.x = width - this.size / 2;
         this.angle = random(-30, 30);
       }
-      if (this.y-this.size/2 < 0) {
-        this.y = this.size/2;
+      if (this.y - this.size / 2 < 0) {
+        this.y = this.size / 2;
         this.angle = random(-30, 30);
       }
-      if (this.y+this.size/2 > height-height/3) {
-        this.y = height-height/3-this.size/2;
+      if (this.y + this.size / 2 > height - height / 3) {
+        this.y = height - height / 3 - this.size / 2;
         this.angle = random(-30, 30);
       }
-    }
-    else if (wrapType === "through") {
+    } else if (wrapType === "through") {
       this.angle += random(-0.2, 0.2);
       // reappear on the other side
-      if (this.x-this.size/2 <= 0) {
+      if (this.x - this.size / 2 <= 0) {
         this.x += width;
       }
-      if (this.x+this.size/2 > width) {
+      if (this.x + this.size / 2 > width) {
         this.x -= width;
       }
-      if (this.y-this.size/2 < 0) {
-        this.y += (height-height/3);
+      if (this.y - this.size / 2 < 0) {
+        this.y += (height - height / 3);
       }
-      if (this.y+this.size/2 > height-height/3) {
-        this.y -= (height-height/3);
+      if (this.y + this.size / 2 > height - height / 3) {
+        this.y -= (height - height / 3);
       }
     }
   }
@@ -99,16 +100,33 @@ class Enemy {
     let d = dist(this.x, this.y, frontline.x, frontline.y);
     if (d < this.size) {
       if (frontline.invincible === false) {
-          frontline.hp -= round((this.contactDamage*(1+this.offenseChange/100)/(1+frontline.defenseChange/100)));
-          frontline.hp = constrain(frontline.hp, 0, frontline.maxHp);
-          if (frontline.tankUltActive === true) {
-            console.log("touch enemy");
-            frontline.ultCharge += frontline.tankUltAmount;
-            frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
+        // if the damaged character has activated tank ult ability
+        if (frontline.tankUltActive === true) {
+          frontline.ultCharge += frontline.tankUltAmount;
+          frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
+        }
+        frontline.hp -= round((this.contactDamage * (1 + this.offenseChange / 100) / (1 + frontline.defenseChange / 100))) * 0.5;
+        frontline.hp = constrain(frontline.hp, 0, frontline.maxHp);
+        if (frontline.tankUltActive === true) {
+          console.log("touch enemy");
+          frontline.ultCharge += frontline.tankUltAmount;
+          frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
+        }
+        A_HIT_PLAYER.play();
+        frontline.invincible = true;
+        setTimeout(function() {
+          frontline.invincible = false
+        }, 100);
+        // look for the enemy's current aggro target player, then deal the other half damage to that player
+        let aggroedPlayerTarget;
+        for (let i = 0; i < playersList.length; i++) {
+          if (this.currentAggro === playersList[i].name) {
+            aggroedPlayerTarget = playersList[i];
           }
-          A_HIT_PLAYER.play();
-          frontline.invincible = true;
-          setTimeout(function() {frontline.invincible = false}, 100);
+        }
+        // the aggroed player takes other half of the damage
+        aggroedPlayerTarget.hp -= round(((this.effects[i2][1] * (1 + this.offenseChange / 100) / (1 + target.defenseChange / 100))) * 0.5);
+        aggroedPlayerTarget.hp = constrain(aggroedPlayerTarget.hp, 0, aggroedPlayerTarget.maxHp);
       }
     }
   }

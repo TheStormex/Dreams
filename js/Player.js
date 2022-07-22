@@ -4,7 +4,7 @@ class Player {
     this.type = "player";
     this.maxHp = maxHp;
     this.hp = maxHp;
-    this.stun = false;
+//    this.stun = false;
     this.baseSpeed = width / 200 + height / 200;
     this.currentSpeed = this.baseSpeed;
     this.x = width / 2;
@@ -45,7 +45,7 @@ class Player {
     this.abilities = abilities;
     // after taking a hit, the player is invincible for 0.25 seconds
     this.invincible = false;
-    // current status
+    // current status (root, )
     this.status = ["none"];
     // bottle stats
     // used this turn?
@@ -59,42 +59,48 @@ class Player {
     // If have the tank buff active
     this.tankUltActive = false;
     this.tankUltAmount = 0;
+    // capabilities
+    this.canMove = true;
+    this.canShoot = true;
+    this.canAbility = true;
   }
   move() {
-    // apply tired penalty if tired
-    if (this.tired === true) {
-      this.currentSpeed = this.baseSpeed / 2;
-    } else if (this.tired === false) {
-      this.currentSpeed = this.baseSpeed;
-    }
-    this.vx = 0;
-    this.vy = 0;
-    if (keyIsDown(87)) {
-      this.vy = -this.currentSpeed;
-    }
-    if (keyIsDown(65)) {
-      this.vx = -this.currentSpeed;
-    }
-    if (keyIsDown(83)) {
-      this.vy = this.currentSpeed;
-    }
-    if (keyIsDown(68)) {
-      this.vx = this.currentSpeed;
-    }
-    this.x += this.vx;
-    this.y += this.vy;
-    // prevent going outside of walls
-    if (this.x - this.size / 2 <= 0) {
-      this.x = this.size / 2;
-    }
-    if (this.x + this.size / 2 > width) {
-      this.x = width - this.size / 2;
-    }
-    if (this.y - this.size / 2 < 0) {
-      this.y = this.size / 2;
-    }
-    if (this.y + this.size / 2 > height - height / 3) {
-      this.y = height - height / 3 - this.size / 2;
+    if (this.canMove === true) {
+      // apply tired penalty if tired
+      if (this.tired === true) {
+        this.currentSpeed = this.baseSpeed / 2;
+      } else if (this.tired === false) {
+        this.currentSpeed = this.baseSpeed;
+      }
+      this.vx = 0;
+      this.vy = 0;
+      if (keyIsDown(87)) {
+        this.vy = -this.currentSpeed;
+      }
+      if (keyIsDown(65)) {
+        this.vx = -this.currentSpeed;
+      }
+      if (keyIsDown(83)) {
+        this.vy = this.currentSpeed;
+      }
+      if (keyIsDown(68)) {
+        this.vx = this.currentSpeed;
+      }
+      this.x += this.vx;
+      this.y += this.vy;
+      // prevent going outside of walls
+      if (this.x - this.size / 2 <= 0) {
+        this.x = this.size / 2;
+      }
+      if (this.x + this.size / 2 > width) {
+        this.x = width - this.size / 2;
+      }
+      if (this.y - this.size / 2 < 0) {
+        this.y = this.size / 2;
+      }
+      if (this.y + this.size / 2 > height - height / 3) {
+        this.y = height - height / 3 - this.size / 2;
+      }
     }
   }
   // for every bottle's bonus effects, make the text appear
