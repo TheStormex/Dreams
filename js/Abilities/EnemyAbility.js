@@ -21,8 +21,8 @@ class EnemyAbility {
       switch (this.effects[i].type) {
         case "damage":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].hp -= round(theEffect.amount * (1+this.user.offenseChange*0.01) * (1+theEffect.targets[i].defenseChange*0.01));
-            theEffect.targets[i].hp = constrain(theEffect.targets[i].hp, 0, theEffect.targets[i].maxHp);
+            theEffect.targets[i2].hp -= round(theEffect.amount * (1+this.user.offenseChange*0.01) * (1+theEffect.targets[i2].defenseChange*0.01));
+            theEffect.targets[i2].hp = constrain(theEffect.targets[i2].hp, 0, theEffect.targets[i2].maxHp);
           }
           break;
         case "heal":
@@ -38,12 +38,12 @@ class EnemyAbility {
           break;
         case "offense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].offenseChange += theEffect.amount;
+            theEffect.targets[i2].offenseChange += theEffect.amount;
           }
           break;
         case "defense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i].defenseChange += theEffect.amount;
+            theEffect.targets[i2].defenseChange += theEffect.amount;
           }
           break;
         case "ramp":

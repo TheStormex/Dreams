@@ -4,7 +4,6 @@ class Player {
     this.type = "player";
     this.maxHp = maxHp;
     this.hp = maxHp;
-//    this.stun = false;
     this.baseSpeed = width / 200 + height / 200;
     this.currentSpeed = this.baseSpeed;
     this.x = width / 2;

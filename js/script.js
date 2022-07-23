@@ -142,10 +142,11 @@ let pro_p_shockwave = new BulletStats(0, "origin", "stay", "enemies", [["damage"
 
 // screws
 let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 100]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_plasmaPulse = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["stun", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["stun", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-let pro_p_ult_emp = new BulletStats(1, "angles", "straight", "enemies", [["damage", 1], ["stun", 1500]], 3, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["root", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+let pro_p_ult_emp = new BulletStats(1, "angles", "straight", "enemies", [["damage", 1], ["root", 1500]], 3, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // robot
 
@@ -169,8 +170,8 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 // screws abilities and effects
 let ab_targetExploits_effect = new AbilityEffect("defense_change", "enemies", -25, "", false, false, 0, 0);
 let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Target enemy gets -25 DEF", 32, "none", false, [[10, "use"]], 0);
-let ab_energyRecharge_effect = new AbilityEffect("abilityRenew", "players", 0, "", false, false, 0, 0);
-let ab_energyRecharge = new PlayerAbility("Energy Recharge", 2, [ab_energyRecharge_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
+let ab_softReboot_effect = new AbilityEffect("abilityRenew", "players", 0, "", false, false, 0, 0);
+let ab_softReboot = new PlayerAbility("Soft Reboot", 2, [ab_softReboot_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
 let ab_magnetize_effect = new AbilityEffect("tank_ult", "", 5, "", false, false, 100, 2000, 0);
 let ab_magnetize = new PlayerAbility("Magnetize", 1, [ab_magnetize_effect], "Taking damage gains Ult charge", 32, "none", false, [[10, "use"]], 1);
 let ab_shockwave_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 20);
@@ -201,22 +202,22 @@ let ab_firewall = new PlayerAbility("Firewall", 3, [ab_firewall_effect], "Target
 let ab_factoryReset_effect = new AbilityEffect("cleanse", "players", 0, "", false, false, 0, 1);
 let ab_factoryReset = new PlayerAbility("Factory Reset", 2, [ab_factoryReset_effect], "Target ally is Cleansed", 32, "none", false, [[5, "use"]], 0);
 let ab_DOOS_effect = new AbilityEffect("bullet", "", 1, pro_p_DDOS, false, false, 0, 1);
-let ab_DDOS = new PlayerAbility("DDoS", 2, [ab_DOOS_effect], "Stun enemies hit for 0.5 seconds", 32, "none", false, [[5, "hit"]], 1);
+let ab_DDOS = new PlayerAbility("DDoS", 2, [ab_DOOS_effect], "Root enemies hit for 0.5 seconds", 32, "none", false, [[5, "hit"]], 1);
 let ab_bruteForce_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 10);
 let ab_bruteForce_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
 let ab_bruteForce = new PlayerAbility("Brute Force Attack", 1, [ab_bruteForce_effect, ab_bruteForce_effect2], "Dash and shoot around you", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
-let ab_ult_vpn_effect = new AbilityEffect("ramp", "players", 6, "", false, true, 0, 0);
-let ab_ult_vpn = new PlayerAbility("Activate VPN", 0, [ab_ult_vpn_effect], "All allies get +6 Energy", 32, "none", true, [[0, "use"]], 0);
+let ab_ult_backupGenerator_effect = new AbilityEffect("ramp", "players", 6, "", false, true, 0, 0);
+let ab_ult_backupGenerator = new PlayerAbility("Backup Generator", 0, [ab_ult_backupGenerator_effect], "All allies get +6 Energy", 32, "none", true, [[0, "use"]], 0);
 let ab_ult_EMP_effect = new AbilityEffect("bullet", "", 1, pro_p_ult_emp, false, false, 100, 30);
 let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stunning waves", 32, "none", true, [[5, "hit"]], 0);
 // robot abilities and effects
 let ab_plasmaPulse_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
-let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 3, [ab_plasmaPulse_effect], "Throw a projectile", 32, "none", false, [[5, "hit"]], 1);
+let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 3, [ab_plasmaPulse_effect], "Stun enemies hit for 2 seconds", 32, "none", false, [[5, "hit"]], 1);
 let ab_escape_effect = new AbilityEffect("bullet", "", 5, pro_p_backdoor, false, false, 20, 1);
 let ab_escape_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
 let ab_escape = new PlayerAbility("Escape", 2, [ab_escape_effect, ab_escape_effect2], "Dash and leave behind dust", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
-let ab_powerCharge_effect = new AbilityEffect("discount", "players", 1, "", false, false, 0, 0);
-let ab_powerCharge = new PlayerAbility("Power Charge",  3, [ab_powerCharge_effect], "Target ally gets Discount 1 (costs: min 1)", 32, "none", false, [[10, "use"]], 0);
+let ab_defragmentation_effect = new AbilityEffect("discount", "players", 1, "", false, false, 0, 0);
+let ab_defragmentation = new PlayerAbility("Defragmentation",  3, [ab_defragmentation_effect], "Target ally gets Discount 1 (costs: min 1)", 32, "none", false, [[10, "use"]], 0);
 let ab_erraticStimulant_effect = new AbilityEffect("ultCharge_change", "players", 20, "", false, false, 0, 0);
 let ab_erraticStimulant = new PlayerAbility("Erratic Stimulant", 4, [ab_erraticStimulant_effect], "Target ally gets +20 Ult Charge", 32, "none", false, [[10, "use"]], 0);
 let ab_ult_restorationBlast_effect = new AbilityEffect("heal", "players", 50, "", false, true, 0, 0);
@@ -889,11 +890,11 @@ function initialisation() {
   boltImages = new Images(S_BOLT_LEFT, S_BOLT_RIGHT, S_BOLT_FRONT, S_BOLT_FACE);
   bolt = new Player("Bolt", 200, 4, 10, [[ab_cleanupProtocol, ab_signalBoost, ab_ult_ransomBot], [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]], pro_p_bolt_basic, boltImages);
   nutsImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
-  nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_factoryReset, ab_ult_vpn], [ab_DDOS, ab_bruteForce, ab_ult_EMP]], pro_p_nuts_basic, nutsImages);
+  nuts = new Player("Nuts", 300, 3, 12, [[ab_firewall, ab_factoryReset, ab_ult_backupGenerator], [ab_DDOS, ab_bruteForce, ab_ult_EMP]], pro_p_nuts_basic, nutsImages);
   screwsImages = new Images(S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE);
-  screws = new Player("Screws", 200, 5, 20, [[ab_targetExploits, ab_energyRecharge, ab_ult_hexcodeDeflector], [ab_magnetize, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
+  screws = new Player("Screws", 200, 5, 20, [[ab_targetExploits, ab_softReboot, ab_ult_hexcodeDeflector], [ab_magnetize, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
   robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
-  robot = new Player("Robot", 300, 4, 15, [[ab_powerCharge, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
+  robot = new Player("Robot", 300, 4, 15, [[ab_defragmentation, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
   agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt, ta_e_agent_overload], 70);
   for (var i = 0; i < agent.abilities.length; i++) {

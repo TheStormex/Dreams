@@ -5,7 +5,6 @@ class Enemy {
     this.hp = maxHp;
     this.maxHp = maxHp;
     this.speed = width / 400 + height / 400;
-    //    this.stun = false;
     this.x = width / 2;
     this.y = height / 4;
     this.vx = 0;
@@ -122,10 +121,11 @@ class Enemy {
         for (let i = 0; i < playersList.length; i++) {
           if (this.currentAggro === playersList[i].name) {
             aggroedPlayerTarget = playersList[i];
+            console.log(aggroedPlayerTarget);
           }
         }
         // the aggroed player takes other half of the damage
-        aggroedPlayerTarget.hp -= round(((this.effects[i2][1] * (1 + this.offenseChange / 100) / (1 + target.defenseChange / 100))) * 0.5);
+        aggroedPlayerTarget.hp -= round(((this.contactDamage * (1 + this.offenseChange / 100) / (1 + aggroedPlayerTarget.defenseChange / 100))) * 0.5);
         aggroedPlayerTarget.hp = constrain(aggroedPlayerTarget.hp, 0, aggroedPlayerTarget.maxHp);
       }
     }
