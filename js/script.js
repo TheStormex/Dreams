@@ -142,7 +142,7 @@ let pro_p_shockwave = new BulletStats(0, "origin", "stay", "enemies", [["damage"
 
 // screws
 let pro_p_logicBomb = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 100]], 8, [["speed", -100, 1500]], "to be set", "to be set", "done", ["done", "nothing"], 150);
-let pro_p_plasmaPulse = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["stun", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
+let pro_p_plasmaPulse = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["stun", 4000], ["speedChange", "receiver", -0.04, 4000]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["root", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
@@ -212,7 +212,7 @@ let ab_ult_EMP_effect = new AbilityEffect("bullet", "", 1, pro_p_ult_emp, false,
 let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stunning waves", 32, "none", true, [[5, "hit"]], 0);
 // robot abilities and effects
 let ab_plasmaPulse_effect = new AbilityEffect("bullet", "", 1, pro_p_plasmaPulse, false, false, 0, 1);
-let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 3, [ab_plasmaPulse_effect], "Stun enemies hit for 2 seconds", 32, "none", false, [[5, "hit"]], 1);
+let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 3, [ab_plasmaPulse_effect], "Stun and Slow enemies hit for 4 seconds", 32, "none", false, [[5, "hit"]], 1);
 let ab_escape_effect = new AbilityEffect("bullet", "", 5, pro_p_backdoor, false, false, 20, 1);
 let ab_escape_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
 let ab_escape = new PlayerAbility("Escape", 2, [ab_escape_effect, ab_escape_effect2], "Dash and leave behind dust", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
@@ -354,6 +354,8 @@ function setup() {
   pro_p_ult_bitRotWorm.sounds = A_COMBAT_ULT;
   pro_p_DDOS.images = S_DDOS;
   pro_p_DDOS.sounds = A_COMBAT;
+  pro_p_plasmaPulse.images = S_DDOS;
+  pro_p_plasmaPulse.sounds = A_COMBAT;
   pro_p_bruteForce.images = S_BRUTE_FORCE;
   pro_p_bruteForce.sounds = A_COMBAT;
   pro_p_ult_emp.images = S_DDOS;
@@ -509,6 +511,7 @@ function newTurn() {
     playersList[i].costDebuff = 0;
     playersList[i].bottleUsed = false;
     playersList[i].basicBulletCooldown = false;
+    playersList[i].speedMultiplier = 1;
     // if a player character did not use any abilities last turn, it gains refreshed this turn
     if (playersList[i].acted === false && !playersList[i].status.includes("stun")) {
       // if not the first turn, give the characters refreshed buff
@@ -540,6 +543,7 @@ function newTurn() {
   for (let i = 0; i < enemiesList.length; i++) {
     enemiesList[i].offenseChange = 0;
     enemiesList[i].defenseChange = 0;
+    enemiesList[i].speedMultiplier = 1;
     enemiesList[i].status = [];
   }
   // enemies choose aggro targets: if a player's aggro level is 1 or more above all others, it is

@@ -6,6 +6,7 @@ class Player {
     this.hp = maxHp;
     this.baseSpeed = width / 200 + height / 200;
     this.currentSpeed = this.baseSpeed;
+    this.speedMultiplier = 0;
     this.x = width / 2;
     this.y = height / 2;
     this.angle = 0;

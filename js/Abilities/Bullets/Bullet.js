@@ -169,6 +169,29 @@ class Bullet {
           } else if (this.effects[i2][1] === "receiver") {
             target.health += this.effects[i2][2];
           }
+          break;
+        // change the speed of user or receiver
+        case "speedChange":
+          let speedChangeAmount = this.effects[i2][2];
+          if (this.effects[i2][1] === "self") {
+            this.origin.speedMultiplier += speedChangeAmount;
+            this.origin.speedMultiplier = constrain(this.origin.speedMultiplier, 0, 3);
+            if (this.effects[i2][2] < 1) {
+              this.origin.status.push("slow");
+            }
+          } else if (this.effects[i2][1] === "receiver") {
+            target.speedMultiplier += speedChangeAmount;
+            target.speedMultiplier = constrain(target.speedMultiplier, 0, 3);
+            if (speedChangeAmount < 1) {
+              target.status.push("slow");
+            }
+          }
+          let speedChangeTimer = setInterval(() => {
+            target.speedMultiplier -= speedChangeAmount;
+            clearInterval(speedChangeTimer)
+          }, this.effects[i2][3]);
+          intervalsList.push(speedChangeTimer);
+          break;
         default:
       }
     }

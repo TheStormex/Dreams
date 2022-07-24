@@ -4,7 +4,9 @@ class Enemy {
     this.type = "enemy";
     this.hp = maxHp;
     this.maxHp = maxHp;
-    this.speed = width / 400 + height / 400;
+    this.baseSpeed = width / 400 + height / 400;
+    this.speed = this.baseSpeed;
+    this.speedMultiplier = 1;
     this.x = width / 2;
     this.y = height / 4;
     this.vx = 0;
@@ -50,6 +52,10 @@ class Enemy {
       if (moveType === "noise") {
         this.angle += random(-0.2, 0.2);
       } else if (moveType === "line") {}
+      this.speed = this.baseSpeed * this.speedMultiplier;
+      if (this.speed !== this.baseSpeed) {
+        console.log(this.baseSpeed + " " + this.speedMultiplier + " " + this.speed);
+      }
       this.vx = this.speed * cos(this.angle);
       this.vy = this.speed * sin(this.angle);
       this.x += this.vx;
