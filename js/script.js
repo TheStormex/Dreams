@@ -218,10 +218,10 @@ let ab_escape_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0)
 let ab_escape = new PlayerAbility("Escape", 2, [ab_escape_effect, ab_escape_effect2], "Dash and leave behind dust", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
 let ab_defragmentation_effect = new AbilityEffect("discount", "players", 1, "", false, false, 0, 0);
 let ab_defragmentation = new PlayerAbility("Defragmentation",  3, [ab_defragmentation_effect], "Target ally gets Discount 1 (costs: min 1)", 32, "none", false, [[10, "use"]], 0);
-let ab_erraticStimulant_effect = new AbilityEffect("ultCharge_change", "players", 20, "", false, false, 0, 0);
-let ab_erraticStimulant = new PlayerAbility("Erratic Stimulant", 4, [ab_erraticStimulant_effect], "Target ally gets +20 Ult Charge", 32, "none", false, [[10, "use"]], 0);
-let ab_ult_restorationBlast_effect = new AbilityEffect("heal", "players", 50, "", false, true, 0, 0);
-let ab_ult_restorationBlast = new PlayerAbility("Restoration Blast", 0, [ab_ult_restorationBlast_effect], "All allies Heal for 50 HP", 32, "none", true, [[0, "use"]], 0);
+let ab_portableCharger_effect = new AbilityEffect("ultCharge_change", "players", 20, "", false, false, 0, 0);
+let ab_portableCharger = new PlayerAbility("Portable Charger", 4, [ab_portableCharger_effect], "Target ally gets +20 Ult Charge", 32, "none", false, [[10, "use"]], 0);
+let ab_ult_malwarePurge_effect = new AbilityEffect("heal", "players", 50, "", false, true, 0, 0);
+let ab_ult_malwarePurge = new PlayerAbility("Malware Purge", 0, [ab_ult_malwarePurge_effect], "All allies Heal for 50 HP", 32, "none", true, [[0, "use"]], 0);
 let ab_ult_paradoxProtocol_effect = new AbilityEffect("bullet", "", 5, pro_p_logicBomb, false, false, 50, 10);
 let ab_ult_paradoxProtocol =  new PlayerAbility("Explosion", 0, [ab_ult_paradoxProtocol_effect], "Drop a cluster of bombs", 32, "none", true, [[5, "hit"]], 0);
 
@@ -530,7 +530,7 @@ function newTurn() {
     playersList[i].energy += playersList[i].energyTurn + playersList[i].energyBoost;
     playersList[i].energy = constrain(playersList[i].energy, 0, playersList[i].maxEnergy);
     playersList[i].acted = false;
-    playersList[i].stun = false;
+    playersList[i].status = [];
     // all abilities are no used yet
     for (let i2 = 0; i2 < playersList[i].abilities[0].length; i2++) {
       playersList[i].abilities[0][i2].used = false;
@@ -540,6 +540,7 @@ function newTurn() {
   for (let i = 0; i < enemiesList.length; i++) {
     enemiesList[i].offenseChange = 0;
     enemiesList[i].defenseChange = 0;
+    enemiesList[i].status = [];
   }
   // enemies choose aggro targets: if a player's aggro level is 1 or more above all others, it is
   // the target. If 2 or more have same highest amount, choose randomly between them
@@ -894,7 +895,7 @@ function initialisation() {
   screwsImages = new Images(S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE);
   screws = new Player("Screws", 200, 5, 20, [[ab_targetExploits, ab_softReboot, ab_ult_hexcodeDeflector], [ab_magnetize, ab_shockwave, ab_ult_explosion]], pro_p_bolt_basic, screwsImages);
   robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
-  robot = new Player("Robot", 300, 4, 15, [[ab_defragmentation, ab_erraticStimulant, ab_ult_restorationBlast], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
+  robot = new Player("Robot", 300, 4, 15, [[ab_defragmentation, ab_portableCharger, ab_ult_malwarePurge], [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
   agent = new Enemy("Hackshield Agent", 800, width/20+height/20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt, ta_e_agent_overload], 70);
   for (var i = 0; i < agent.abilities.length; i++) {

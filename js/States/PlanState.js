@@ -624,7 +624,9 @@ class PlanState {
         let theLoopRate = whichAbility.loopRate[whichEffectNumber];
         let enemyShootLoop = setInterval(() => {
           if (whichEnemy.hp > 0) {
-            shootBullets(whichEnemy.currentAbility.effects[whichEffectNumber], whichAbility);
+            if (whichEnemy.canShoot === true) {
+              shootBullets(whichEnemy.currentAbility.effects[whichEffectNumber], whichAbility);
+            }
           } else {
             clearInterval(enemyShootLoop);
           }
