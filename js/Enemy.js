@@ -107,7 +107,6 @@ class Enemy {
         frontline.hp -= round((this.contactDamage * (1 + this.offenseChange / 100) / (1 + frontline.defenseChange / 100))) * 0.5;
         frontline.hp = constrain(frontline.hp, 0, frontline.maxHp);
         if (frontline.tankUltActive === true) {
-          console.log("touch enemy");
           frontline.ultCharge += frontline.tankUltAmount;
           frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
         }
@@ -121,7 +120,6 @@ class Enemy {
         for (let i = 0; i < playersList.length; i++) {
           if (this.currentAggro === playersList[i].name) {
             aggroedPlayerTarget = playersList[i];
-            console.log(aggroedPlayerTarget);
           }
         }
         // the aggroed player takes other half of the damage

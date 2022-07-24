@@ -211,7 +211,7 @@ let ab_ult_backupGenerator = new PlayerAbility("Backup Generator", 0, [ab_ult_ba
 let ab_ult_EMP_effect = new AbilityEffect("bullet", "", 1, pro_p_ult_emp, false, false, 100, 30);
 let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stunning waves", 32, "none", true, [[5, "hit"]], 0);
 // robot abilities and effects
-let ab_plasmaPulse_effect = new AbilityEffect("bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
+let ab_plasmaPulse_effect = new AbilityEffect("bullet", "", 1, pro_p_plasmaPulse, false, false, 0, 1);
 let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 3, [ab_plasmaPulse_effect], "Stun enemies hit for 2 seconds", 32, "none", false, [[5, "hit"]], 1);
 let ab_escape_effect = new AbilityEffect("bullet", "", 5, pro_p_backdoor, false, false, 20, 1);
 let ab_escape_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
