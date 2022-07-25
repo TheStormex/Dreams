@@ -3,7 +3,7 @@ class Player {
     this.name = name;
     this.type = "player";
     this.maxHp = maxHp;
-    this.hp = 1;
+    this.hp = maxHp;
     this.baseSpeed = width / 200 + height / 200;
     this.currentSpeed = this.baseSpeed;
     this.speedMultiplier = 0;
