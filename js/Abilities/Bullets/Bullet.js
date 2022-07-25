@@ -60,6 +60,7 @@ class Bullet {
       let d = dist(this.x, this.y, frontline.x, frontline.y);
       if (d < frontline.size/2 + this.size/2) {
         this.effectHappens(frontline);
+        frontline.harmed = true;
         A_HIT_PLAYER.play();
       }
     }

@@ -3,12 +3,12 @@ class Player {
     this.name = name;
     this.type = "player";
     this.maxHp = maxHp;
-    this.hp = maxHp;
+    this.hp = 1;
     this.baseSpeed = width / 200 + height / 200;
     this.currentSpeed = this.baseSpeed;
     this.speedMultiplier = 0;
     this.x = width / 2;
-    this.y = height / 2;
+    this.y = height / 3;
     this.angle = 0;
     this.vx = 0;
     this.vy = 0;
@@ -63,6 +63,8 @@ class Player {
     this.canMove = true;
     this.canShoot = true;
     this.canAbility = true;
+    // have taken damage from an enemy source in battle?
+    this.harmed = false;
   }
   move() {
     if (this.canMove === true) {

@@ -9,6 +9,7 @@ class FightState {
     // move, check for actions and draw frontline player, enemies, movements bullets
     this.drawSprites();
     this.drawUI();
+    checkAliveAll();
   }
   drawSprites() {
     // if screen is resized, move each char to new locations

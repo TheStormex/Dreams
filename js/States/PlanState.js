@@ -273,6 +273,7 @@ class PlanState {
           aggroedPlayerIndex = i2;
         }
       }
+  //    console.log(aggroedPlayer);
       image(playersList[aggroedPlayerIndex].images.face, width * (i + 1) / (enemiesList.length + 1) - width / 15, height / 5 - height / 10, width / 40, height / 25);
     }
     pop();
@@ -616,6 +617,66 @@ class PlanState {
       if (enemiesList[i].currentAbility.moves === "line") {
         enemiesList[i].angle = random(0, 360);
       }
+      // place each enemy at where they should start based on which one they are and
+      // how many enemies are left
+      switch (enemiesList.length) {
+        case 1:
+          enemiesList[i].x = width / 8;
+          enemiesList[i].y = height / 8;
+          break;
+        case 2:
+          switch (i) {
+            case 0:
+              enemiesList[i].x = width / 8;
+              enemiesList[i].y = height / 8;
+              break;
+            case 1:
+              enemiesList[i].x = width - width / 8;
+              enemiesList[i].y = height - height / 2.4;
+              break;
+            default:
+          }
+          break;
+        case 3:
+          switch (i) {
+            case 0:
+              enemiesList[i].x = width / 2;
+              enemiesList[i].y = height / 8;
+              break;
+            case 1:
+              enemiesList[i].x = width / 8;
+              enemiesList[i].y = height - height / 2.4;
+              break;
+            case 2:
+              enemiesList[i].x = width - width / 8;
+              enemiesList[i].y = height - height / 2.4;
+              break;
+            default:
+          }
+          break;
+        case 4:
+          switch (i) {
+            case 0:
+              enemiesList[i].x = width / 8;
+              enemiesList[i].y = height / 8;
+              break;
+            case 1:
+              enemiesList[i].x = width - width / 8;
+              enemiesList[i].y = height / 8;
+              break;
+            case 2:
+              enemiesList[i].x = width - width / 8;
+              enemiesList[i].y = height - height / 2.4;
+              break;
+            case 3:
+              enemiesList[i].x = width / 8;
+              enemiesList[i].y = height - height / 2.4;
+              break;
+            default:
+          }
+          break;
+        default:
+      }
       let currentAbilityEffects = enemiesList[i].currentAbility.effects;
       for (let i2 = 0; i2 < currentAbilityEffects.length; i2++) {
         let whichEnemy = enemiesList[i];
@@ -636,6 +697,8 @@ class PlanState {
     }
     // set timer for both player and enemy sprites moving
     frontline.currentImage = frontline.images.left;
+    frontline.x = width / 2;
+    frontline.y = height / 3;
     let playerImageTimer = setInterval(function() {
       if (frontline.currentImage === frontline.images.left) {
         frontline.currentImage = frontline.images.right;
@@ -644,7 +707,7 @@ class PlanState {
       }
     }, 500);
     intervalsList.push(playerImageTimer);
-    for (var i = 0; i < enemiesList.length; i++) {
+    for (let i = 0; i < enemiesList.length; i++) {
       enemiesList[i].currentImage = enemiesList[i].images.left;
       let thisEnemy = enemiesList[i];
       let enemyImageTimer = setInterval(() => {
@@ -658,7 +721,6 @@ class PlanState {
     }
     // set timer for going back to plan state
     fightTime = highestTime;
-    console.log(highestTime);
     currentFightTime = 0;
     fightTimer = setInterval(function() {
       currentFightTime++;

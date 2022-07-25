@@ -7,8 +7,8 @@ class Enemy {
     this.baseSpeed = width / 400 + height / 400;
     this.speed = this.baseSpeed;
     this.speedMultiplier = 1;
-    this.x = width / 2;
-    this.y = height / 4;
+    this.x = 0;
+    this.y = 0;
     this.vx = 0;
     this.vy = 0;
     this.angle = 0;
@@ -110,7 +110,8 @@ class Enemy {
           frontline.ultCharge += frontline.tankUltAmount;
           frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
         }
-        frontline.hp -= round((this.contactDamage * (1 + this.offenseChange / 100) / (1 + frontline.defenseChange / 100))) * 0.5;
+        frontline.hp -= round(((this.contactDamage * (1 + this.offenseChange / 100) / (1 + frontline.defenseChange / 100))) * 0.5);
+        frontline.harmed = true;
         frontline.hp = constrain(frontline.hp, 0, frontline.maxHp);
         if (frontline.tankUltActive === true) {
           frontline.ultCharge += frontline.tankUltAmount;
