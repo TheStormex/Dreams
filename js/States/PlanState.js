@@ -150,8 +150,9 @@ class PlanState {
       } else if (playersList[i].refreshed === true) { // if this character is refreshed by not using any abilities last turn and was not frontline
         strokeWeight(3);
         stroke(0, 150, 0);
+        textSize(width / 100, height / 80);
         fill(0, 255, 100);
-        text("Refreshed!", width * (i + 1) / (playersList.length + 1), height / 2 + height / 7.1);
+        text("Refreshed!", width * (i + 1) / (playersList.length + 1), height / 2 + height / 7.4);
         noStroke();
       }
       // draw the status changes of each character if they are not 0
@@ -189,8 +190,17 @@ class PlanState {
         push();
         fill(255, 255, 0);
         stroke(0);
-        textSize(width / 80, height / 80);
-        text("STUNNED", width * (i + 1) / (playersList.length + 1), height / 2 + height / 8.5);
+        textSize(width / 100, height / 80);
+        text("STUNNED", width * (i + 1) / (playersList.length + 1), height / 2 + height / 8.7);
+        pop();
+      }
+      // if the frontline char did not get hit once last combat phase, get flawless text
+      if (playersList[i].harmed === false && turns > 1) {
+        push();
+        fill(255, 0, 255);
+        stroke(0);
+        textSize(width / 100, height / 80);
+        text("Flawless!", width * (i + 1) / (playersList.length + 1), height / 2 + height / 6.4);
         pop();
       }
     }
@@ -596,6 +606,7 @@ class PlanState {
   // go to the fight state from here
   goToFight() {
     currentChar = frontline;
+    frontline.harmed = false;
     // all characters not frontline has their frontline turns reset
     for (let i = 0; i < playersList.length; i++) {
       if (playersList[i].name !== frontline.name) {
@@ -724,6 +735,13 @@ class PlanState {
     currentFightTime = 0;
     fightTimer = setInterval(function() {
       currentFightTime++;
+      push();
+      fill(0);
+      textSize(width/5);
+      textAlign(CENTER);
+      text(currentFightTime, width/2, height/3);
+  //    console.log(currentFightTime);
+      pop();
       if (currentFightTime / 100 >= fightTime) {
         fightToPlan();
       }

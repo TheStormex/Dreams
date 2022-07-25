@@ -508,8 +508,6 @@ function newTurn() {
         frontline.energy = constrain(frontline.energy, 0, frontline.maxEnergy);
         frontline.ultCharge += 10;
         frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
-      } else {
-        frontline.harmed = false;
       }
     }
 
@@ -551,55 +549,17 @@ function newTurn() {
         playersList[i].abilities[0][i2].used = false;
       }
     }
-    // reset enemies stats
-    for (let i = 0; i < enemiesList.length; i++) {
-      enemiesList[i].offenseChange = 0;
-      enemiesList[i].defenseChange = 0;
-      enemiesList[i].speedMultiplier = 1;
-      enemiesList[i].status = [];
-    }
-    // enemies choose aggro targets: if a player's aggro level is 1 or more above all others, it is
-    // the target. If 2 or more have same highest amount, choose randomly between them
-    for (let i = 0; i < enemiesList.length; i++) {
-      // the current highest aggro amount
-      let highestAggro = 0;
-      // how many players have the highest amount together
-      let manyHighestAggro = [];
-      // for each living player character that can be aggroed
-      enemiesList.aggroList = playersList;
-      for (let i2 = 0; i2 < enemiesList[i].aggroList.length; i2++) {
-        // record their aggro amount and compare it to the highest
-        let currentPlayerAggro = enemiesList[i].aggroAmount[i2];
-        if (currentPlayerAggro > highestAggro) {
-          highestAggro = currentPlayerAggro;
-          // in case of a tie later, clean the array and add this one
-          // also clear since if it was currently filled with past lower numbers
-          manyHighestAggro = [];
-          append(manyHighestAggro, i2);
-          // if many are same highest, note down their index
-          // ex: bolt, nuts, screws, robot = 0, 1, 2, 3
-          // if bolt and screws are the highest together (3), then the manyHighestAggro
-          // array becomes (0, 2)
-        } else if (currentPlayerAggro === highestAggro) {
-          append(manyHighestAggro, i2);
-        }
-      }
-      // if there are many that are highest, randomly choose one between them
-      // if there is only one highest, random choice only returns the same one
-      // then the current enemy's chosen target name is selected
-      let chosenRandomPlayer = random(manyHighestAggro);
-      enemiesList[i].currentAggro = playersList[chosenRandomPlayer].name;;
-      // reset the aggro for each enemy to be equal to each player
-      // so new player actions will grab their attention again
-      // from scratch
-      for (let i2 = 0; i2 < enemiesList[i].aggroList.length; i2++) {
-        enemiesList[i].aggroAmount[i2] = 1;
-      }
-    }
     // each enemy randomly choose whether to use talents, then if
     // they do, randomly choose a talent to activate
     // reset talentUsed variable
     for (let i = 0; i < enemiesList.length; i++) {
+      // reset enemies stats
+      enemiesList[i].offenseChange = 0;
+      enemiesList[i].defenseChange = 0;
+      enemiesList[i].speedMultiplier = 1;
+      enemiesList[i].status = [];
+      // each enemy choose an aggro target
+      enemiesList[i].chooseAggroTarget();
       enemiesList[i].talentUsed = false;
       let talentChance = enemiesList[i].talentRate;
       let randomNumber = random(0, 100);
@@ -632,7 +592,6 @@ function checkAliveAll() {
   for (let i = 0; i < playersList.length; i++) {
     if (playersList[i].hp <= 0) {
       playerDied = true;
-      console.log("player to leave" + playersList[i].name + playersList[i].hp);
         // if (currentChar.name === playersList[i].name) {
         //   currentChar = playersList[(i+1)%playersList.length];
         // }
@@ -642,9 +601,6 @@ function checkAliveAll() {
           while (frontline === oldFrontline) {
             frontline = random(playersList);
           }
-          console.log("oldf " + oldFrontline.name);
-          console.log("new frontline " + frontline.name);
-          console.log(i);
         }
       A_CHAR_DEATH.play();
       playersList.splice(i, 1);
@@ -695,7 +651,6 @@ function fightToPlan() {
       soundsList[i].stop();
   }
   turns++;
-  console.log("change" + turns);
   newTurn();
   whichScreen = PLAN_STATE;
 }

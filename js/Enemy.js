@@ -54,7 +54,7 @@ class Enemy {
       } else if (moveType === "line") {}
       this.speed = this.baseSpeed * this.speedMultiplier;
       if (this.speed !== this.baseSpeed) {
-        console.log(this.baseSpeed + " " + this.speedMultiplier + " " + this.speed);
+      //  console.log(this.baseSpeed + " " + this.speedMultiplier + " " + this.speed);
       }
       this.vx = this.speed * cos(this.angle);
       this.vy = this.speed * sin(this.angle);
@@ -146,6 +146,44 @@ class Enemy {
       this.alive = false;
       frontline.ultCharge += 20;
       frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
+    }
+  }
+  // enemies choose aggro targets: if a player's aggro level is 1 or more above all others, it is
+  // the target. If 2 or more have same highest amount, choose randomly between them
+  // the current highest aggro amount
+  chooseAggroTarget() {
+    let highestAggro = 0;
+    // how many players have the highest amount together
+    let manyHighestAggro = [];
+    // for each living player character that can be aggroed
+    enemiesList.aggroList = playersList;
+    for (let i2 = 0; i2 < this.aggroList.length; i2++) {
+      // record their aggro amount and compare it to the highest
+      let currentPlayerAggro = this.aggroAmount[i2];
+      if (currentPlayerAggro > highestAggro) {
+        highestAggro = currentPlayerAggro;
+        // in case of a tie later, clean the array and add this one
+        // also clear since if it was currently filled with past lower numbers
+        manyHighestAggro = [];
+        append(manyHighestAggro, i2);
+        // if many are same highest, note down their index
+        // ex: bolt, nuts, screws, robot = 0, 1, 2, 3
+        // if bolt and screws are the highest together (3), then the manyHighestAggro
+        // array becomes (0, 2)
+      } else if (currentPlayerAggro === highestAggro) {
+        append(manyHighestAggro, i2);
+      }
+    }
+    // if there are many that are highest, randomly choose one between them
+    // if there is only one highest, random choice only returns the same one
+    // then the current enemy's chosen target name is selected
+    let chosenRandomPlayer = random(manyHighestAggro);
+    this.currentAggro = playersList[chosenRandomPlayer].name;;
+    // reset the aggro for each enemy to be equal to each player
+    // so new player actions will grab their attention again
+    // from scratch
+    for (let i2 = 0; i2 < this.aggroList.length; i2++) {
+      this.aggroAmount[i2] = 1;
     }
   }
 }
