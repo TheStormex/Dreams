@@ -65,6 +65,7 @@ class Player {
     this.canAbility = true;
     // have taken damage from an enemy source in battle?
     this.harmed = false;
+    this.wasFrontline = false;
   }
   move() {
     if (this.canMove === true) {

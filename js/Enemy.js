@@ -1,5 +1,5 @@
 class Enemy {
-  constructor(name, maxHp, size, contactDamage, abilities, images, talents, talentRate) {
+  constructor(name, maxHp, size, contactDamage, abilities, images, talents, talentRate, combatDialogue, combatDialogueTriggers) {
     this.name = name;
     this.type = "enemy";
     this.hp = maxHp;
@@ -36,6 +36,13 @@ class Enemy {
     this.canMove = true;
     this.canShoot = true;
     this.canAbility = true;
+    // how it chooses aggro targets
+
+    // how it chooses support targets
+
+    // combat dialogues and their trigger event
+    this.combatDialogue = combatDialogue;
+    this.combatDialogueTriggers = combatDialogueTriggers;
   }
   draw() {
     push();

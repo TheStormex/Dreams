@@ -195,7 +195,7 @@ class PlanState {
         pop();
       }
       // if the frontline char did not get hit once last combat phase, get flawless text
-      if (playersList[i].harmed === false && turns > 1) {
+      if (playersList[i].harmed === false && turns > 1 && playersList[i].wasFrontline === true) {
         push();
         fill(255, 0, 255);
         stroke(0);
@@ -612,6 +612,7 @@ class PlanState {
       if (playersList[i].name !== frontline.name) {
         playersList[i].frontlineTurns = 0;
         playersList[i].tired = false;
+        playersList[i].wasFrontline = false;
       }
     }
     // for each enemy, give them a random moveset for the fight sequence
