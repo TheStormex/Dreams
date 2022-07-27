@@ -6,7 +6,7 @@ class FightState {
   }
   draw() {
     background(200);
-    // move, check for actions and draw frontline player, enemies, movements bullets
+    // move, check for actions and draw currentChar player, enemies, movements bullets
     this.drawSprites();
     this.drawUI();
     checkAliveAll();
@@ -40,14 +40,14 @@ class FightState {
       // }
     }
     noStroke();
-    // draw the player frontline character
+    // draw the player currentChar character
     fill(0, 255, 0);
-    frontline.move();
-    let vector1 = createVector(frontline.x, frontline.y);
-    let vector2 = createVector(mouseX - frontline.x, mouseY - frontline.y);
-    frontline.angle = vector2.heading();
+    currentChar.move();
+    let vector1 = createVector(currentChar.x, currentChar.y);
+    let vector2 = createVector(mouseX - currentChar.x, mouseY - currentChar.y);
+    currentChar.angle = vector2.heading();
     imageMode(CENTER);
-    image(frontline.currentImage, frontline.x, frontline.y, frontline.size, frontline.size);
+    image(currentChar.currentImage, currentChar.x, currentChar.y, currentChar.size, currentChar.size);
     pop();
   }
   drawUI() {
@@ -58,8 +58,8 @@ class FightState {
     push();
     noStroke();
     fill(250, 0, 0);
-    translate(frontline.x, frontline.y);
-    rotate(frontline.angle + PI / 2);
+    translate(currentChar.x, currentChar.y);
+    rotate(currentChar.angle + PI / 2);
     triangle(0, -height / 10, -width / 80, -height / 18, width / 80, -height / 18);
     pop();
     // draw enemies health bar
@@ -90,16 +90,16 @@ class FightState {
   }
   // draw the combat skills the characters can use in the UI box
   drawPlayerMenu() {
-    if (frontline != "none") {
+    if (currentChar != "none") {
       push();
       // 2 combat skills
-      for (var i = 0; i < frontline.abilities[1].length; i++) {
+      for (var i = 0; i < currentChar.abilities[1].length; i++) {
         strokeWeight(3);
         stroke(0);
         let abilityButton = combatButtons[i][1];
         // if activated, it is highlighted
         for (var i2 = 0; i2 < combatButtons.length; i2++) {
-          if (currentCombatAbilityKey === abilityButton && frontline.canAbility === true) {
+          if (currentCombatAbilityKey === abilityButton && currentChar.canAbility === true) {
             fill(0);
           } else {
             fill(255);
@@ -111,7 +111,7 @@ class FightState {
         // name, cost and ability, cooldown
         // if activated, it is highlighted
         for (var i2 = 0; i2 < combatButtons.length; i2++) {
-          if (currentCombatAbilityKey === abilityButton && frontline.canAbility === true) {
+          if (currentCombatAbilityKey === abilityButton && currentChar.canAbility === true) {
             fill(255);
           } else {
             fill(0);
@@ -119,15 +119,15 @@ class FightState {
         }
         textAlign(CENTER, CENTER);
         textSize(width / 80 + height / 80);
-        text(frontline.abilities[1][i].name, width / 3.75 + (i * width / 3.5), height - height / 6);
+        text(currentChar.abilities[1][i].name, width / 3.75 + (i * width / 3.5), height - height / 6);
         // apply any discounts to non ultimates
-        if (frontline.abilities[1][i].ultimate === false) {
-          frontline.abilities[1][i].costCurrent = frontline.abilities[1][i].cost - frontline.abilityDiscount;
-          frontline.abilities[1][i].costCurrent = constrain(frontline.abilities[1][i].costCurrent, 0, 999);
+        if (currentChar.abilities[1][i].ultimate === false) {
+          currentChar.abilities[1][i].costCurrent = currentChar.abilities[1][i].cost - currentChar.abilityDiscount;
+          currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 1, 999);
         }
-        let abilityCostNumber = frontline.abilities[1][i].costCurrent;
+        let abilityCostNumber = currentChar.abilities[1][i].costCurrent;
         let abilityCostText;
-        if (frontline.abilities[1][i].ultimate === false) {
+        if (currentChar.abilities[1][i].ultimate === false) {
           abilityCostText = "Cost:  " + "  Energy";
           text(abilityCostText, width / 3.75 + (i * width / 3.5), height - height / 8);
         } else {
@@ -138,20 +138,20 @@ class FightState {
           pop();
         }
         // apply any discounts
-        frontline.abilities[1][i].costCurrent = frontline.abilities[1][i].cost - frontline.abilityDiscount;
-        frontline.abilities[1][i].costCurrent = constrain(frontline.abilities[1][i].costCurrent, 1, 999);
+        currentChar.abilities[1][i].costCurrent = currentChar.abilities[1][i].cost - currentChar.abilityDiscount;
+        currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 1, 999);
         textSize(width / 150 + height / 150);
-        text(frontline.abilities[1][i].description, width / 3.75 + (i * width / 3.5), height - height / 12);
+        text(currentChar.abilities[1][i].description, width / 3.75 + (i * width / 3.5), height - height / 12);
         // what button to press to activate this ability
         let abilityButtonText = combatButtons[i][0];
         textAlign(LEFT, CENTER);
         textSize(width / 60 + height / 60);
         text(abilityButtonText, width / 7 + (i * width / 3.5), height - height / 5);
         // if this is an ultimate, then let the player know
-        // if (frontline.abilities[1][i].ultimate === true) {
+        // if (currentChar.abilities[1][i].ultimate === true) {
         //   textAlign(CENTER, CENTER);
         //   textSize(width/100+height/100);
-        //   if (frontline.ultCharge === 100) {
+        //   if (currentChar.ultCharge === 100) {
         //     fill(0, 255, 0);
         //     text("Ultimate Ready!", width/3.75+(i*width/3.5), height-height/5);
         //   } else {
@@ -160,24 +160,24 @@ class FightState {
         //   }
         // }
         // if there is a discount or tax
-        if (frontline.abilities[1][i].costCurrent > frontline.abilities[1][i].cost) {
+        if (currentChar.abilities[1][i].costCurrent > currentChar.abilities[1][i].cost) {
           fill(255, 0, 0);
-        } else if (frontline.abilities[1][i].costCurrent < frontline.abilities[1][i].cost) {
+        } else if (currentChar.abilities[1][i].costCurrent < currentChar.abilities[1][i].cost) {
           fill(0, 255, 0);
         }
         textSize(width / 80 + height / 80);
-        if (frontline.abilities[1][i].ultimate === false) {
+        if (currentChar.abilities[1][i].ultimate === false) {
           text(abilityCostNumber, width / 3.95 + (i * width / 3.5), height - height / 8);
         }
         // the cooldown of each ability if it is on cooldown
-        if (frontline.abilities[1][i].onCooldown === true) {
-          text(frontline.abilities[1][i].cooldownLeft, width / 3.75 + (i * width / 3.5), height - height / 5);
+        if (currentChar.abilities[1][i].onCooldown === true) {
+          text(currentChar.abilities[1][i].cooldownLeft, width / 3.75 + (i * width / 3.5), height - height / 5);
         }
         // if this is an ultimate, then let the player know
-        if (frontline.abilities[1][i].ultimate === true) {
+        if (currentChar.abilities[1][i].ultimate === true) {
           textAlign(CENTER, CENTER);
           textSize(width / 100 + height / 100);
-          if (frontline.ultCharge === 100) {
+          if (currentChar.ultCharge === 100) {
             fill(0, 255, 0);
             text("Ultimate Ready!", width / 3.75 + (i * width / 3.5), height - height / 5);
           } else {
@@ -188,7 +188,7 @@ class FightState {
       }
       pop();
       //  if char is stunned
-      if (frontline.status.includes("stun")) {
+      if (currentChar.status.includes("stun")) {
         push();
         fill(255, 255, 0);
         stroke(0);
@@ -202,22 +202,22 @@ class FightState {
   // if mouse is down, check if an ability is clicked, if not, shoot basic bullets
   // if an ability is clicked then shoot that ability in that direction / location
   mouseDown() {
-    if (this.situation === "shoot" && frontline.canShoot === true) {
-      if (frontline.basicBulletCooldown === false) {
-        let playerBasicBullet = new Bullet(frontline, frontline.x, frontline.y, width * (frontline.basicBullet.speed / 2) / 100 + height * (frontline.basicBullet.speed / 2) / 100,
-          frontline.angle, frontline.basicBullet.moveType, frontline.basicBullet.targets, frontline.basicBullet.effects,
-          width * (frontline.basicBullet.size / 2) / 100 + height * (frontline.basicBullet.size / 2) / 100, frontline.basicBullet.changes,
-          frontline.basicBullet.images, frontline.basicBullet.sounds, frontline.basicBullet.wall, frontline.basicBullet.ifHit, frontline.basicBullet.timer);
-        frontline.basicBullet.sounds.play();
+    if (this.situation === "shoot" && currentChar.canShoot === true) {
+      if (currentChar.basicBulletCooldown === false) {
+        let playerBasicBullet = new Bullet(currentChar, currentChar.x, currentChar.y, width * (currentChar.basicBullet.speed / 2) / 100 + height * (currentChar.basicBullet.speed / 2) / 100,
+          currentChar.angle, currentChar.basicBullet.moveType, currentChar.basicBullet.targets, currentChar.basicBullet.effects,
+          width * (currentChar.basicBullet.size / 2) / 100 + height * (currentChar.basicBullet.size / 2) / 100, currentChar.basicBullet.changes,
+          currentChar.basicBullet.images, currentChar.basicBullet.sounds, currentChar.basicBullet.wall, currentChar.basicBullet.ifHit, currentChar.basicBullet.timer);
+        currentChar.basicBullet.sounds.play();
         projectilesList.push(playerBasicBullet);
-        frontline.basicBulletCooldown = true;
+        currentChar.basicBulletCooldown = true;
         // set cooldown timer of that basic bullet, cannot shoot again until over
         setTimeout(function() {
-          frontline.basicBulletCooldown = false
-        }, frontline.basicBullet.timer);
+          currentChar.basicBulletCooldown = false
+        }, currentChar.basicBullet.timer);
       }
-    } else if (this.situation === "ability" && frontline.canAbility === true) {
-      currentAbility.user = frontline;
+    } else if (this.situation === "ability" && currentChar.canAbility === true) {
+      currentAbility.user = currentChar;
       currentAbility.happens();
       // if this is a combat ability with a cooldown, then after use, set the timer (old)
       // let thisAbility = currentAbility;
@@ -242,7 +242,7 @@ class FightState {
   keyDown() {
     // if is ctrl, shift or space, set the current ability to the ability that
     // is assigned to that key, if already activated, then clicking will cancel it
-    if (currentKeyPressed === 32 || currentKeyPressed === 16 || currentKeyPressed === 17 && frontline.canAbility === true) {
+    if (currentKeyPressed === 32 || currentKeyPressed === 16 || currentKeyPressed === 17 && currentChar.canAbility === true) {
       if (currentCombatAbilityKey !== currentKeyPressed) {
         if (this.situation === "shoot") {
           this.setAbility();
@@ -260,16 +260,16 @@ class FightState {
   }
   setAbility() {
     currentCombatAbilityKey = currentKeyPressed;
-    for (var i = 0; i < frontline.abilities[1].length; i++) {
+    for (var i = 0; i < currentChar.abilities[1].length; i++) {
       let abilityButton = combatButtons[i][1];
       if (currentCombatAbilityKey === abilityButton) {
-        let abilityToBeActivated = frontline.abilities[1][i];
+        let abilityToBeActivated = currentChar.abilities[1][i];
         // if this ability is not an ultimate and the player character does not have enough to use it, and if they have enough energy to use it, and it is not on cooldown then it works
-        if (abilityToBeActivated.ultimate === false && frontline.energy - abilityToBeActivated.cost >= 0 && abilityToBeActivated.cooldownLeft === 0) {
-          currentAbility = frontline.abilities[1][i];
+        if (abilityToBeActivated.ultimate === false && currentChar.energy - abilityToBeActivated.cost >= 0 && abilityToBeActivated.cooldownLeft === 0) {
+          currentAbility = currentChar.abilities[1][i];
           this.situation = "ability";
-        } else if (abilityToBeActivated.ultimate === true && frontline.ultCharge === 100) {
-          currentAbility = frontline.abilities[1][i];
+        } else if (abilityToBeActivated.ultimate === true && currentChar.ultCharge === 100) {
+          currentAbility = currentChar.abilities[1][i];
           this.situation = "ability";
         } else {
           currentAbility = 0;

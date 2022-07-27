@@ -34,25 +34,30 @@ class PlanState {
         }
         // if a character is selected, then if mouse over one of their abilities, put it into the mouse over
         if (currentChar !== "none") {
-          for (let i = 0; i < currentChar.abilities[0].length; i++) {
-            if (mouseX > width / 7 + (i * width / 3.5) && mouseX < width / 7 + (i * width / 3.5) + width / 4 && mouseY > height - height / 4.5 && mouseY < height - height / 4.5 + height / 6) {
-              mouseOver = currentChar.abilities[0][i];
+          // mouseover if over the C switch
+          if (mouseX > width/9 - width/60 && mouseX < width/9+width/60 && mouseY > height-height/3.6 - height/60 && mouseY < height-height/3.6 + height/60) {
+            mouseOver = "combatAbilitiesDisplay";
+          } else {
+              for (let i = 0; i < currentChar.abilities[0].length; i++) {
+                if (mouseX > width / 7 + (i * width / 3.5) && mouseX < width / 7 + (i * width / 3.5) + width / 4 && mouseY > height - height / 4.5 && mouseY < height - height / 4.5 + height / 6) {
+                  mouseOver = currentChar.abilities[0][i];
+                }
+              }
+              // check if mousing over the use bottle button
+              if (mouseX > width - width / 3 - width / 30 && mouseX < width - width / 3 + width / 30 && mouseY > height - height / 3.63 - height / 40 && mouseY < height - height / 3.63 + height / 40) {
+                mouseOver = "bottle"
+              }
+            }
+            // if mouseover a character's head, show the passives this character has
+            // if (currentChar !== "none") {
+            //   if (mouseX > width/18-width/20 && mouseX < width/18-width/20+width/10 && mouseY > height-height/7-height/12 && mouseY < height-height/7-height/12+height/6) {
+            //   }
+            // }
+            // check if mousing over the fight button
+            if (mouseX > width - width / 15 - width / 20 && mouseX < width - width / 15 + width / 10 - width / 20 && mouseY > height / 2 - height / 30 - height / 6 && mouseY < height / 2 + height / 15 - height / 30 - height / 6) {
+              mouseOver = "fight"
             }
           }
-          // check if mousing over the use bottle button
-          if (mouseX > width - width / 3 - width / 30 && mouseX < width - width / 3 + width / 30 && mouseY > height - height / 3.63 - height / 40 && mouseY < height - height / 3.63 + height / 40) {
-            mouseOver = "bottle"
-          }
-        }
-        // if mouseover a character's head, show the passives this character has
-        // if (currentChar !== "none") {
-        //   if (mouseX > width/18-width/20 && mouseX < width/18-width/20+width/10 && mouseY > height-height/7-height/12 && mouseY < height-height/7-height/12+height/6) {
-        //   }
-        // }
-        // check if mousing over the fight button
-        if (mouseX > width - width / 15 - width / 20 && mouseX < width - width / 15 + width / 10 - width / 20 && mouseY > height / 2 - height / 30 - height / 6 && mouseY < height / 2 + height / 15 - height / 30 - height / 6) {
-          mouseOver = "fight"
-        }
         break;
       case "ability":
         // check what is being moused over, player or enemy
@@ -333,7 +338,7 @@ class PlanState {
         // apply any discounts to non ultimates
         if (currentChar.abilities[0][i].ultimate === false) {
           currentChar.abilities[0][i].costCurrent = currentChar.abilities[0][i].cost - currentChar.abilityDiscount;
-          currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 0, 999);
+          currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 1, 999);
         }
         let abilityCostNumber = currentChar.abilities[0][i].costCurrent;
         let abilityCostText;
@@ -382,6 +387,18 @@ class PlanState {
           fill(255, 0, 0);
           text("Used This Turn", width / 3.75 + (i * width / 3.5), height - height / 5);
         }
+      }
+      // mouse over circle to see the combat phase abilities
+      textAlign(CENTER);
+      fill(0);
+      stroke(0);
+      rectMode(CENTER, CENTER);
+      rect(width/9, height-height/3.6, width/30, height/30);
+      fill(255);
+      textSize(width/80+height/80);
+      text("C", width/9, height-height/3.63);
+      if (mouseOver === "combatAbilitiesDisplay") {
+        FIGHT_STATE.drawPlayerMenu();
       }
       //  if char is stunned
       if (currentChar.status.includes("stun")) {
