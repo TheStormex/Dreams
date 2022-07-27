@@ -39,32 +39,32 @@ class EnemyTalent {
     for (let i = 0; i < this.effects.length; i++) {
       let theEffect = this.effects[i];
       switch (theEffect) {
-        case "heal":
+        case "Heal":
           let targetOldHp = this.chosenTarget.hp;
           this.chosenTarget.hp += this.amount[i];
           this.chosenTarget.hp = constrain(this.chosenTarget.hp, 0, this.chosenTarget.maxHp);
           break;
-        case "offense_change":
+        case "Offense Change":
           this.chosenTarget.offenseChange += this.amount[i];
           this.chosenTarget.offenseDebuff += this.amount[i];
           break;
-        case "defense_change":
+        case "Defense Change":
           this.chosenTarget.defenseChange += this.amount[i];
           this.chosenTarget.defenseDebuff += this.amount[i];
           break;
-        case "stun":
+        case "Stun":
           this.chosenTarget.status.push("stun");
           break;
-        case "drain":
+        case "Drain Energy":
           this.chosenTarget.energy -= this.amount[i];
           this.chosenTarget.energy = constrain(this.chosenTarget.energy, 0, this.chosenTarget.maxEnergy);
           break;
-        case "tax":
+        case "Tax":
           this.chosenTarget.abilityDiscount += this.amount[i];
           this.chosenTarget.costDebuff += this.amount[i];
           break;
         // make a diff char frontline
-        case "switch":
+        case "Change Frontline":
           while (this.chosenTarget.name === frontline.name) {
             this.chosenTarget = random(playersList);
           }

@@ -9,7 +9,7 @@ class PlanState {
     // draw players, enemies, selected player stats on bottom, click on support skills to use it, mouse over to see what it does
     // ult charge, health, energy,
     this.drawChars();
-    this.mouseOverPlayer();
+    this.mouseOverCharacters();
     drawCommonUI();
     this.drawPlayerMenu();
     this.drawExtraUI();
@@ -21,7 +21,7 @@ class PlanState {
     }
   }
   // if the mouse is over an player avatar, that player character becomes the selected character, if not using an ability, then that character becomes the current character
-  mouseOverPlayer() {
+  mouseOverCharacters() {
     mouseOver = 0;
     // draw depending on the situation: choose, ability, happen
     switch (this.situation) {
@@ -56,6 +56,12 @@ class PlanState {
             // check if mousing over the fight button
             if (mouseX > width - width / 15 - width / 20 && mouseX < width - width / 15 + width / 10 - width / 20 && mouseY > height / 2 - height / 30 - height / 6 && mouseY < height / 2 + height / 15 - height / 30 - height / 6) {
               mouseOver = "fight"
+            }
+            // if mouseover an enemy can see the exact effect
+            for (let i = 0; i < enemiesList.length; i++) {
+              if (mouseX > width * (i + 1) / (enemiesList.length + 1) - width / 12 && mouseX < width * (i + 1) / (enemiesList.length + 1) - width / 12 + width / 6 && mouseY > height / 5 - height / 6 && mouseY < height / 5 - height / 6 + height / 3) {
+                mouseOver = enemiesList[i];
+              }
             }
           }
         break;
@@ -288,8 +294,33 @@ class PlanState {
           aggroedPlayerIndex = i2;
         }
       }
-  //    console.log(aggroedPlayer);
       image(playersList[aggroedPlayerIndex].images.face, width * (i + 1) / (enemiesList.length + 1) - width / 15, height / 5 - height / 10, width / 40, height / 25);
+      // if mouse over the enemies during choose situation, see the details of the talent
+      if (this.situation === "choose" && mouseOver === enemiesList[i] && enemiesList[i].talentUsed === true) {
+        fill(255);
+        rectMode(CENTER, CENTER);
+        rect(width * (i + 1) / (enemiesList.length + 1), height / 4.5, width / 8, height / 5.2);
+        fill(0);
+        textSize(width/150 + height/100);
+        textAlign(CENTER);
+        let theUsedTalent;
+        // find the talent using the name
+        for (let i2 = 0; i2 < enemiesList[i].talents.length; i2++) {
+          if (enemiesList[i].talents[i2].name === enemiesList[i].talentUsedName) {
+            theUsedTalent = enemiesList[i].talents[i2];
+          }
+        }
+        text("Talent: " + theUsedTalent.name, width * (i + 1) / (enemiesList.length + 1), height / 7);
+        text("Target:", width * (i + 1) / (enemiesList.length + 1), height / 5.8);
+        text(theUsedTalent.chosenTarget.name, width * (i + 1) / (enemiesList.length + 1), height / 5.1);
+        for (let i2 = 0; i2 < theUsedTalent.effects.length; i2++) {
+          theUsedTalent.effects[i2];
+          text("Effect:", width * (i + 1) / (enemiesList.length + 1), height / 4.5);
+          text(theUsedTalent.effects[i2], width * (i + 1) / (enemiesList.length + 1), height / 4.1);
+          text("Amount:", width * (i + 1) / (enemiesList.length + 1), height / 3.7);
+          text(theUsedTalent.amount[i2], width * (i + 1) / (enemiesList.length + 1), height / 3.4);
+        }
+      }
     }
     pop();
   }

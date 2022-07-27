@@ -249,14 +249,14 @@ let ab_e_serpent_shoot = new EnemyAbility("line", [ab_e_serpent_shoot_effect], [
 let ab_e_serpent_wave = new EnemyAbility("line", [ab_e_serpent_wave_effect], [1800], "walls", 8);
 let ab_e_serpent_gatling = new EnemyAbility("noise", [ab_e_serpent_gatling_effect], [1800], "through", 8);
 // enemies talents
-let ta_e_agent_block = new EnemyTalent("Block", "self", ["defense_change"], [50]);
-let ta_e_agent_pierce = new EnemyTalent("Pierce", "players", ["defense_change"], [-30]);
-let ta_e_agent_taunt = new EnemyTalent("Taunt", "players", ["switch", "drain"], [0, 3]);
-let ta_e_agent_overload = new EnemyTalent("Overload", "players", ["tax"], [-1]);
-let ta_e_serpent_swipe = new EnemyTalent("Swipe", "frontline", ["offense_change"], [-40]);
-let ta_e_serpent_spray = new EnemyTalent("Spray", "enemies", ["heal"], [50]);
-let ta_e_serpent_gaze = new EnemyTalent("Gaze", "players", ["stun"], [0]);
-let ta_e_serpent_swat = new EnemyTalent("Swat", "enemies", ["defense_change"], [30]);
+let ta_e_agent_block = new EnemyTalent("Block", "self", ["Defense Change"], [50]);
+let ta_e_agent_pierce = new EnemyTalent("Pierce", "players", ["Defense Change"], [-30]);
+let ta_e_agent_taunt = new EnemyTalent("Taunt", "players", ["Switch", "Drain Energy"], ["N/A", 3]);
+let ta_e_agent_overload = new EnemyTalent("Overload", "players", ["Tax"], [-1]);
+let ta_e_serpent_swipe = new EnemyTalent("Swipe", "frontline", ["Offense Change"], [-40]);
+let ta_e_serpent_spray = new EnemyTalent("Spray", "enemies", ["Heal"], [100]);
+let ta_e_serpent_gaze = new EnemyTalent("Gaze", "players", ["Stun"], ["N/A"]);
+let ta_e_serpent_swat = new EnemyTalent("Swat", "enemies", ["Defense Change"], [30]);
 
 let projectilesList = [];
 
