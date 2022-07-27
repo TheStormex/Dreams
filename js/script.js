@@ -147,7 +147,7 @@ let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage",
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["root", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_ult_emp = new BulletStats(1, "angles", "straight", "enemies", [["damage", 1], ["root", 1500]], 3, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8], ["knockback", 20, 1]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // robot
 
 // zaria
@@ -174,7 +174,7 @@ let ab_softReboot_effect = new AbilityEffect("abilityRenew", "players", 0, "", f
 let ab_softReboot = new PlayerAbility("Soft Reboot", 2, [ab_softReboot_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
 let ab_magnetize_effect = new AbilityEffect("tank_ult", "", 5, "", false, false, 100, 2000, 0);
 let ab_magnetize = new PlayerAbility("Magnetize", 1, [ab_magnetize_effect], "Taking damage gains Ult charge", 32, "none", false, [[10, "use"]], 1);
-let ab_shockwave_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 20);
+let ab_shockwave_effect = new AbilityEffect("bullet", "", 1, pro_p_bruteForce, false, false, 100, 20);
 let ab_shockwave = new PlayerAbility("Shockwave",  3, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [[5, "use"], [5, "hit"]], 0);
 let ab_ult_hexcodeDeflector_effect = new AbilityEffect("defense_change", "players", 70, "", false, true, 0, 0);
 let ab_ult_hexcodeDeflector = new PlayerAbility("Hexcode Deflector", 0, [ab_ult_hexcodeDeflector_effect], "All allies get +70 DEF", 32, "none", true, [[0, "use"]], 0);

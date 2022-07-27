@@ -171,6 +171,23 @@ class Bullet {
             target.health += this.effects[i2][2];
           }
           break;
+        // knock back
+        case "knockback":
+          let knockbackCounter = this.effects[i2][1];
+          let thisBulletAngle = this.angle;
+          let knockbackAmount = this.effects[i2][2] * (width/200+height/300);
+          let knockbackInterval = setInterval(() => {
+            target.vx = knockbackAmount * cos(thisBulletAngle);
+            target.vy = knockbackAmount * sin(thisBulletAngle);
+            target.x += target.vx;
+            target.y += target.vy;
+            knockbackCounter--;
+            if (knockbackCounter <= 0) {
+              clearInterval(knockbackInterval);
+            }
+          }, 1);
+          intervalsList.push(knockbackInterval);
+          break;
         // change the speed of user or receiver
         case "speedChange":
           let speedChangeAmount = this.effects[i2][2];
