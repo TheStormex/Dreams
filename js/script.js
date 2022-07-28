@@ -170,8 +170,9 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 // screws abilities and effects
 let ab_targetExploits_effect = new AbilityEffect("defense_change", "enemies", -25, "", false, false, 0, 0);
 let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Target enemy gets -25 DEF", 32, "none", false, [[10, "use"]], 0);
-let ab_softReboot_effect = new AbilityEffect("abilityRenew", "players", 0, "", false, false, 0, 0);
-let ab_softReboot = new PlayerAbility("Soft Reboot", 2, [ab_softReboot_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
+let ab_softReboot_effect = new AbilityEffect("ramp", "players", 1, "", false, false, 0, 0);
+let ab_softReboot_effect2 = new AbilityEffect("abilityRenew", "players", 0, "", false, false, 0, 0);
+let ab_softReboot = new PlayerAbility("Soft Reboot", 3, [ab_softReboot_effect, ab_softReboot_effect2], "Target ally's abilities are Renewed and gets 1 Energy", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
 let ab_magnetize_effect = new AbilityEffect("tank_ult", "", 5, "", false, false, 100, 2000, 0);
 let ab_magnetize = new PlayerAbility("Magnetize", 1, [ab_magnetize_effect], "Taking damage gains Ult charge", 32, "none", false, [[10, "use"]], 1);
 let ab_shockwave_effect = new AbilityEffect("bullet", "", 1, pro_p_shockwave, false, false, 100, 50);

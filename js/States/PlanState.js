@@ -611,48 +611,39 @@ class PlanState {
       }
       if (this.situation === "ability") {
         // for each effect, happens
+        let abilityCanHappen = false;
         for (let i = 0; i < currentAbility.effects.length; i++) {
           currentAbility.currentEffect = currentAbility.effects[i];
           if (currentAbility.effects[i].aoe === false) {
             // if this ability can target this moused over character activate ability
             if (mouseOver !== 0) {
               if (currentAbility.effects[i].canTargetsList.includes(mouseOver)) {
-                console.log("effect # " + i);
-                console.log("before" + currentAbility.effects[i].targets);
                 currentAbility.effects[i].targets.push(mouseOver);
-                console.log("after" + currentAbility.effects[i].targets);
-                console.log("this effect type " + currentAbility.effects[i].type);
-                console.log("this effect type also " + currentAbility.effects[i].type);
-                console.log("mouse " + mouseOver.name);
-                console.log("targets " + currentAbility.effects[i].targets[0].name);
-                currentAbility.user = currentChar;
-                if (currentAbility.ultimate === true) {
-                  A_SUPPORT_ULT.play();
-                  currentAbility.user.ultCharge -= 100;
-                } else {
-                  A_SUPPORT.play();
-                }
-                currentAbility.happens();
-                this.situation = "choose";
+                abilityCanHappen = true;
+
                 // if the cancel button is moused over, cancel the ability
-              } else if (mouseOver === "cancel") {
-                this.situation = "choose";
               }
             }
           } else if (currentAbility.effects[i].aoe === true) {
             for (var i2 = 0; i2 < currentAbility.effects[i].canTargetsList.length; i2++) {
               currentAbility.effects[i].targets.push(currentAbility.effects[i].canTargetsList[i2]);
             }
-            currentAbility.user = currentChar;
-            if (currentAbility.ultimate === true) {
-              A_SUPPORT_ULT.play();
-              currentAbility.user.ultCharge -= 100;
-            } else {
-              A_SUPPORT.play();
-            }
-            currentAbility.happens();
-            this.situation = "choose";
+            abilityCanHappen = true;
           }
+        }
+        if (abilityCanHappen === true) {
+          currentAbility.user = currentChar;
+          if (currentAbility.ultimate === true) {
+            A_SUPPORT_ULT.play();
+            currentAbility.user.ultCharge -= 100;
+          } else {
+            A_SUPPORT.play();
+          }
+          currentAbility.happens();
+          this.situation = "choose";
+        }
+        if (mouseOver === "cancel") {
+          this.situation = "choose";
         }
       }
     }
