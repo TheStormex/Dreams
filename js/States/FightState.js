@@ -47,6 +47,10 @@ class FightState {
     let vector2 = createVector(mouseX - currentChar.x, mouseY - currentChar.y);
     currentChar.angle = vector2.heading();
     imageMode(CENTER);
+    if (currentChar.immune === true) {
+      fill(255, 255, 0);
+      ellipse(currentChar.x, currentChar.y, currentChar.size);
+    }
     image(currentChar.currentImage, currentChar.x, currentChar.y, currentChar.size, currentChar.size);
     pop();
   }

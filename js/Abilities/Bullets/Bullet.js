@@ -56,7 +56,7 @@ class Bullet {
         }
       }
     }
-    else if (this.targets === "players") {
+    else if (this.targets === "players" && frontline.immune === false && frontline.invincible === false) {
       let d = dist(this.x, this.y, frontline.x, frontline.y);
       if (d < frontline.size/2 + this.size/2) {
         this.effectHappens(frontline);
@@ -110,22 +110,24 @@ class Bullet {
             target.hp = constrain(target.hp, 0, target.maxHp);
           } else if (this.origin.type === "enemy") {
           // if this is an enemy's bullet:
-            target.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))*0.5);
-            target.hp = constrain(target.hp, 0, target.maxHp);
-            // look for the enemy's current aggro target player, then deal the other half damage to that player
-            let aggroedPlayerTarget;
-            for (let i = 0; i < playersList.length; i++) {
-              if (this.origin.currentAggro === playersList[i].name) {
-                aggroedPlayerTarget = playersList[i];
+            if (target.immune === false) {
+              target.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))*0.5);
+              target.hp = constrain(target.hp, 0, target.maxHp);
+              // look for the enemy's current aggro target player, then deal the other half damage to that player
+              let aggroedPlayerTarget;
+              for (let i = 0; i < playersList.length; i++) {
+                if (this.origin.currentAggro === playersList[i].name) {
+                  aggroedPlayerTarget = playersList[i];
+                }
               }
-            }
-            // the aggroed player takes other half of the damage
-            aggroedPlayerTarget.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))*0.5);
-            aggroedPlayerTarget.hp = constrain(aggroedPlayerTarget.hp, 0, aggroedPlayerTarget.maxHp);
-            // if the damaged character has activated tank ult ability
-            if (target.tankUltActive === true) {
-              target.ultCharge += target.tankUltAmount;
-              target.ultCharge = constrain(target.ultCharge, 0, 100);
+              // the aggroed player takes other half of the damage
+              aggroedPlayerTarget.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))*0.5);
+              aggroedPlayerTarget.hp = constrain(aggroedPlayerTarget.hp, 0, aggroedPlayerTarget.maxHp);
+              // if the damaged character has activated tank ult ability
+              if (target.tankUltActive === true) {
+                target.ultCharge += target.tankUltAmount;
+                target.ultCharge = constrain(target.ultCharge, 0, 100);
+              }
             }
           }
           break;

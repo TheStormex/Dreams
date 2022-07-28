@@ -111,7 +111,7 @@ class Enemy {
   contact() {
     let d = dist(this.x, this.y, frontline.x, frontline.y);
     if (d < this.size) {
-      if (frontline.invincible === false) {
+      if (frontline.invincible === false && frontline.immune === false) {
         // if the damaged character has activated tank ult ability
         if (frontline.tankUltActive === true) {
           frontline.ultCharge += frontline.tankUltAmount;

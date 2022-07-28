@@ -66,6 +66,13 @@ class PlayerAbility {
             }
           }
           break;
+        case "immune":
+          this.user.immune = true;
+          let immuneInterval = setInterval(() => {
+            this.user.immune = false;
+          }, theEffect.amount);
+          intervalsList.push(immuneInterval);
+          break;
         case "offense_change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].offenseChange += theEffect.amount;

@@ -45,6 +45,8 @@ class Player {
     this.abilities = abilities;
     // after taking a hit, the player is invincible for 0.25 seconds
     this.invincible = false;
+    // immune cannot be affected by enemies
+    this.immune = false;
     // current status (root, )
     this.status = ["none"];
     // bottle stats
