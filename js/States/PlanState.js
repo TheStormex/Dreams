@@ -24,12 +24,20 @@ class PlanState {
   mouseOverCharacters() {
     mouseOver = 0;
     // draw depending on the situation: choose, ability, happen
+
     switch (this.situation) {
       case "choose":
+        // mousing over player characters
         for (let i = 0; i < playersList.length; i++) {
-          if (mouseX > width * (i + 1) / (playersList.length + 1) - width / 12 && mouseX < width * (i + 1) / (playersList.length + 1) - width / 12 + width / 6 && mouseY > height / 2 - height / 6 && mouseY < height / 2 - height / 6 + height / 3) {
+          if (mouseX > width * (i + 1) / (playersList.length + 1) - width / 14 && mouseX < width * (i + 1) / (playersList.length + 1) + width / 14 && mouseY > height / 2 - height / 6 && mouseY < height / 2 + height / 6) {
             mouseOver = playersList[i];
             currentChar = playersList[i];
+          }
+        }
+        // mousing over enemy characters (for talents)
+        for (let i = 0; i < enemiesList.length; i++) {
+          if (mouseX > width * (i + 1) / (enemiesList.length + 1) - width / 16 && mouseX < width * (i + 1) / (enemiesList.length + 1) + width / 16 && mouseY > height / 4.5- height / 10.4 && mouseY < height / 4.5 + height / 10.4) {
+            mouseOver = enemiesList[i];
           }
         }
         // if a character is selected, then if mouse over one of their abilities, put it into the mouse over
@@ -57,29 +65,24 @@ class PlanState {
             if (mouseX > width - width / 15 - width / 20 && mouseX < width - width / 15 + width / 10 - width / 20 && mouseY > height / 2 - height / 30 - height / 6 && mouseY < height / 2 + height / 15 - height / 30 - height / 6) {
               mouseOver = "fight"
             }
-            // if mouseover an enemy can see the exact effect
-            for (let i = 0; i < enemiesList.length; i++) {
-              if (mouseX > width * (i + 1) / (enemiesList.length + 1) - width / 12 && mouseX < width * (i + 1) / (enemiesList.length + 1) - width / 12 + width / 6 && mouseY > height / 5 - height / 6 && mouseY < height / 5 - height / 6 + height / 3) {
-                mouseOver = enemiesList[i];
-              }
-            }
           }
         break;
       case "ability":
         // check what is being moused over, player or enemy
         for (let i = 0; i < playersList.length; i++) {
-          if (mouseX > width * (i + 1) / (playersList.length + 1) - width / 12 && mouseX < width * (i + 1) / (playersList.length + 1) - width / 12 + width / 6 && mouseY > height / 2 - height / 6 && mouseY < height / 2 - height / 6 + height / 3) {
+          if (mouseX > width * (i + 1) / (playersList.length + 1) - width / 14 && mouseX < width * (i + 1) / (playersList.length + 1) + width / 14 && mouseY > height / 2 - height / 6 && mouseY < height / 2 + height / 6) {
             mouseOver = playersList[i];
-          }
-        }
-        for (let i = 0; i < enemiesList.length; i++) {
-          if (mouseX > width * (i + 1) / (enemiesList.length + 1) - width / 12 && mouseX < width * (i + 1) / (enemiesList.length + 1) - width / 12 + width / 6 && mouseY > height / 5 - height / 6 && mouseY < height / 5 - height / 6 + height / 3) {
-            mouseOver = enemiesList[i];
           }
         }
         // check if mousing over the cancel button
         if (mouseX > width - width / 15 - width / 20 && mouseX < width - width / 15 + width / 10 - width / 20 && mouseY > height / 2 - height / 30 - height / 6 && mouseY < height / 2 + height / 15 - height / 30 - height / 6) {
           mouseOver = "cancel"
+        }
+        // if mousing over enemy highlight when enemies can be targeted
+        for (let i = 0; i < enemiesList.length; i++) {
+          if (mouseX > width * (i + 1) / (enemiesList.length + 1) - width / 14 && mouseX < width * (i + 1) / (enemiesList.length + 1) + width / 14 && mouseY > height / 6 - height / 6.8 && mouseY < height / 6 + height / 6.8) {
+            mouseOver = enemiesList[i];
+          }
         }
         break;
       default:
