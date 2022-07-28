@@ -200,9 +200,9 @@ let ab_ult_ransomBot = new PlayerAbility("Ransom Bot", 0, [ab_ult_ransomBot_effe
 // nuts abilities and effects
 let ab_firewall_effect = new AbilityEffect("defense_change", "players", 25, "", false, false, 0);
 let ab_firewall = new PlayerAbility("Firewall", 3, [ab_firewall_effect], "Target ally gets +25 DEF", 32, "none", false, [[10, "use"]], 0);
-let ab_factoryReset_effect2 = new AbilityEffect("offense_change", "players", 30, "", false, false, 0);
+let ab_factoryReset_effect2 = new AbilityEffect("offense_change", "players", 20, "", false, false, 0);
 let ab_factoryReset_effect = new AbilityEffect("cleanse", "players", 0, "", false, false, 0, 1);
-let ab_factoryReset = new PlayerAbility("Factory Reset", 3, [ab_factoryReset_effect, ab_factoryReset_effect2], "Target ally is Cleansed and gains 30 OFF", 32, "none", false, [[5, "use"]], 0);
+let ab_factoryReset = new PlayerAbility("Factory Reset", 3, [ab_factoryReset_effect, ab_factoryReset_effect2], "Target ally is Cleansed and gets +20 OFF", 32, "none", false, [[5, "use"]], 0);
 let ab_DOOS_effect = new AbilityEffect("bullet", "", 1, pro_p_DDOS, false, false, 0, 1);
 let ab_DDOS = new PlayerAbility("DDoS", 2, [ab_DOOS_effect], "Root enemies hit for 0.5 seconds", 32, "none", false, [[5, "hit"]], 1);
 let ab_bruteForce_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 10);
