@@ -176,7 +176,7 @@ class PlanState {
         rect(width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 - height / 18, width / 20, height / 20);
         fill(0);
         textSize(width / 80, height / 80);
-        text("ATK", width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 - height / 18 - height / 80);
+        text("OFF", width * (i + 1) / (playersList.length + 1) + width / 12, height / 2 - height / 18 - height / 80);
         let offenseText;
         if (playersList[i].offenseChange > 0) {
           offenseText = "+" + playersList[i].offenseChange + "%";
@@ -261,7 +261,7 @@ class PlanState {
         rect(width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5 - height / 18, width / 20, height / 20);
         fill(0);
         textSize(width / 80, height / 80);
-        text("ATK", width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5 - height / 18 - height / 80);
+        text("OFF", width * (i + 1) / (enemiesList.length + 1) + width / 12, height / 5 - height / 18 - height / 80);
         let offenseText2;
         if (enemiesList[i].offenseChange > 0) {
           offenseText2 = "+" + enemiesList[i].offenseChange + "%";
@@ -611,12 +611,20 @@ class PlanState {
       }
       if (this.situation === "ability") {
         // for each effect, happens
-        for (var i = 0; i < currentAbility.effects.length; i++) {
-          if (currentAbility.currentEffect.aoe === false) {
+        for (let i = 0; i < currentAbility.effects.length; i++) {
+          currentAbility.currentEffect = currentAbility.effects[i];
+          if (currentAbility.effects[i].aoe === false) {
             // if this ability can target this moused over character activate ability
             if (mouseOver !== 0) {
-              if (currentAbility.currentEffect.canTargetsList.includes(mouseOver)) {
-                currentAbility.currentEffect.targets.push(mouseOver);
+              if (currentAbility.effects[i].canTargetsList.includes(mouseOver)) {
+                console.log("effect # " + i);
+                console.log("before" + currentAbility.effects[i].targets);
+                currentAbility.effects[i].targets.push(mouseOver);
+                console.log("after" + currentAbility.effects[i].targets);
+                console.log("this effect type " + currentAbility.effects[i].type);
+                console.log("this effect type also " + currentAbility.effects[i].type);
+                console.log("mouse " + mouseOver.name);
+                console.log("targets " + currentAbility.effects[i].targets[0].name);
                 currentAbility.user = currentChar;
                 if (currentAbility.ultimate === true) {
                   A_SUPPORT_ULT.play();
@@ -631,9 +639,9 @@ class PlanState {
                 this.situation = "choose";
               }
             }
-          } else if (currentAbility.currentEffect.aoe === true) {
-            for (var i2 = 0; i2 < currentAbility.currentEffect.canTargetsList.length; i2++) {
-              currentAbility.currentEffect.targets.push(currentAbility.currentEffect.canTargetsList[i2]);
+          } else if (currentAbility.effects[i].aoe === true) {
+            for (var i2 = 0; i2 < currentAbility.effects[i].canTargetsList.length; i2++) {
+              currentAbility.effects[i].targets.push(currentAbility.effects[i].canTargetsList[i2]);
             }
             currentAbility.user = currentChar;
             if (currentAbility.ultimate === true) {
@@ -654,15 +662,16 @@ class PlanState {
     currentAbility = mouseOver;
     // remove the ability from mouseOver since what will be mousedOver will be a character
     mouseOver = 0;
-    currentAbility.currentStep = 1;
-    currentAbility.currentEffect = currentAbility.effects[0];
-    // if the first effect can target players, then make the canTargetsList into an array of all player characters, same if enemies
-    if (currentAbility.currentEffect.canTargets === "players") {
-      currentAbility.currentEffect.canTargetsList = playersList;
-    } else if (currentAbility.currentEffect.canTargets === "enemies") {
-      currentAbility.currentEffect.canTargetsList = enemiesList;
+//    currentAbility.currentStep = 1;
+    for (let i = 0; i < currentAbility.effects.length; i++) {
+      // if the first effect can target players, then make the canTargetsList into an array of all player characters, same if enemies
+      if (currentAbility.effects[i].canTargets === "players") {
+        currentAbility.effects[i].canTargetsList = playersList;
+      } else if (currentAbility.effects[i].canTargets === "enemies") {
+        currentAbility.effects[i].canTargetsList = enemiesList;
+      }
+      this.situation = "ability";
     }
-    this.situation = "ability";
   }
   // go to the fight state from here
   goToFight() {

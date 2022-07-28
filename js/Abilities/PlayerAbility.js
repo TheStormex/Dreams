@@ -27,7 +27,7 @@ class PlayerAbility {
     // if this ability has been used this turn so it cannot be used again
     this.used = false;
     // which step is currently happening
-    this.currentStep = 0;
+    this.currentStep = 1;
     // which effect is currently happening
     this.currentEffect = 0;
     // how many steps this ability has before it is finished
@@ -48,6 +48,8 @@ class PlayerAbility {
     // for each effect, apply
     for (let i = 0; i < this.effects.length; i++) {
       let theEffect = this.effects[i];
+      console.log(i);
+      console.log(theEffect.targets);
       switch (this.effects[i].type) {
         case "damage":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {

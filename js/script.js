@@ -137,7 +137,7 @@ let pro_p_robot_basic = new BulletStats(2, "origin", "straight", "enemies", [["d
 // abilities bullets
 // nuts
 // let pro_p_confidenceBoost = new BulletStats(0.6, "origin", "straight", "enemies", [["damage", 2], ["heal", "self", 2]], 8, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-let pro_p_shockwave = new BulletStats(0, "origin", "stay", "enemies", [["damage", 10]], 2, [["size", -100, 2000]], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_shockwave = new BulletStats(2, "angles", "straight", "enemies", [["damage", 3], ["knockback", 10, 1]], 1, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // bolt
 
 // screws
@@ -147,7 +147,7 @@ let pro_p_backdoor = new BulletStats(0, "origin", "stay", "enemies", [["damage",
 let pro_p_ult_bitRotWorm = new BulletStats(2, "origin", "straight", "enemies", [["damage", 5]], 5, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_DDOS = new BulletStats(1, "origin", "straight", "enemies", [["damage", 2], ["root", 1500]], 6, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
 let pro_p_ult_emp = new BulletStats(1, "angles", "straight", "enemies", [["damage", 1], ["root", 1500]], 3, [], "to be set", "to be set", "done", ["through", "nothing"], 150);
-let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8], ["knockback", 20, 1]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
+let pro_p_bruteForce = new BulletStats(1, "angles", "straight", "enemies", [["damage", 8]], 2, [], "to be set", "to be set", "done", ["done", "nothing"], 150);
 // robot
 
 // zaria
@@ -174,8 +174,8 @@ let ab_softReboot_effect = new AbilityEffect("abilityRenew", "players", 0, "", f
 let ab_softReboot = new PlayerAbility("Soft Reboot", 2, [ab_softReboot_effect], "Target ally's abilities are Renewed", 32, "none", false, [[5, "use"], [10, "heal"]], 0);
 let ab_magnetize_effect = new AbilityEffect("tank_ult", "", 5, "", false, false, 100, 2000, 0);
 let ab_magnetize = new PlayerAbility("Magnetize", 1, [ab_magnetize_effect], "Taking damage gains Ult charge", 32, "none", false, [[10, "use"]], 1);
-let ab_shockwave_effect = new AbilityEffect("bullet", "", 1, pro_p_bruteForce, false, false, 100, 20);
-let ab_shockwave = new PlayerAbility("Shockwave",  3, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [[5, "use"], [5, "hit"]], 0);
+let ab_shockwave_effect = new AbilityEffect("bullet", "", 1, pro_p_shockwave, false, false, 100, 50);
+let ab_shockwave = new PlayerAbility("Shockwave",  2, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [[5, "use"], [5, "hit"]], 0);
 let ab_ult_hexcodeDeflector_effect = new AbilityEffect("defense_change", "players", 70, "", false, true, 0, 0);
 let ab_ult_hexcodeDeflector = new PlayerAbility("Hexcode Deflector", 0, [ab_ult_hexcodeDeflector_effect], "All allies get +70 DEF", 32, "none", true, [[0, "use"]], 0);
 // let ab_ult_guardianBarrier_effect = new AbilityEffect("defense_change", "players", 60, "", false, true, 0, 0);
@@ -199,8 +199,9 @@ let ab_ult_ransomBot = new PlayerAbility("Ransom Bot", 0, [ab_ult_ransomBot_effe
 // nuts abilities and effects
 let ab_firewall_effect = new AbilityEffect("defense_change", "players", 25, "", false, false, 0);
 let ab_firewall = new PlayerAbility("Firewall", 3, [ab_firewall_effect], "Target ally gets +25 DEF", 32, "none", false, [[10, "use"]], 0);
+let ab_factoryReset_effect2 = new AbilityEffect("offense_change", "players", 30, "", false, false, 0);
 let ab_factoryReset_effect = new AbilityEffect("cleanse", "players", 0, "", false, false, 0, 1);
-let ab_factoryReset = new PlayerAbility("Factory Reset", 2, [ab_factoryReset_effect], "Target ally is Cleansed", 32, "none", false, [[5, "use"]], 0);
+let ab_factoryReset = new PlayerAbility("Factory Reset", 3, [ab_factoryReset_effect, ab_factoryReset_effect2], "Target ally is Cleansed and gains 30 OFF", 32, "none", false, [[5, "use"]], 0);
 let ab_DOOS_effect = new AbilityEffect("bullet", "", 1, pro_p_DDOS, false, false, 0, 1);
 let ab_DDOS = new PlayerAbility("DDoS", 2, [ab_DOOS_effect], "Root enemies hit for 0.5 seconds", 32, "none", false, [[5, "hit"]], 1);
 let ab_bruteForce_effect = new AbilityEffect("bullet", "", 2, pro_p_bruteForce, false, false, 100, 10);
@@ -213,7 +214,7 @@ let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stu
 // robot abilities and effects
 let ab_plasmaPulse_effect = new AbilityEffect("bullet", "", 1, pro_p_plasmaPulse, false, false, 0, 1);
 let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 3, [ab_plasmaPulse_effect], "Stun and Slow enemies hit for 4 seconds", 32, "none", false, [[5, "hit"]], 1);
-let ab_escape_effect = new AbilityEffect("immune", "players", 2000, "", false, false, 0, 1);
+let ab_escape_effect = new AbilityEffect("immune", "players", 2500, "", false, false, 0, 1);
 let ab_escape_effect2 = new AbilityEffect("dash", "", 3, "", false, false, 0, 0);
 let ab_escape = new PlayerAbility("Escape", 2, [ab_escape_effect, ab_escape_effect2], "Dash and be Immune for 2 seconds", 32, "none", false, [[5, "hit"], [2, "use"]], 1);
 let ab_defragmentation_effect = new AbilityEffect("discount", "players", 1, "", false, false, 0, 0);
@@ -358,6 +359,8 @@ function setup() {
   pro_p_plasmaPulse.sounds = A_COMBAT;
   pro_p_bruteForce.images = S_BRUTE_FORCE;
   pro_p_bruteForce.sounds = A_COMBAT;
+  pro_p_shockwave.images = S_BRUTE_FORCE;
+  pro_p_shockwave.sounds = A_COMBAT;
   pro_p_ult_emp.images = S_DDOS;
   pro_p_ult_emp.sounds = A_COMBAT_ULT;
   // enemy bullets
@@ -505,7 +508,7 @@ function newTurn() {
       // }
       // if the frontline character did not take any hits last turn
       if (frontline.harmed === false) {
-        frontline.energy += 3;
+        frontline.energy += 2;
         frontline.energy = constrain(frontline.energy, 0, frontline.maxEnergy);
         frontline.ultCharge += 10;
         frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
@@ -523,6 +526,8 @@ function newTurn() {
       playersList[i].bottleUsed = false;
       playersList[i].basicBulletCooldown = false;
       playersList[i].speedMultiplier = 1;
+      playersList[i].invincible = false;
+      playersList[i].immune = false;
       // if a player character did not use any abilities last turn, it gains refreshed this turn
       if (playersList[i].acted === false && !playersList[i].status.includes("stun")) {
         // if not the first turn, give the characters refreshed buff
