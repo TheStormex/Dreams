@@ -797,13 +797,6 @@ class PlanState {
     currentFightTime = 0;
     fightTimer = setInterval(function() {
       currentFightTime++;
-      push();
-      fill(0);
-      textSize(width/5);
-      textAlign(CENTER);
-      text(currentFightTime, width/2, height/3);
-  //    console.log(currentFightTime);
-      pop();
       if (currentFightTime / 100 >= fightTime) {
         fightToPlan();
       }
