@@ -1,5 +1,5 @@
 class Enemy {
-  constructor(name, maxHp, size, contactDamage, abilities, images, talents, talentRate, combatDialogue, combatDialogueTriggers) {
+  constructor(name, maxHp, size, contactDamage, abilities, images, talents, talentsTriggers, combatDialogue, combatDialogueTriggers, aggroType) {
     this.name = name;
     this.type = "enemy";
     this.hp = maxHp;
@@ -19,15 +19,13 @@ class Enemy {
     this.size = size;
     this.abilities = abilities;
     this.talents = talents;
-    this.talentRate = talentRate;
+    this.talentsTriggers = talentsTriggers;
     this.talentUsed = false;
     this.talentUsedName = "";
     this.currentAbility;
     this.currentAggro = "none";
-    // names of all alive player characters
-    this.aggroList = [];
-    // amount of aggro for each character in order
-    this.aggroAmount = [];
+    // aggro type (calculated before tactics phase, who is aggro)
+    this.aggroType = aggroType;
     this.images = images;
     this.currentImage;
     this.alive = true;
@@ -132,7 +130,7 @@ class Enemy {
         // look for the enemy's current aggro target player, then deal the other half damage to that player
         let aggroedPlayerTarget;
         for (let i = 0; i < playersList.length; i++) {
-          if (this.currentAggro === playersList[i].name) {
+          if (this.currentAggro === playersList[i]) {
             aggroedPlayerTarget = playersList[i];
           }
         }
@@ -158,39 +156,62 @@ class Enemy {
   // enemies choose aggro targets: if a player's aggro level is 1 or more above all others, it is
   // the target. If 2 or more have same highest amount, choose randomly between them
   // the current highest aggro amount
+  // based on the aggro type, choose who to target
+  // if many have same stats, randomly choose one of them
   chooseAggroTarget() {
-    let highestAggro = 0;
-    // how many players have the highest amount together
-    let manyHighestAggro = [];
-    // for each living player character that can be aggroed
-    enemiesList.aggroList = playersList;
-    for (let i2 = 0; i2 < this.aggroList.length; i2++) {
-      // record their aggro amount and compare it to the highest
-      let currentPlayerAggro = this.aggroAmount[i2];
-      if (currentPlayerAggro > highestAggro) {
-        highestAggro = currentPlayerAggro;
-        // in case of a tie later, clean the array and add this one
-        // also clear since if it was currently filled with past lower numbers
-        manyHighestAggro = [];
-        append(manyHighestAggro, i2);
-        // if many are same highest, note down their index
-        // ex: bolt, nuts, screws, robot = 0, 1, 2, 3
-        // if bolt and screws are the highest together (3), then the manyHighestAggro
-        // array becomes (0, 2)
-      } else if (currentPlayerAggro === highestAggro) {
-        append(manyHighestAggro, i2);
+    let variableToCheck = [];
+    for (let i = 0; i < playersList.length; i++) {
+      switch (this.aggroType[0]) {
+        case "hp":
+          variableToCheck.push(playersList[i].hp);
+          break;
+        case "ultCharge":
+          variableToCheck.push(playersList[i].ultCharge);
+          break;
+        default:
       }
     }
-    // if there are many that are highest, randomly choose one between them
-    // if there is only one highest, random choice only returns the same one
-    // then the current enemy's chosen target name is selected
-    let chosenRandomPlayer = random(manyHighestAggro);
-    this.currentAggro = playersList[chosenRandomPlayer].name;;
-    // reset the aggro for each enemy to be equal to each player
-    // so new player actions will grab their attention again
-    // from scratch
-    for (let i2 = 0; i2 < this.aggroList.length; i2++) {
-      this.aggroAmount[i2] = 1;
+    let chosenTargetsIndexes = [];
+    let finalChosenTargetIndex;
+    switch (this.aggroType[1]) {
+      case "highest":
+        let highestValue;
+        for (let i = 0; i < variableToCheck.length; i++) {
+          if (i > 0) {
+            if (variableToCheck[i] > highestValue) {
+              highestValue = variableToCheck[i];
+              chosenTargetsIndexes = [i];
+            } else if (variableToCheck[i] === highestValue) {
+              chosenTargetsIndexes.push(i);
+            }
+          } else {
+            highestValue = variableToCheck[i];
+            chosenTargetsIndexes = [i];
+          }
+        }
+        break;
+      case "lowest":
+        let lowestValue;
+        for (let i = 0; i < variableToCheck.length; i++) {
+          if (i > 0) {
+            if (variableToCheck[i] > lowestValue) {
+              lowestValue = variableToCheck[i];
+              chosenTargetsIndexes = [i];
+            } else if (variableToCheck[i] === lowestValue) {
+              chosenTargetsIndexes.push(i);
+            }
+          } else {
+            lowestValue = variableToCheck[i];
+            chosenTargetsIndexes = [i];
+          }
+        }
+        break;
+      default:
     }
+    finalChosenTargetIndex = random(chosenTargetsIndexes);
+    this.currentAggro = playersList[finalChosenTargetIndex];
+  }
+  chooseTalentTarget() {
+
   }
 }

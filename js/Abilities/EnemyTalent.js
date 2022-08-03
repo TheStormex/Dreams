@@ -1,6 +1,6 @@
 class EnemyTalent {
   // start of turn talents, random choose 1, choose 1 target character,
-  constructor(name, targets, effects, amount) {
+  constructor(name, targets, effects, amount, triggerType, targetEnemyType, targetAllyType) {
     this.name = name;
     // possible targets group (self, players, enemies)
     this.targets = targets;
@@ -12,7 +12,18 @@ class EnemyTalent {
     this.effects = effects;
     // how much the effect happens (if appiicable)
     this.amount = amount;
+    // possible, other char (not) used X, other char (not) affected by X
+    this.triggerType = triggerType;
+    this.isTriggered = false;
+    // l / h hp, specific, aggro
+    // not all talents have effects that target both sides
+    this.targetEnemyType = targetEnemyType;
+    this.targetAllyType = targetAllyType;
   }
+  enemyTalentTriggerCheck() {
+    
+  }
+
   enemyTalentHappens() {
     // who can this talent affect, then chose target from that list
     switch (this.targets) {

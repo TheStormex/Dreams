@@ -293,7 +293,7 @@ class PlanState {
       // name of the enemy's current aggro to fetch that player's face image
       let aggroedPlayerIndex;
       for (let i2 = 0; i2 < playersList.length; i2++) {
-        if (playersList[i2].name === aggroedPlayer) {
+        if (playersList[i2].name === aggroedPlayer.name) {
           aggroedPlayerIndex = i2;
         }
       }
@@ -324,13 +324,13 @@ class PlanState {
         for (let i2 = 0; i2 < theUsedTalent.effects.length; i2++) {
           theUsedTalent.effects[i2];
           strokeWeight(0);
-          text("Effect:", width * (i + 1) / (enemiesList.length + 1), height / 4.5);
+          text("Effect:", width * (i + 1) / (enemiesList.length + 1), height / (4.5 + i2 * 0.3));
           strokeWeight(2);
-          text(theUsedTalent.effects[i2], width * (i + 1) / (enemiesList.length + 1), height / 4.1);
+          text(theUsedTalent.effects[i2], width * (i + 1) / (enemiesList.length + 1), height / (4.1 + i2 * 0.2));
           strokeWeight(0);
-          text("Amount:", width * (i + 1) / (enemiesList.length + 1), height / 3.7);
+          text("Amount:", width * (i + 1) / (enemiesList.length + 1), height / (3.7 + i2 * 0.2));
           strokeWeight(2);
-          text(theUsedTalent.amount[i2], width * (i + 1) / (enemiesList.length + 1), height / 3.4);
+          text(theUsedTalent.amount[i2], width * (i + 1) / (enemiesList.length + 1), height / (3.4 + i2 * 0.1));
         }
         pop();
       }

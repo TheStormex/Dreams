@@ -116,7 +116,7 @@ class Bullet {
               // look for the enemy's current aggro target player, then deal the other half damage to that player
               let aggroedPlayerTarget;
               for (let i = 0; i < playersList.length; i++) {
-                if (this.origin.currentAggro === playersList[i].name) {
+                if (this.origin.currentAggro === playersList[i]) {
                   aggroedPlayerTarget = playersList[i];
                 }
               }
