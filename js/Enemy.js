@@ -34,13 +34,16 @@ class Enemy {
     this.canMove = true;
     this.canShoot = true;
     this.canAbility = true;
-    // how it chooses aggro targets
-
-    // how it chooses support targets
-
+    // boolean stats for if things happened
+    // to check for triggers
+    this.damaged = false;
     // combat dialogues and their trigger event
+    this.combatDialogueThisTurn;
     this.combatDialogue = combatDialogue;
     this.combatDialogueTriggers = combatDialogueTriggers;
+    // list of effects that were used by / on this character
+    this.usedList = [];
+    this.affectedList = [];
   }
   draw() {
     push();
@@ -211,7 +214,29 @@ class Enemy {
     finalChosenTargetIndex = random(chosenTargetsIndexes);
     this.currentAggro = playersList[finalChosenTargetIndex];
   }
-  chooseTalentTarget() {
 
+  chooseDialogue() {
+    // check each from lowest index to highest with
+    // highest being the one with priority to be chosen
+    // as the final choice if many are available
+    let chosenDialogue;
+    for (let i = 0; i < this.combatDialogueTriggers.length; i++) {
+      switch (this.combatDialogueTriggers[i]) {
+        case "base":
+          // start with the base dialogue
+          chosenDialogue = this.combatDialogue[i];
+          break;
+        // if this enemy has been hit by an ally and
+        // took damage from it
+        case "damaged":
+          if (this.harmed === true) {
+            chosenDialogue = this.combatDialogue[i];
+          }
+          break;
+        default:
+      }
+    }
+    this.combatDialogueThisTurn = chosenDialogue;
+    // console.log(this.name + ": " + this.combatDialogueThisTurn);
   }
 }

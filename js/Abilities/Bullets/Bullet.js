@@ -103,11 +103,16 @@ class Bullet {
   effectHappens(target) {
     for (let i2 = 0; i2 < this.effects.length; i2++) {
       switch (this.effects[i2][0]) {
-        case "damage":
+        case "Damage":
+        addUsedAffected(target, "affected", "damage");
         // if this is a player's bullet:
           if (this.origin.type === "player") {
             target.hp -= round((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)));
             target.hp = constrain(target.hp, 0, target.maxHp);
+            // if this hit an enemy, that enemy is harmed
+            if (target.type === "enemy") {
+              target.harmed = true;
+            }
           } else if (this.origin.type === "enemy") {
           // if this is an enemy's bullet:
             if (target.immune === false) {
@@ -132,15 +137,15 @@ class Bullet {
           }
           break;
         // spawn more bullets
-        case "spawn":
+        case "Spawn":
           break;
         // give characters ult charge (players)
-        case "ultCharge":
+        case "Ult Charge":
           this.origin.ultCharge += this.effects[i2][1];
           this.origin.ultCharge = constrain(this.origin.ultCharge, 0, 100);
           break;
         // stun the target (cannot use abilities or attack)
-        case "stun":
+        case "Stun":
           target.status.push("stun");
           let stunTimer = setInterval(() => {
             // if the target is still stunned when timer runs out, remove it
@@ -153,7 +158,7 @@ class Bullet {
           intervalsList.push(stunTimer);
           break;
         // root the target (cannot move)
-        case "root":
+        case "Root":
           target.status.push("root");
           let rootTimer = setInterval(() => {
             // if the target is still stunned when timer runs out, remove it
@@ -166,7 +171,7 @@ class Bullet {
           intervalsList.push(rootTimer);
           break;
         // heal a character, either the user or the receiver
-        case "heal":
+        case "Heal":
           if (this.effects[i2][1] === "self") {
             this.origin.health += this.effects[i2][2];
           } else if (this.effects[i2][1] === "receiver") {
@@ -174,7 +179,7 @@ class Bullet {
           }
           break;
         // knock back
-        case "knockback":
+        case "Knockback":
           let knockbackCounter = this.effects[i2][1];
           let thisBulletAngle = this.angle;
           let knockbackAmount = this.effects[i2][2] * (width/200+height/300);
@@ -191,7 +196,7 @@ class Bullet {
           intervalsList.push(knockbackInterval);
           break;
         // change the speed of user or receiver
-        case "speedChange":
+        case "Speed Change":
           let speedChangeAmount = this.effects[i2][2];
           if (this.effects[i2][1] === "self") {
             this.origin.speedMultiplier += speedChangeAmount;

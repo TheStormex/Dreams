@@ -68,6 +68,9 @@ class Player {
     // have taken damage from an enemy source in battle?
     this.harmed = false;
     this.wasFrontline = false;
+    // list of effects that were used by / on this character 
+    this.usedList = [];
+    this.affectedList = [];
   }
   move() {
     if (this.canMove === true) {
@@ -109,17 +112,17 @@ class Player {
     }
   }
   // for every bottle's bonus effects, make the text appear
-  bottleEffectText() {
-    let effectText = "";
-    for (let i = 0; i < this.bottleBonuses.length; i++) {
-      switch (this.bottleBonuses) {
-        case expression:
-
-          break;
-        default:
-
-      }
-    }
-    return effectText;
-  }
+  // bottleEffectText() {
+  //   let effectText = "";
+  //   for (let i = 0; i < this.bottleBonuses.length; i++) {
+  //     switch (this.bottleBonuses) {
+  //       case expression:
+  //
+  //         break;
+  //       default:
+  //
+  //     }
+  //   }
+  //   return effectText;
+  // }
 }

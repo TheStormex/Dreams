@@ -48,16 +48,18 @@ class PlayerAbility {
     // for each effect, apply
     for (let i = 0; i < this.effects.length; i++) {
       let theEffect = this.effects[i];
-      console.log(i);
-      console.log(theEffect.targets);
+      // console.log(i);
+      // console.log(theEffect.targets);
+      addUsedAffected(this.user, "used", this.effects[i].type);
+      addUsedAffected(theEffect.targets[i], "affected", this.effects[i].type);
       switch (this.effects[i].type) {
-        case "damage":
+        case "Damage":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i].hp -= round(theEffect.amount * (1+this.user.offenseChange*0.01) * (1+theEffect.targets[i].defenseChange*0.01));
             theEffect.targets[i].hp = constrain(theEffect.targets[i].hp, 0, theEffect.targets[i].maxHp);
           }
           break;
-        case "heal":
+        case "Heal":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             let targetOldHp = theEffect.targets[i2].hp;
             theEffect.targets[i2].hp += theEffect.amount;
@@ -68,36 +70,36 @@ class PlayerAbility {
             }
           }
           break;
-        case "immune":
+        case "Immunity":
           this.user.immune = true;
           let immuneInterval = setInterval(() => {
             this.user.immune = false;
           }, theEffect.amount);
           intervalsList.push(immuneInterval);
           break;
-        case "offense_change":
+        case "Offense Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].offenseChange += theEffect.amount;
           }
           break;
-        case "defense_change":
+        case "Defense Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].defenseChange += theEffect.amount;
           }
           break;
-        case "ultCharge_change":
+        case "Ult Charge Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i].ultCharge += theEffect.amount;
             theEffect.targets[i2].ultCharge = constrain(theEffect.targets[i2].ultCharge, 0, 100);
           }
           break;
-        case "ramp":
+        case "Energy Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].energy += theEffect.amount;
             theEffect.targets[i2].energy = constrain(theEffect.targets[i2].energy, 0, theEffect.targets[i2].maxEnergy);
           }
           break;
-        case "cleanse":
+        case "Cleanse":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             // remove negative status
             theEffect.targets[i2].status = [];
@@ -112,29 +114,29 @@ class PlayerAbility {
             theEffect.targets[i2].costDebuff = 0;
           }
           break;
-        case "abilityRenew":
+        case "Ability Renew":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             for (let i3 = 0; i3 < theEffect.targets[i2].abilities[0].length; i3++) {
               theEffect.targets[i2].abilities[0][i3].used = false;
             }
           }
           break;
-        case "bulletSpeed_change":
+        case "Bullet Speed Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].bulletSpeed += theEffect.amount;
           }
           break;
-        case "discount":
+        case "Cost Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].abilityDiscount += theEffect.amount;
           }
           break;
         // combat only effects
-        case "bullet":
+        case "Bullet":
           shootBullets(theEffect, this);
           break;
         // move the user towards the mouse angle direction
-        case "dash":
+        case "Dash":
           let dashCounter = 10;
           let currentUserAngle = this.user.angle;
           let dashInterval = setInterval(() => {
@@ -148,7 +150,7 @@ class PlayerAbility {
             }
           }, 10);
           break;
-        case "tank_ult":
+        case "Tank Ult":
           this.user.tankUltAmount = theEffect.amount;
           this.user.tankUltActive = true;
           let duration = theEffect.perDelay;

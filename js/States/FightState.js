@@ -215,6 +215,7 @@ class FightState {
         currentChar.basicBullet.sounds.play();
         projectilesList.push(playerBasicBullet);
         currentChar.basicBulletCooldown = true;
+        currentChar.acted = true;
         // set cooldown timer of that basic bullet, cannot shoot again until over
         setTimeout(function() {
           currentChar.basicBulletCooldown = false
