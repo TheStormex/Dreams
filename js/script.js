@@ -210,21 +210,21 @@ let pro_e_serpentBullet = new BulletStats(0.4, "towards", "straight", "players",
 // player abilities and effects
 // screws abilities and effects
 let ab_targetExploits_effect = new AbilityEffect("Defense Change", "enemies", -25, "", false, false, 0, 0);
-let ab_targetExploits = new PlayerAbility("Target Exploits", 3, [ab_targetExploits_effect], "Target enemy gets -25 DEF", 32, "none", false, [
+let ab_targetExploits = new PlayerAbility("Target Exploits", 1, [ab_targetExploits_effect], "Target enemy gets -25 DEF", 32, "none", false, [
   [10, "use"]
 ], 0);
 let ab_softReboot_effect = new AbilityEffect("Energy Change", "players", 1, "", false, false, 0, 0);
 let ab_softReboot_effect2 = new AbilityEffect("Ability Renew", "players", 0, "", false, false, 0, 0);
-let ab_softReboot = new PlayerAbility("Soft Reboot", 3, [ab_softReboot_effect, ab_softReboot_effect2], "Target ally's abilities are Renewed and gets 1 Energy", 32, "none", false, [
+let ab_softReboot = new PlayerAbility("Soft Reboot", 1, [ab_softReboot_effect, ab_softReboot_effect2], "Target ally's abilities are Renewed and gets 1 Energy", 32, "none", false, [
   [5, "use"],
   [10, "heal"]
 ], 0);
 let ab_magnetize_effect = new AbilityEffect("Tank Ult", "", 5, "", false, false, 100, 2000, 0);
-let ab_magnetize = new PlayerAbility("Magnetize", 1, [ab_magnetize_effect], "Taking damage gains Ult charge", 32, "none", false, [
+let ab_magnetize = new PlayerAbility("Magnetize", 0, [ab_magnetize_effect], "Taking damage gains Ult charge", 32, "none", false, [
   [10, "use"]
 ], 1);
 let ab_shockwave_effect = new AbilityEffect("bullet", "", 1, pro_p_shockwave, false, false, 100, 50);
-let ab_shockwave = new PlayerAbility("Shockwave", 2, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [
+let ab_shockwave = new PlayerAbility("Shockwave", 1, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [
   [5, "use"],
   [5, "hit"]
 ], 0);
@@ -240,22 +240,22 @@ let ab_ult_explosion = new PlayerAbility("Explosion", 0, [ab_ult_explosion_effec
 ], 0);
 // bolt abilities and effects
 let ab_logicBomb_effect = new AbilityEffect("Bullet", "", 1, pro_p_logicBomb, false, false, 0, 1);
-let ab_logicBomb = new PlayerAbility("Logic Bomb", 3, [ab_logicBomb_effect], "Throw a projectile", 32, "none", false, [
+let ab_logicBomb = new PlayerAbility("Logic Bomb", 1, [ab_logicBomb_effect], "Throw a projectile", 32, "none", false, [
   [5, "hit"]
 ], 1);
 let ab_backdoor_effect = new AbilityEffect("Bullet", "", 5, pro_p_backdoor, false, false, 20, 1);
 let ab_backdoor_effect2 = new AbilityEffect("Dash", "", 3, "", false, false, 0, 0);
-let ab_backdoor = new PlayerAbility("Backdoor", 2, [ab_backdoor_effect, ab_backdoor_effect2], "Dash and leave behind dust", 32, "none", false, [
+let ab_backdoor = new PlayerAbility("Backdoor", 1, [ab_backdoor_effect, ab_backdoor_effect2], "Dash and leave behind dust", 32, "none", false, [
   [5, "hit"],
   [2, "use"]
 ], 1);
 let ab_cleanupProtocol_effect = new AbilityEffect("Heal", "players", 60, "", false, false, 0, 0);
-let ab_cleanupProtocol = new PlayerAbility("Cleanup Protocol", 3, [ab_cleanupProtocol_effect], "Target ally heals 60 HP", 32, "none", false, [
+let ab_cleanupProtocol = new PlayerAbility("Cleanup Protocol", 1, [ab_cleanupProtocol_effect], "Target ally heals 60 HP", 32, "none", false, [
   [5, "use"],
   [10, "heal"]
 ], 0);
-let ab_signalBoost_effect = new AbilityEffect("Energy Change", "players", 5, "", false, false, 0, 0);
-let ab_signalBoost = new PlayerAbility("Signal Boost", 4, [ab_signalBoost_effect], "Target ally gets +5 Energy", 32, "none", false, [
+let ab_signalBoost_effect = new AbilityEffect("Energy Change", "players", 3, "", false, false, 0, 0);
+let ab_signalBoost = new PlayerAbility("Signal Boost", 2, [ab_signalBoost_effect], "Target ally gets +3 Energy", 32, "none", false, [
   [10, "use"]
 ], 0);
 let ab_ult_bitRotWorm_effect = new AbilityEffect("Bullet", "", 20, pro_p_ult_bitRotWorm, false, false, 100, 1);
@@ -268,16 +268,16 @@ let ab_ult_ransomBot = new PlayerAbility("Ransom Bot", 0, [ab_ult_ransomBot_effe
 ], 0);
 // nuts abilities and effects
 let ab_firewall_effect = new AbilityEffect("Defense Change", "players", 25, "", false, false, 0);
-let ab_firewall = new PlayerAbility("Firewall", 3, [ab_firewall_effect], "Target ally gets +25 DEF", 32, "none", false, [
+let ab_firewall = new PlayerAbility("Firewall", 1, [ab_firewall_effect], "Target ally gets +25 DEF", 32, "none", false, [
   [10, "use"]
 ], 0);
 let ab_factoryReset_effect2 = new AbilityEffect("Offense Change", "players", 20, "", false, false, 0);
 let ab_factoryReset_effect = new AbilityEffect("Cleanse", "players", 0, "", false, false, 0, 1);
-let ab_factoryReset = new PlayerAbility("Factory Reset", 3, [ab_factoryReset_effect, ab_factoryReset_effect2], "Target ally is Cleansed and gets +20 OFF", 32, "none", false, [
+let ab_factoryReset = new PlayerAbility("Factory Reset", 1, [ab_factoryReset_effect, ab_factoryReset_effect2], "Target ally is Cleansed and gets +20 OFF", 32, "none", false, [
   [5, "use"]
 ], 0);
 let ab_DOOS_effect = new AbilityEffect("Bullet", "", 1, pro_p_DDOS, false, false, 0, 1);
-let ab_DDOS = new PlayerAbility("DDoS", 2, [ab_DOOS_effect], "Root enemies hit for 0.5 seconds", 32, "none", false, [
+let ab_DDOS = new PlayerAbility("DDoS", 1, [ab_DOOS_effect], "Root enemies hit for 0.5 seconds", 32, "none", false, [
   [5, "hit"]
 ], 1);
 let ab_bruteForce_effect = new AbilityEffect("Bullet", "", 2, pro_p_bruteForce, false, false, 100, 10);
@@ -296,21 +296,21 @@ let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stu
 ], 0);
 // robot abilities and effects
 let ab_plasmaPulse_effect = new AbilityEffect("Bullet", "", 1, pro_p_plasmaPulse, false, false, 0, 1);
-let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 3, [ab_plasmaPulse_effect], "Stun and Slow enemies hit for 4 seconds", 32, "none", false, [
+let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 1, [ab_plasmaPulse_effect], "Stun and Slow enemies hit for 4 seconds", 32, "none", false, [
   [5, "hit"]
 ], 1);
 let ab_escape_effect = new AbilityEffect("Immunity", "players", 2500, "", false, false, 0, 1);
 let ab_escape_effect2 = new AbilityEffect("Dash", "", 3, "", false, false, 0, 0);
-let ab_escape = new PlayerAbility("Escape", 2, [ab_escape_effect, ab_escape_effect2], "Dash and be Immune for 2 seconds", 32, "none", false, [
+let ab_escape = new PlayerAbility("Escape", 1, [ab_escape_effect, ab_escape_effect2], "Dash and be Immune for 2 seconds", 32, "none", false, [
   [5, "hit"],
   [2, "use"]
 ], 1);
 let ab_defragmentation_effect = new AbilityEffect("Cost Change", "players", 1, "", false, false, 0, 0);
-let ab_defragmentation = new PlayerAbility("Defragmentation", 3, [ab_defragmentation_effect], "Target ally gets Discount 1 (costs: min 1)", 32, "none", false, [
+let ab_defragmentation = new PlayerAbility("Defragmentation", 1, [ab_defragmentation_effect], "Target ally gets Discount 1", 32, "none", false, [
   [10, "use"]
 ], 0);
 let ab_portableCharger_effect = new AbilityEffect("Ult Charge Change", "players", 20, "", false, false, 0, 0);
-let ab_portableCharger = new PlayerAbility("Portable Charger", 4, [ab_portableCharger_effect], "Target ally gets +20 Ult Charge", 32, "none", false, [
+let ab_portableCharger = new PlayerAbility("Portable Charger", 2, [ab_portableCharger_effect], "Target ally gets +20 Ult Charge", 32, "none", false, [
   [10, "use"]
 ], 0);
 let ab_ult_malwarePurge_effect = new AbilityEffect("Heal", "players", 50, "", false, true, 0, 0);
@@ -989,22 +989,22 @@ function initialisation() {
   // create the player characters and enemy characters
   // players
   boltImages = new Images(S_BOLT_LEFT, S_BOLT_RIGHT, S_BOLT_FRONT, S_BOLT_FACE);
-  bolt = new Player("Bolt", 200, 4, 10, [
+  bolt = new Player("Bolt", 200, 2, 6, [
     [ab_cleanupProtocol, ab_signalBoost, ab_ult_ransomBot],
     [ab_logicBomb, ab_backdoor, ab_ult_bitRotWorm]
   ], pro_p_bolt_basic, boltImages);
   nutsImages = new Images(S_NUTS_LEFT, S_NUTS_RIGHT, S_NUTS_FRONT, S_NUTS_FACE);
-  nuts = new Player("Nuts", 300, 3, 12, [
+  nuts = new Player("Nuts", 300, 2, 4, [
     [ab_firewall, ab_factoryReset, ab_ult_backupGenerator],
     [ab_DDOS, ab_bruteForce, ab_ult_EMP]
   ], pro_p_nuts_basic, nutsImages);
   screwsImages = new Images(S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE, S_SCREWS_FACE);
-  screws = new Player("Screws", 200, 5, 20, [
+  screws = new Player("Screws", 200, 3, 8, [
     [ab_targetExploits, ab_softReboot, ab_ult_hexcodeDeflector],
     [ab_magnetize, ab_shockwave, ab_ult_explosion]
   ], pro_p_bolt_basic, screwsImages);
   robotImages = new Images(S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE, S_ROBOT_FACE);
-  robot = new Player("Robot", 300, 4, 15, [
+  robot = new Player("Robot", 300, 2, 5, [
     [ab_defragmentation, ab_portableCharger, ab_ult_malwarePurge],
     [ab_escape, ab_plasmaPulse, ab_ult_paradoxProtocol]
   ], pro_p_nuts_basic, robotImages);

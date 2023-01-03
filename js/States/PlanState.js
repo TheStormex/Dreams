@@ -148,7 +148,7 @@ class PlanState {
         text("Frontline", width * (i + 1) / (playersList.length + 1), height / 2 + height / 11);
       } else {
         // if has enough energy to become Frontline
-        if (playersList[i].energy >= 3) {
+        if (playersList[i].energy >= 1) {
           text("Click to make Frontline", width * (i + 1) / (playersList.length + 1), height / 2 + height / 11);
         } else {
           text("Can't be Frontline", width * (i + 1) / (playersList.length + 1), height / 2 + height / 11);
@@ -352,7 +352,7 @@ class PlanState {
     noStroke();
     fill(0);
     text("Change Frontline", width / 15, height / 3 + height / 8);
-    text("Cost = 3 Energy", width / 15, height / 2);
+    text("Cost = 1 Energy", width / 15, height / 2);
     pop();
     if (currentChar != "none") {
       push();
@@ -382,7 +382,7 @@ class PlanState {
         // apply any discounts to non ultimates
         if (currentChar.abilities[0][i].ultimate === false) {
           currentChar.abilities[0][i].costCurrent = currentChar.abilities[0][i].cost - currentChar.abilityDiscount;
-          currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 1, 999);
+          currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 0, 999);
         }
         let abilityCostNumber = currentChar.abilities[0][i].costCurrent;
         let abilityCostText;
