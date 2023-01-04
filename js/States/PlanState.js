@@ -587,8 +587,8 @@ class PlanState {
         // if a player is moused over, that player character is now the front line
         else if (playersList.includes(mouseOver)) {
           // if would be frontline has 3 or more energy, before frontline, else, no.
-          if (mouseOver.energy >= 3 && frontline != mouseOver) {
-            mouseOver.energy -= 3;
+          if (mouseOver.energy >= 1 && frontline != mouseOver) {
+            mouseOver.energy -= 1;
             frontline = mouseOver;
           }
           // if a player's ability is moused over, then clicking selects that ability to be used

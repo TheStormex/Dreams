@@ -110,10 +110,11 @@ class Bullet {
             target.hp -= round((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)));
             target.hp = constrain(target.hp, 0, target.maxHp);
             // if this hit an enemy, that enemy is harmed
-            if (target.type === "enemy") {
+            // if (target.type === "enemy") {
               target.harmed = true;
-            }
+            // }
           } else if (this.origin.type === "enemy") {
+
           // if this is an enemy's bullet:
             if (target.immune === false) {
               target.hp -= round(((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)))*0.5);

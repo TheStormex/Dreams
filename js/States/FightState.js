@@ -127,7 +127,7 @@ class FightState {
         // apply any discounts to non ultimates
         if (currentChar.abilities[1][i].ultimate === false) {
           currentChar.abilities[1][i].costCurrent = currentChar.abilities[1][i].cost - currentChar.abilityDiscount;
-          currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 1, 999);
+          currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 0, 999);
         }
         let abilityCostNumber = currentChar.abilities[1][i].costCurrent;
         let abilityCostText;
@@ -143,7 +143,7 @@ class FightState {
         }
         // apply any discounts
         currentChar.abilities[1][i].costCurrent = currentChar.abilities[1][i].cost - currentChar.abilityDiscount;
-        currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 1, 999);
+        currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 0, 999);
         textSize(width / 150 + height / 150);
         text(currentChar.abilities[1][i].description, width / 3.75 + (i * width / 3.5), height - height / 12);
         // what button to press to activate this ability
