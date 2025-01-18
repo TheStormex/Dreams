@@ -44,6 +44,7 @@ class PlayerAbility {
     this.user.acted = true;
     if (this.ultimate === true) {
         this.user.ultCharge -= 100;
+        addUsedAffected(this.user, "used", "Ultimate");
     }
     // for each effect, apply
     for (let i = 0; i < this.effects.length; i++) {
@@ -51,7 +52,9 @@ class PlayerAbility {
       // console.log(i);
       // console.log(theEffect.targets);
       addUsedAffected(this.user, "used", this.effects[i].type);
-      addUsedAffected(theEffect.targets[i], "affected", this.effects[i].type);
+      for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+          addUsedAffected(theEffect.targets[i2], "affected", this.effects[i].type);
+      }
       switch (this.effects[i].type) {
         case "Damage":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {

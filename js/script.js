@@ -2,7 +2,7 @@
 
 /********************************************************************
 
-The Last Hacktivists
+The Last Hacktivists 2
 Che Tan
 
 Two brave hacktivists broke into the system of the mega corporation
@@ -29,6 +29,8 @@ const ENDING_SCREEN_TEXT = [
 let currentDialog = TUTORIAL_TEXT;
 let currentDialogNumber = 0;
 let currentDialogText;
+// game just started or no
+let firstClick = true;
 // sounds for P5 part
 let A_CHAR_DEATH;
 let A_BOLT_BASIC;
@@ -41,6 +43,7 @@ let A_SUPPORT;
 let A_COMBAT;
 let A_SUPPORT_ULT;
 let A_COMBAT_ULT;
+let A_MUSIC;
 // images for P5 part
 let S_BOLT_BULLET_BASIC;
 let S_BOLT_FACE;
@@ -286,8 +289,8 @@ let ab_bruteForce = new PlayerAbility("Brute Force Attack", 2, [ab_bruteForce_ef
   [5, "hit"],
   [2, "use"]
 ], 1);
-let ab_ult_backupGenerator_effect = new AbilityEffect("Energy Change", "players", 6, "", false, true, 0, 0);
-let ab_ult_backupGenerator = new PlayerAbility("Backup Generator", 0, [ab_ult_backupGenerator_effect], "All allies get +6 Energy", 32, "none", true, [
+let ab_ult_backupGenerator_effect = new AbilityEffect("Energy Change", "players", 5, "", false, true, 0, 0);
+let ab_ult_backupGenerator = new PlayerAbility("Backup Generator", 0, [ab_ult_backupGenerator_effect], "All allies get +5 Energy", 32, "none", true, [
   [0, "use"]
 ], 0);
 let ab_ult_EMP_effect = new AbilityEffect("Bullet", "", 1, pro_p_ult_emp, false, false, 100, 30);
@@ -351,21 +354,21 @@ let ab_e_serpent_wave = new EnemyAbility("line", [ab_e_serpent_wave_effect], [18
 let ab_e_serpent_gatling = new EnemyAbility("noise", [ab_e_serpent_gatling_effect], [1800], "through", 8);
 // enemies talents
 let ta_e_agent_block = new EnemyTalent("Block", "enemies", ["Defense Change"], [50],
-["enemies", "any", "affected", "damage"], ["specific", "self", ""]);
+["enemies", "any", "affected", "Damage"], ["specific", "self", ""]);
 let ta_e_agent_pierce = new EnemyTalent("Pierce", "players", ["Defense Change"], [-30],
-["players", "frontline", "affected", "defense_up"], ["stats", "hp", "highest"]);
+["players", "frontline", "affected", "Defense Change"], ["stats", "hp", "highest"]);
 let ta_e_agent_taunt = new EnemyTalent("Taunt", "players", ["Switch", "Energy Change"], ["N/A", -3],
-["players", "any", "used", "heal"], ["stats", "energy", "lowest"]);
+["players", "any", "used", "Heal"], ["stats", "energy", "lowest"]);
 let ta_e_agent_overload = new EnemyTalent("Overload", "players", ["Cost Change"], [-1],
-["enemies", "any", "affected", "defense_down"], ["stats", "energy", "highest"]);
+["enemies", "any", "affected", "Defense Change"], ["stats", "energy", "highest"]);
 let ta_e_serpent_swipe = new EnemyTalent("Swipe", "frontline", ["Offense Change"], [-40],
-["players", "frontline", "used", "damage"], ["specific", "frontline", ""]);
+["players", "frontline", "used", "Damage"], ["specific", "frontline", ""]);
 let ta_e_serpent_spray = new EnemyTalent("Spray", "enemies", ["Heal"], [100],
-["enemies", "any", "affected", "damage"], ["stats", "hp", "lowest"]);
+["enemies", "any", "affected", "Damage"], ["stats", "hp", "lowest"]);
 let ta_e_serpent_gaze = new EnemyTalent("Gaze", "players", ["Stun"], ["N/A"],
-["players", "any", "used", "ultimate"], ["specific", "frontline", ""]);
+["players", "any", "used", "Ultimate"], ["specific", "frontline", ""]);
 let ta_e_serpent_swat = new EnemyTalent("Swat", "enemies", ["Defense Change"], [30],
-["players", "not_frontline", "used", "heal"], ["specific", "name", "Screws"]);
+["players", "not_frontline", "used", "Heal"], ["specific", "name", "Screws"]);
 
 let projectilesList = [];
 
@@ -385,9 +388,10 @@ let sfxTimer;
 
 $(document).ready(start);
 
-function start() {}
+function start() {
+}
 
-// p5 preload, load image sprites
+// p5 preload, load image sprites and sounds
 function preload() {
   S_BOLT_BULLET_BASIC = loadImage(`assets/images/bolt_basicBullet.png`);
   S_BOLT_FACE = loadImage(`assets/images/bolt_face.png`);
@@ -417,6 +421,19 @@ function preload() {
   S_BRUTE_FORCE = loadImage(`assets/images/bruteForce.png`);
   S_LOGO = loadImage(`assets/images/clown.png`);
   S_NAME = loadImage(`assets/images/clown.png`);
+  soundFormats('wav', 'ogg');
+  A_CHAR_DEATH = loadSound(`assets/sounds/a_char_death.wav`);
+  A_BOLT_BASIC = loadSound(`assets/sounds/a_bolt_basic.wav`);
+  A_NUTS_BASIC = loadSound(`assets/sounds/a_nuts_basic.wav`);
+  A_AGENT_BULLET = loadSound(`assets/sounds/a_agent_bullet.wav`);
+  A_SERPENT_BULLET = loadSound(`assets/sounds/a_serpent_bullet.wav`);
+  A_HIT_PLAYER = loadSound(`assets/sounds/a_hit_player.wav`);
+  A_HIT_ENEMY = loadSound(`assets/sounds/a_hit_enemy.wav`);
+  A_SUPPORT = loadSound(`assets/sounds/a_support.wav`);
+  A_COMBAT = loadSound(`assets/sounds/a_combat.wav`);
+  A_SUPPORT_ULT = loadSound(`assets/sounds/a_support_ult.wav`);
+  A_COMBAT_ULT = loadSound(`assets/sounds/a_combat_ult.wav`);
+  A_MUSIC = loadSound(`assets/sounds/a_song.wav`);
 }
 
 // p5 setup, load sounds,
@@ -424,29 +441,17 @@ function setup() {
   gameScreen = createCanvas(windowWidth, windowHeight);
   gameScreen.style('display', 'none');
   background(100);
-
-  // load sounds
-  A_CHAR_DEATH = loadSound(`assets/sounds/a_char_death.wav`);
+  // add non-music sounds to list
   soundsList.push(A_CHAR_DEATH);
-  A_BOLT_BASIC = loadSound(`assets/sounds/a_bolt_basic.wav`);
   soundsList.push(A_BOLT_BASIC);
-  A_NUTS_BASIC = loadSound(`assets/sounds/a_nuts_basic.wav`);
   soundsList.push(A_NUTS_BASIC);
-  A_AGENT_BULLET = loadSound(`assets/sounds/a_agent_bullet.wav`);
   soundsList.push(A_AGENT_BULLET);
-  A_SERPENT_BULLET = loadSound(`assets/sounds/a_serpent_bullet.wav`);
   soundsList.push(A_SERPENT_BULLET);
-  A_HIT_PLAYER = loadSound(`assets/sounds/a_hit_player.wav`);
   soundsList.push(A_HIT_PLAYER);
-  A_HIT_ENEMY = loadSound(`assets/sounds/a_hit_enemy.wav`);
   soundsList.push(A_HIT_ENEMY);
-  A_SUPPORT = loadSound(`assets/sounds/a_support.wav`);
   soundsList.push(A_SUPPORT);
-  A_COMBAT = loadSound(`assets/sounds/a_combat.wav`);
   soundsList.push(A_COMBAT);
-  A_SUPPORT_ULT = loadSound(`assets/sounds/a_support_ult.wav`);
   soundsList.push(A_SUPPORT_ULT);
-  A_COMBAT_ULT = loadSound(`assets/sounds/a_combat_ult.wav`);
   soundsList.push(A_COMBAT_ULT);
 
   // add the image to each bullet's image slot and sounds slot
@@ -478,6 +483,12 @@ function setup() {
   pro_e_serpentBullet.sounds = A_SERPENT_BULLET;
 
   initialisation();
+  // add the click fundtion to the start button to begin the game and freeze first click
+  // make the start button appear
+  let startButton = document.getElementById('startButton');
+  startButton.style.display = 'inline-block';
+  startButton.addEventListener('click', startGame);
+  startButton.addEventListener('click', preventStartMouseClick);
 }
 
 // p5 draw
@@ -491,6 +502,13 @@ function draw() {
     framecount++;
   }
   // console.log(framecount);
+}
+
+// at the start of the game, prevent the click on the start button to affect the game ability buttons
+// run this and remove the first click gate once a second has passed
+function preventStartMouseClick() {
+
+  firstClick = false;
 }
 
 // check for status effects and apply the effects of them
@@ -679,7 +697,8 @@ function newTurn() {
       for (let i2 = 0; i2 < enemiesList[i].talents.length; i2++) {
         enemiesList[i].talents[i2].enemyTalentTriggerCheck();
         if (enemiesList[i].talents[i2].isTriggered === true) {
-          possibleTriggers.push(enemiesList[i].talents[i2]);
+          triggeredTalents.push(enemiesList[i].talents[i2]);
+          console.log(enemiesList[i].talents[i2].name + "triggered");
         }
       }
       // use the talent whose index in the talents list
@@ -958,6 +977,7 @@ function startGame() {
   gameScreen.style('display', 'block');
   $(`#dialogBox`).css('display', 'block');
   currentDialogNumber = 0;
+  A_MUSIC.play();
 }
 
 // find an object and its index of its array
@@ -972,7 +992,7 @@ function addUsedAffected(character, affectedOrUsed, typeofEffect) {
   switch (affectedOrUsed) {
     case "affected":
       character.affectedList.push(typeofEffect);
-      // console.log(character.name + " affected " + character.affectedList);
+    //   console.log(character.name + " affected " + character.affectedList);
       break;
     case "used":
       character.usedList.push(typeofEffect);
@@ -1042,6 +1062,12 @@ function initialisation() {
           playersList[i].abilities[0][i2].steps++;
         }
       }
+    }
+  }
+  // set all talents users to that enemy
+  for (let i = 0; i < enemiesList.length; i++) {
+    for (let i2 = 0; i2 < enemiesList[i].talents.length; i2++) {
+      enemiesList[i].talents[i2].user = enemiesList[i];
     }
   }
   // set the list of aggro for each enemy, the list of all player characters in the battle they can target

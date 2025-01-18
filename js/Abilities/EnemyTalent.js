@@ -23,7 +23,7 @@ class EnemyTalent {
   // for each triggerType element, check if that has happened
   // if all 4 are true, this talent can happen
   enemyTalentTriggerCheck() {
-    let triggerCheckGroup;
+    let triggerCheckGroup = [];
     let triggerCheckGroupSpecific = [];
     let triggerCheckInOutList = [];
     let triggerCheckEffectType;
@@ -62,7 +62,7 @@ class EnemyTalent {
         for (let i = 0; i < triggerCheckGroupSpecific.length; i++) {
           // for each used type of effect
           for (let i2 = 0; i2 < triggerCheckGroupSpecific[i].usedList.length; i2++) {
-            triggerCheckInOutList.push(triggerCheckGroupSpecific[i2]);
+            triggerCheckInOutList.push(triggerCheckGroupSpecific[i].usedList[i2]);
           }
         }
         break;
@@ -72,7 +72,7 @@ class EnemyTalent {
         for (let i = 0; i < triggerCheckGroupSpecific.length; i++) {
           // for each type of effect that affected this character
           for (let i2 = 0; i2 < triggerCheckGroupSpecific[i].affectedList.length; i2++) {
-            triggerCheckInOutList.push(triggerCheckGroupSpecific[i2]);
+            triggerCheckInOutList.push(triggerCheckGroupSpecific[i].affectedList[i2]);
           }
         }
         break;
@@ -82,6 +82,8 @@ class EnemyTalent {
     // if it can be found, isTriggered becomes true for this talent
     // for each item in the in out list
     for (let i = 0; i < triggerCheckInOutList.length; i++) {
+      // console.log(this.user.name + " " + this.name + " " + triggerCheckInOutList[i]);
+      // console.log(this.triggerType[3]);
       if (triggerCheckInOutList[i] === this.triggerType[3]) {
         this.isTriggered = true;
       }
@@ -111,7 +113,6 @@ class EnemyTalent {
   // which enemy / player exactly will this affect
   enemyTalentTargetChoice() {
     let groupList = [];
-    let targetCharacter;
     let statToCheck = [];
     let targetsIndexes = [];
     switch (this.targets) {
@@ -131,15 +132,15 @@ class EnemyTalent {
       case "specific":
         switch (this.targetType[1]) {
           case "self":
-            targetCharacter = this.user;
+            this.chosenTarget = this.user;
             break;
           case "frontline":
-            targetCharacter = frontline;
+            this.chosenTarget = frontline;
             break;
           case "name":
             for (let i = 0; i < groupList.length; i++) {
               if (this.targetType[2] === groupList[i].name) {
-                targetCharacter = groupList[i];
+                this.chosenTarget = groupList[i];
               }
             }
             break;
@@ -148,6 +149,9 @@ class EnemyTalent {
         break;
       case "stats":
         // which stat to look for
+        // to organize the lists
+        // how to rank based on names from top to bottom
+        let groupStatsOrder = [];
         switch (this.targetType[1]) {
           case "hp":
             for (let i = 0; i < groupList.length; i++) {
@@ -155,11 +159,32 @@ class EnemyTalent {
             }
             break;
           case "energy":
-
+            for (let i = 0; i < groupList.length; i++) {
+              statToCheck.push(groupList[i].energy);
+            }
             break;
           default:
         }
-        // how to rank based on this stat?
+        // reorder
+        let highestValue = 0;
+        let currentValue = 0;
+        // remaining group list, to be reduced each time after
+        // the highest number is found, it is removed.
+        // ex: [Player1, 200hp], [Player 2, 150hp]
+
+        let remainingGroupList = [];
+        for (let i = 0; i < groupList.length; i++) {
+          remainingGroupList.push([groupList[i], statToCheck[i]]);
+        }
+        // find highest one from all of the group characters
+        for (let i = 0; i < remainingGroupList.length; i++) {
+          if (statToCheck[i] > highestValue) {
+            currentValue = statToCheck[i];
+          }
+        }
+        // this is the highest one, push to list
+        console.log(statToCheck);
+        groupStatsOrder.push([groupList[i], statToCheck[i]]);
         switch (this.targetType[2]) {
           case "highest":
 
@@ -172,13 +197,14 @@ class EnemyTalent {
         break;
       default:
     }
-    return targetCharacter;
   }
 
   enemyTalentHappens() {
     // for each effect, apply
     for (let i = 0; i < this.effects.length; i++) {
       let theEffect = this.effects[i];
+      console.log("talent " + this.user.name);
+      console.log(this.user.name + " " + this.chosenTarget);
       addUsedAffected(this.user, "used", theEffect);
       addUsedAffected(this.chosenTarget, "affected", theEffect);
       switch (theEffect) {

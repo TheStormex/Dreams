@@ -19,13 +19,13 @@ class EnemyAbility {
     for (let i = 0; i < this.effects.length; i++) {
       let theEffect = this.effects[i];
       switch (this.effects[i].type) {
-        case "damage":
+        case "Damage":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].hp -= round(theEffect.amount * (1+this.user.offenseChange*0.01) * (1+theEffect.targets[i2].defenseChange*0.01));
             theEffect.targets[i2].hp = constrain(theEffect.targets[i2].hp, 0, theEffect.targets[i2].maxHp);
           }
           break;
-        case "heal":
+        case "Heal":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             let targetOldHp = theEffect.targets[i2].hp;
             theEffect.targets[i2].hp += theEffect.amount;
@@ -36,28 +36,28 @@ class EnemyAbility {
             }
           }
           break;
-        case "offense_change":
+        case "Offense Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].offenseChange += theEffect.amount;
           }
           break;
-        case "defense_change":
+        case "Defense Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].defenseChange += theEffect.amount;
           }
           break;
-        case "ramp":
+        case "Energy Change":
           for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
             theEffect.targets[i2].energy += theEffect.amount;
             theEffect.targets[i2].energy = constrain(theEffect.targets[i2].energy, 0, theEffect.targets[i2].maxEnergy);
           }
           break;
         // combat only effects
-        case "bullet":
+        case "Bullet":
           shootBullets(theEffect, this);
           break;
         // move the user towards the mouse angle direction
-        case "dash":
+        case "Dash":
           let dashCounter = 10;
           let currentUserAngle = this.user.angle;
           let dashInterval = setInterval(() => {

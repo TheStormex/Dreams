@@ -18,8 +18,12 @@ class PlanState {
     if (gameStarted === true) {
       $('#dialogBox').css(`display`, 'block');
       $(`#dialogText`).text(currentDialogText);
+      if (firstClick === true) {
+        this.situation = "choose";
+      }
     }
   }
+
   // if the mouse is over an player avatar, that player character becomes the selected character, if not using an ability, then that character becomes the current character
   mouseOverCharacters() {
     mouseOver = 0;

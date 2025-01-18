@@ -125,6 +125,9 @@ class Enemy {
           frontline.ultCharge += frontline.tankUltAmount;
           frontline.ultCharge = constrain(frontline.ultCharge, 0, 100);
         }
+        // add the used for the damage to the player
+        addUsedAffected(this, "used", "Damage");
+        addUsedAffected(frontline, "affected", "Damage");
         A_HIT_PLAYER.play();
         frontline.invincible = true;
         setTimeout(function() {
@@ -138,6 +141,7 @@ class Enemy {
           }
         }
         // the aggroed player takes other half of the damage
+        addUsedAffected(aggroedPlayerTarget, "affected", "Damage");
         aggroedPlayerTarget.hp -= round(((this.contactDamage * (1 + this.offenseChange / 100) / (1 + aggroedPlayerTarget.defenseChange / 100))) * 0.5);
         aggroedPlayerTarget.hp = constrain(aggroedPlayerTarget.hp, 0, aggroedPlayerTarget.maxHp);
       }

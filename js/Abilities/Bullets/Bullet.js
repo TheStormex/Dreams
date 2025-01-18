@@ -102,9 +102,9 @@ class Bullet {
   }
   effectHappens(target) {
     for (let i2 = 0; i2 < this.effects.length; i2++) {
+      addUsedAffected(target, "affected", this.effects[i2][0]);
       switch (this.effects[i2][0]) {
         case "Damage":
-        addUsedAffected(target, "affected", "damage");
         // if this is a player's bullet:
           if (this.origin.type === "player") {
             target.hp -= round((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)));

@@ -68,9 +68,9 @@ class Player {
     // have taken damage from an enemy source in battle?
     this.harmed = false;
     this.wasFrontline = false;
-    // list of effects that were used by / on this character 
-    this.usedList = [];
-    this.affectedList = [];
+    // list of effects that were used by / on this character
+    this.usedList = [""];
+    this.affectedList = [""];
   }
   move() {
     if (this.canMove === true) {
