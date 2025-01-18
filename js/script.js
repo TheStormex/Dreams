@@ -483,8 +483,10 @@ function setup() {
   pro_e_serpentBullet.sounds = A_SERPENT_BULLET;
 
   initialisation();
-  // add the click fundtion to the start button to begin the game and freeze first click
+  // add the click function to the start button to begin the game and freeze first click
   // make the start button appear
+  let loadingButton = document.getElementById('loadingButton');
+  loadingButton.style.display = 'none';
   let startButton = document.getElementById('startButton');
   startButton.style.display = 'inline-block';
   startButton.addEventListener('click', startGame);
@@ -507,7 +509,11 @@ function draw() {
 // at the start of the game, prevent the click on the start button to affect the game ability buttons
 // run this and remove the first click gate once a second has passed
 function preventStartMouseClick() {
+  setTimeout(removeFirstClick, 200);
+}
 
+// after the time, remove the first click and allow player to play
+function removeFirstClick() {
   firstClick = false;
 }
 
@@ -977,7 +983,9 @@ function startGame() {
   gameScreen.style('display', 'block');
   $(`#dialogBox`).css('display', 'block');
   currentDialogNumber = 0;
-  A_MUSIC.play();
+  // play the music on loop at 50% volume to not overwrite the SFX
+  A_MUSIC.loop();
+  A_MUSIC.setVolume(0.5);
 }
 
 // find an object and its index of its array
