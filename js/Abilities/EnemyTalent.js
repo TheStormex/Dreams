@@ -151,7 +151,6 @@ class EnemyTalent {
         // which stat to look for
         // to organize the lists
         // how to rank based on names from top to bottom
-        let groupStatsOrder = [];
         switch (this.targetType[1]) {
           case "hp":
             for (let i = 0; i < groupList.length; i++) {
@@ -166,33 +165,30 @@ class EnemyTalent {
           default:
         }
         // reorder
-        let highestValue = 0;
-        let currentValue = 0;
-        // remaining group list, to be reduced each time after
-        // the highest number is found, it is removed.
-        // ex: [Player1, 200hp], [Player 2, 150hp]
-
-        let remainingGroupList = [];
-        for (let i = 0; i < groupList.length; i++) {
-          remainingGroupList.push([groupList[i], statToCheck[i]]);
-        }
+        // find the highest and lowest numbers
+        // first set the highest and lowest to the first
+        // then change by comparing
+        // example: [Nuts, 1000]
+        let highestValue = [groupList[0], statToCheck[0]];
+        let lowestValue = [groupList[0], statToCheck[0]];
         // find highest one from all of the group characters
-        for (let i = 0; i < remainingGroupList.length; i++) {
-          if (statToCheck[i] > highestValue) {
-            currentValue = statToCheck[i];
+        for (let i = 0; i < groupList.length; i++) {
+          if (statToCheck[i] > highestValue[1]) {
+            highestValue = [groupList[i], statToCheck[i]];
+          }
+          if (statToCheck[i] < lowestValue[1]) {
+            lowestValue = [groupList[i], statToCheck[i]];
           }
         }
-        // this is the highest one, push to list
-        console.log(statToCheck);
-        groupStatsOrder.push([groupList[i], statToCheck[i]]);
+        // depending on the chosen target, add it as chosen target
         switch (this.targetType[2]) {
           case "highest":
-
+            this.chosenTarget = highestValue[0];
             break;
           case "lowest":
-
+            this.chosenTarget = lowestValue[0];
             break;
-          default:
+          default: console.log('error');
         }
         break;
       default:
