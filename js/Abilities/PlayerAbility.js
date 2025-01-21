@@ -54,6 +54,7 @@ class PlayerAbility {
       addUsedAffected(this.user, "used", this.effects[i].type, "Player");
       for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
           addUsedAffected(theEffect.targets[i2], "affected", this.effects[i].type, "Player");
+          console.log(theEffect.targets[i2]);
       }
       switch (this.effects[i].type) {
         case "Damage":

@@ -381,7 +381,7 @@ class PlanState {
           fill(0);
         }
         textAlign(CENTER, CENTER);
-        textSize(width / 80 + height / 80);
+        textSize(width / 100 + height / 80);
         text(currentChar.abilities[0][i].name, width / 3.75 + (i * width / 3.5), height - height / 6);
         // apply any discounts to non ultimates
         if (currentChar.abilities[0][i].ultimate === false) {
@@ -410,7 +410,7 @@ class PlanState {
         if (currentChar.abilities[0][i].ultimate === false) {
           text(abilityCostNumber, width / 3.85 + (i * width / 3.5), height - height / 8);
         }
-        textSize(width / 150 + height / 150);
+        textSize(width / 300 + height / 120);
         // if moused over, it is highlighted
         if (mouseOver.name === currentChar.abilities[0][i].name && !currentChar.status.includes("stun")) {
           fill(255);
@@ -420,7 +420,7 @@ class PlanState {
         text(currentChar.abilities[0][i].description, width / 3.75 + (i * width / 3.5), height - height / 12);
         // if this is an ultimate, then let the player know
         if (currentChar.abilities[0][i].ultimate === true) {
-          textSize(width / 100 + height / 100);
+          textSize(width / 150 + height / 100);
           if (currentChar.ultCharge === 100) {
             fill(0, 255, 0);
             text("Ultimate Ready!", width / 3.75 + (i * width / 3.5), height - height / 5);
@@ -431,7 +431,7 @@ class PlanState {
         }
         // if this non-ultimate ability has been used this turn and cannot be used again
         if (currentChar.abilities[0][i].used === true && currentChar.abilities[0][i].ultimate === false) {
-          textSize(width / 100 + height / 100);
+          textSize(width / 150 + height / 100);
           fill(255, 0, 0);
           text("Used This Turn", width / 3.75 + (i * width / 3.5), height - height / 5);
         }

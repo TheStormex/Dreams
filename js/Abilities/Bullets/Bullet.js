@@ -47,6 +47,7 @@ class Bullet {
     }
   }
   contact() {
+    // if this touches enemies
     if (this.targets === "enemies") {
       for (let i = 0; i < enemiesList.length; i++) {
         let d = dist(this.x, this.y, enemiesList[i].x, enemiesList[i].y);
@@ -56,6 +57,7 @@ class Bullet {
         }
       }
     }
+    // if this touches a player frontline that is not immune
     else if (this.targets === "players" && frontline.immune === false && frontline.invincible === false) {
       let d = dist(this.x, this.y, frontline.x, frontline.y);
       if (d < frontline.size/2 + this.size/2) {
@@ -102,18 +104,18 @@ class Bullet {
   }
   effectHappens(target) {
     for (let i2 = 0; i2 < this.effects.length; i2++) {
-      addUsedAffected(target, "affected", this.effects[i2][0]);
+      addUsedAffected(target, "affected", this.effects[i2][0], this.origin.type);
       switch (this.effects[i2][0]) {
         case "Damage":
         // if this is a player's bullet:
-          if (this.origin.type === "player") {
+          if (this.origin.type === "Player") {
             target.hp -= round((this.effects[i2][1]*(1+this.origin.offenseChange/100)/(1+target.defenseChange/100)));
             target.hp = constrain(target.hp, 0, target.maxHp);
             // if this hit an enemy, that enemy is harmed
             // if (target.type === "enemy") {
               target.harmed = true;
             // }
-          } else if (this.origin.type === "enemy") {
+          } else if (this.origin.type === "Enemy") {
 
           // if this is an enemy's bullet:
             if (target.immune === false) {

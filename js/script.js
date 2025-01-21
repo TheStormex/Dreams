@@ -757,12 +757,23 @@ function checkAliveAll() {
           frontline = random(playersList);
         }
       }
+      // console.log(enemiesList);
+      // // remove the player from the enemies' lists
+      // for (let i2 = 0; i2 < enemiesList.length; i2++) {
+      //   for (let i3 = 0; i3 < enemiesList[i2].aggroList.length; i3++) {
+      //     if (enemiesList[i2].aggroList[i3].name === playersList[i].name) {
+      //       enemiesList[i2].aggroList.splice(i3, 1);
+      //     }
+      //   }
+      //   for (let i3 = 0; i3 < enemiesList[i2].aggroAmount.length; i3++) {
+      //     if (enemiesList[i2].aggroAmount[i3].name === playersList[i].name) {
+      //       enemiesList[i2].aggroAmount.splice(i3, 1);
+      //     }
+      //   }
+      // }
+      // remove the player character from the players list
       A_CHAR_DEATH.play();
       playersList.splice(i, 1);
-      for (let i2 = 0; i2 < enemiesList.length; i2++) {
-        enemiesList[i2].aggroList.splice(i, 1);
-        enemiesList[i2].aggroAmount.splice(i, 1);
-      }
     }
   }
   if (whichScreen === FIGHT_STATE && playerDied === true) {
@@ -1004,12 +1015,10 @@ function objectArrayValueSearch() {
 function addUsedAffected(character, affectedOrUsed, typeofEffect, source) {
   switch (affectedOrUsed) {
     case "affected":
-      character.affectedList.push(typeofEffect, source);
-    //   console.log(character.name + " affected " + character.affectedList);
+      character.affectedList.push([typeofEffect, source]);
       break;
     case "used":
-      character.usedList.push(typeofEffect, source);
-      // console.log(character.name + " used " + character.usedList);
+      character.usedList.push([typeofEffect, source]);
       break;
     default:
 

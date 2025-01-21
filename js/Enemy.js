@@ -1,7 +1,7 @@
 class Enemy {
   constructor(name, maxHp, size, contactDamage, abilities, images, talents, talentsTriggers, combatDialogue, combatDialogueTriggers, aggroType) {
     this.name = name;
-    this.type = "enemy";
+    this.type = "Enemy";
     this.hp = maxHp;
     this.maxHp = maxHp;
     this.baseSpeed = width / 400 + height / 400;

@@ -75,7 +75,8 @@ class EnemyTalent {
         for (let i = 0; i < triggerCheckGroupSpecific.length; i++) {
           // for each type of effect that affected this character
           for (let i2 = 0; i2 < triggerCheckGroupSpecific[i].affectedList.length; i2++) {
-            triggerCheckInOutList.push(triggerCheckGroupSpecific[i].affectedList[i2]);
+            console.log(triggerCheckInOutList);
+            triggerCheckInOutList.push([triggerCheckGroupSpecific[i].affectedList[i2][0], triggerCheckGroupSpecific[i].affectedList[i2][1]]);
           }
         }
         break;

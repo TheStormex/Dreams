@@ -1,7 +1,7 @@
 class Player {
   constructor(name, maxHp, energyTurn, maxEnergy, abilities, basicBullet, images) {
     this.name = name;
-    this.type = "player";
+    this.type = "Player";
     this.maxHp = maxHp;
     this.hp = maxHp;
     this.baseSpeed = width / 200 + height / 200;
@@ -69,8 +69,8 @@ class Player {
     this.harmed = false;
     this.wasFrontline = false;
     // list of effects that were used by / on this character
-    this.usedList = [""];
-    this.affectedList = [""];
+    this.usedList = [];
+    this.affectedList = [];
   }
   move() {
     if (this.canMove === true) {

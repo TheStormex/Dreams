@@ -90,7 +90,7 @@ class FightState {
     let colorOfBar = map(currentFightTime / 100, 0, fightTime, 0, 100);
     fill(colorOfBar, 100, 100);
     rect(0, height - height / 3, progressBarLength, height / 50);
-    console.log("fightTime " + currentFightTime/100 + ' / ' + fightTime);
+    // console.log("fightTime " + currentFightTime/100 + ' / ' + fightTime);
     pop();
   }
   // draw the combat skills the characters can use in the UI box
