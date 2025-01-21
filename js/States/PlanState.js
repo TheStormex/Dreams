@@ -19,7 +19,7 @@ class PlanState {
       $('#dialogBox').css(`display`, 'block');
       $(`#dialogText`).text(currentDialogText);
       if (firstClick === true) {
-        this.situation = "choose";
+        mouseOver = 0;
       }
     }
   }
@@ -105,7 +105,7 @@ class PlanState {
     fill(255);
     // check enemy / player amount, for each enemy / player, draw name, sprites and stats
     for (let i = 0; i < playersList.length; i++) {
-      textSize(width / 100 + height / 100);
+      textSize(width / 120 + height / 100);
       rectMode(CENTER, CENTER);
       // mark the selected character with a square depending on the situation, if choose, then friendly only (can be selected to act)
       // if ability, then those who can be selected will glow and those moused over will have another square
@@ -224,7 +224,7 @@ class PlanState {
     }
     // draw the enemy sprites
     for (let i = 0; i < enemiesList.length; i++) {
-      textSize(width / 100 + height / 100);
+      textSize(width / 120 + height / 100);
       fill(255);
       rectMode(CENTER, CENTER);
       // if the current ability can select enemies, mark them
@@ -308,7 +308,7 @@ class PlanState {
         rectMode(CENTER, CENTER);
         rect(width * (i + 1) / (enemiesList.length + 1), height / 4.5, width / 8, height / 5.2);
         fill(0);
-        textSize(width/150 + height/100);
+        textSize(width/180 + height/120);
         textAlign(CENTER);
         let theUsedTalent;
         // find the talent using the name

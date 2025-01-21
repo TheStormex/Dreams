@@ -18,6 +18,8 @@ class EnemyTalent {
     // l / h hp, specific, aggro
     // not all talents have effects that target both sides
     this.targetType = targetType;
+    // ID for tracking
+    this.id = 0;
   }
 
   // for each triggerType element, check if that has happened
@@ -27,6 +29,7 @@ class EnemyTalent {
     let triggerCheckGroupSpecific = [];
     let triggerCheckInOutList = [];
     let triggerCheckEffectType;
+    let triggerCheckEffectSource;
     switch (this.triggerType[0]) {
       case "enemies":
         triggerCheckGroup = enemiesList;
@@ -62,7 +65,7 @@ class EnemyTalent {
         for (let i = 0; i < triggerCheckGroupSpecific.length; i++) {
           // for each used type of effect
           for (let i2 = 0; i2 < triggerCheckGroupSpecific[i].usedList.length; i2++) {
-            triggerCheckInOutList.push(triggerCheckGroupSpecific[i].usedList[i2]);
+            triggerCheckInOutList.push([triggerCheckGroupSpecific[i].usedList[i2][0], triggerCheckGroupSpecific[i].usedList[i2][1]]);
           }
         }
         break;
@@ -82,10 +85,12 @@ class EnemyTalent {
     // if it can be found, isTriggered becomes true for this talent
     // for each item in the in out list
     for (let i = 0; i < triggerCheckInOutList.length; i++) {
-      // console.log(this.user.name + " " + this.name + " " + triggerCheckInOutList[i]);
-      // console.log(this.triggerType[3]);
-      if (triggerCheckInOutList[i] === this.triggerType[3]) {
-        this.isTriggered = true;
+      // if the triggered ability (Heal) is present and was from the right type of source (Player)
+      // then this talent would trigger.
+      if (triggerCheckInOutList[i][0] === this.triggerType[3]) {
+        if (this.triggerType[4] === triggerCheckInOutList[i][1]) {
+           this.isTriggered = true;
+        }
       }
     }
     // switch (this.triggerType[3]) {
@@ -199,10 +204,8 @@ class EnemyTalent {
     // for each effect, apply
     for (let i = 0; i < this.effects.length; i++) {
       let theEffect = this.effects[i];
-      console.log("talent " + this.user.name);
-      console.log(this.user.name + " " + this.chosenTarget);
-      addUsedAffected(this.user, "used", theEffect);
-      addUsedAffected(this.chosenTarget, "affected", theEffect);
+      addUsedAffected(this.user, "used", theEffect, "Enemy");
+      addUsedAffected(this.chosenTarget, "affected", theEffect, "Enemy");
       switch (theEffect) {
         case "Heal":
           let targetOldHp = this.chosenTarget.hp;

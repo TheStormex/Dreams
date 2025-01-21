@@ -44,16 +44,16 @@ class PlayerAbility {
     this.user.acted = true;
     if (this.ultimate === true) {
         this.user.ultCharge -= 100;
-        addUsedAffected(this.user, "used", "Ultimate");
+        addUsedAffected(this.user, "used", "Ultimate", "Player");
     }
     // for each effect, apply
     for (let i = 0; i < this.effects.length; i++) {
       let theEffect = this.effects[i];
       // console.log(i);
       // console.log(theEffect.targets);
-      addUsedAffected(this.user, "used", this.effects[i].type);
+      addUsedAffected(this.user, "used", this.effects[i].type, "Player");
       for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-          addUsedAffected(theEffect.targets[i2], "affected", this.effects[i].type);
+          addUsedAffected(theEffect.targets[i2], "affected", this.effects[i].type, "Player");
       }
       switch (this.effects[i].type) {
         case "Damage":

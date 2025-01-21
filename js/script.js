@@ -227,7 +227,7 @@ let ab_magnetize = new PlayerAbility("Magnetize", 1, [ab_magnetize_effect], "Tak
   [10, "use"]
 ], 1);
 let ab_shockwave_effect = new AbilityEffect("bullet", "", 1, pro_p_shockwave, false, false, 100, 50);
-let ab_shockwave = new PlayerAbility("Shockwave", 2, [ab_shockwave_effect], "Damage and knockback enemies", 32, "none", false, [
+let ab_shockwave = new PlayerAbility("Shockwave", 2, [ab_shockwave_effect], "Damage nearby enemies", 32, "none", false, [
   [5, "use"],
   [5, "hit"]
 ], 0);
@@ -354,21 +354,21 @@ let ab_e_serpent_wave = new EnemyAbility("line", [ab_e_serpent_wave_effect], [18
 let ab_e_serpent_gatling = new EnemyAbility("noise", [ab_e_serpent_gatling_effect], [1800], "through", 8);
 // enemies talents
 let ta_e_agent_block = new EnemyTalent("Block", "enemies", ["Defense Change"], [50],
-["enemies", "any", "affected", "Damage"], ["specific", "self", ""]);
+["enemies", "any", "affected", "Damage", "Player"], ["specific", "self", ""]);
 let ta_e_agent_pierce = new EnemyTalent("Pierce", "players", ["Defense Change"], [-30],
-["players", "frontline", "affected", "Defense Change"], ["stats", "hp", "highest"]);
+["players", "frontline", "affected", "Defense Change", "Player"], ["stats", "hp", "highest"]);
 let ta_e_agent_taunt = new EnemyTalent("Taunt", "players", ["Switch", "Energy Change"], ["N/A", -3],
-["players", "any", "used", "Heal"], ["stats", "energy", "lowest"]);
+["players", "any", "used", "Heal", "Player"], ["stats", "energy", "lowest"]);
 let ta_e_agent_overload = new EnemyTalent("Overload", "players", ["Cost Change"], [-1],
-["enemies", "any", "affected", "Defense Change"], ["stats", "energy", "highest"]);
+["enemies", "any", "affected", "Defense Change", "Player"], ["stats", "energy", "highest"]);
 let ta_e_serpent_swipe = new EnemyTalent("Swipe", "frontline", ["Offense Change"], [-40],
-["players", "frontline", "used", "Damage"], ["specific", "frontline", ""]);
+["players", "frontline", "used", "Damage", "Player"], ["specific", "frontline", ""]);
 let ta_e_serpent_spray = new EnemyTalent("Spray", "enemies", ["Heal"], [100],
-["enemies", "any", "affected", "Damage"], ["stats", "hp", "lowest"]);
+["enemies", "any", "affected", "Damage", "Player"], ["stats", "hp", "lowest"]);
 let ta_e_serpent_gaze = new EnemyTalent("Gaze", "players", ["Stun"], ["N/A"],
-["players", "any", "used", "Ultimate"], ["specific", "frontline", ""]);
-let ta_e_serpent_swat = new EnemyTalent("Swat", "enemies", ["Defense Change"], [30],
-["players", "not_frontline", "used", "Heal"], ["specific", "name", "Screws"]);
+["players", "any", "used", "Ultimate", "Player"], ["specific", "frontline", ""]);
+let ta_e_serpent_swat = new EnemyTalent("Swat", "enemies", ["Offence Change"], [30],
+["players", "not_frontline", "used", "Defense Change", "Player"], ["specific", "self", ""]);
 
 let projectilesList = [];
 
@@ -509,7 +509,8 @@ function draw() {
 // at the start of the game, prevent the click on the start button to affect the game ability buttons
 // run this and remove the first click gate once a second has passed
 function preventStartMouseClick() {
-  setTimeout(removeFirstClick, 200);
+  firstClick = true;
+  setTimeout(removeFirstClick, 1000);
 }
 
 // after the time, remove the first click and allow player to play
@@ -704,7 +705,7 @@ function newTurn() {
         enemiesList[i].talents[i2].enemyTalentTriggerCheck();
         if (enemiesList[i].talents[i2].isTriggered === true) {
           triggeredTalents.push(enemiesList[i].talents[i2]);
-          console.log(enemiesList[i].talents[i2].name + "triggered");
+          // console.log(enemiesList[i].talents[i2].name + "triggered");
         }
       }
       // use the talent whose index in the talents list
@@ -716,7 +717,9 @@ function newTurn() {
         enemiesList[i].talentUsed = true;
         // // if within the chance, do a talent
         chosenTalent.user = enemiesList[i];
-
+        chosenTalent.id = enemiesList[i].name + "--";
+        // console.log("chosen talent enemy name " + enemiesList[i].name);
+        // console.log("chosen talent enemy name 2 " + chosenTalent.user.name);
         enemiesList[i].talentUsedName = chosenTalent.name;
         // do the talent
         chosenTalent.enemyTalentTargetChoice();
@@ -803,6 +806,8 @@ function fightToPlan() {
     soundsList[i].stop();
   }
   turns++;
+  // activate the mouse buffer so player does not accidentally click on fight again
+  preventStartMouseClick();
   newTurn();
   whichScreen = PLAN_STATE;
 }
@@ -996,14 +1001,14 @@ function objectArrayValueSearch() {
 
 // check if this character is already affected/used
 // a certain type of effect, if not, add it
-function addUsedAffected(character, affectedOrUsed, typeofEffect) {
+function addUsedAffected(character, affectedOrUsed, typeofEffect, source) {
   switch (affectedOrUsed) {
     case "affected":
-      character.affectedList.push(typeofEffect);
+      character.affectedList.push(typeofEffect, source);
     //   console.log(character.name + " affected " + character.affectedList);
       break;
     case "used":
-      character.usedList.push(typeofEffect);
+      character.usedList.push(typeofEffect, source);
       // console.log(character.name + " used " + character.usedList);
       break;
     default:
@@ -1037,31 +1042,29 @@ function initialisation() {
     [ab_escapeButton, ab_plasmaPulse, ab_ult_paradoxProtocol]
   ], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
-  agent = new Enemy("Hackshield Agent 1", 800, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt, ta_e_agent_overload],
+  agent = new Enemy("Agent - Hackshield", 600, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce],
    [], ["Halt!", "Cease!"], ["base", "damaged"], ["hp", "lowest"]);
   for (let i = 0; i < agent.abilities.length; i++) {
     agent.abilities[i].user = agent;
   }
-  agent2 = new Enemy("Hackshield Agent 2", 800, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce, ta_e_agent_taunt, ta_e_agent_overload],
+  agent2 = new Enemy("Agent - Quarantine", 600, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_taunt, ta_e_agent_overload],
     [], ["Halt!", "Cease!"], ["base", "damaged"], ["hp", "highest"]);
   for (let i = 0; i < agent2.abilities.length; i++) {
     agent2.abilities[i].user = agent2;
   }
   serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
-  serpent = new Enemy("Serverspy Serpent 1", 1000, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
-    ta_e_serpent_spray, ta_e_serpent_gaze, ta_e_serpent_swat
-  ], [], ["SSS!", "AKK!"], ["base", "damaged"], ["ultCharge", "lowest"]);
+  serpent = new Enemy("Serpent - Serverspy", 800, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
+    ta_e_serpent_spray], [], ["SSS!", "AKK!"], ["base", "damaged"], ["ultCharge", "lowest"]);
   for (let i = 0; i < serpent.abilities.length; i++) {
     serpent.abilities[i].user = serpent;
   }
-  serpent2 = new Enemy("Serverspy Serpent 2", 1000, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
-    ta_e_serpent_spray, ta_e_serpent_gaze, ta_e_serpent_swat
-  ], [], ["SSS!", "AKK!"], ["base", "damaged"], ["ultCharge", "highest"]);
+  serpent2 = new Enemy("Serpent - Killswitch", 800, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_gaze, ta_e_serpent_swat],
+  [], ["SSS!", "AKK!"], ["base", "damaged"], ["ultCharge", "highest"]);
   for (let i = 0; i < serpent2.abilities.length; i++) {
     serpent2.abilities[i].user = serpent2;
   }
   playersList = [bolt, nuts, screws, robot];
-  enemiesList = [agent, agent2, serpent, serpent2];
+  enemiesList = [agent, serpent, agent2, serpent2];
   // set the number of steps of each ability of each player
   for (let i = 0; i < playersList.length; i++) {
     for (let i2 = 0; i2 < playersList[i].abilities[0].length; i2++) {
