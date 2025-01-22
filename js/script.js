@@ -299,7 +299,7 @@ let ab_ult_EMP = new PlayerAbility("EMP", 0, [ab_ult_EMP_effect], "Discharge stu
 ], 0);
 // robot abilities and effects
 let ab_plasmaPulse_effect = new AbilityEffect("Bullet", "", 1, pro_p_plasmaPulse, false, false, 0, 1);
-let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 2, [ab_plasmaPulse_effect], "Stun and Slow enemies hit for 4 seconds", 32, "none", false, [
+let ab_plasmaPulse = new PlayerAbility("Plasma Pulse", 2, [ab_plasmaPulse_effect], "Slow enemies hit for 4 seconds", 32, "none", false, [
   [5, "hit"]
 ], 1);
 let ab_escapeButton_effect = new AbilityEffect("Immunity", "players", 2500, "", false, false, 0, 1);
@@ -309,7 +309,7 @@ let ab_escapeButton = new PlayerAbility("Escape Button", 2, [ab_escapeButton_eff
   [2, "use"]
 ], 1);
 let ab_defragmentation_effect = new AbilityEffect("Cost Change", "players", 1, "", false, false, 0, 0);
-let ab_defragmentation = new PlayerAbility("Defragmentation", 2, [ab_defragmentation_effect], "Target ally gets Discount 1", 32, "none", false, [
+let ab_defragmentation = new PlayerAbility("Defragmentation", 2, [ab_defragmentation_effect], "Target ally gets Discount 1 (costs can't be less than 1)", 32, "none", false, [
   [10, "use"]
 ], 0);
 let ab_portableCharger_effect = new AbilityEffect("Ult Charge Change", "players", 20, "", false, false, 0, 0);

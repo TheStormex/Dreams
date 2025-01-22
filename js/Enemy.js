@@ -219,28 +219,28 @@ class Enemy {
     this.currentAggro = playersList[finalChosenTargetIndex];
   }
 
-  chooseDialogue() {
-    // check each from lowest index to highest with
-    // highest being the one with priority to be chosen
-    // as the final choice if many are available
-    let chosenDialogue;
-    for (let i = 0; i < this.combatDialogueTriggers.length; i++) {
-      switch (this.combatDialogueTriggers[i]) {
-        case "base":
-          // start with the base dialogue
-          chosenDialogue = this.combatDialogue[i];
-          break;
-        // if this enemy has been hit by an ally and
-        // took damage from it
-        case "damaged":
-          if (this.harmed === true) {
-            chosenDialogue = this.combatDialogue[i];
-          }
-          break;
-        default:
-      }
-    }
-    this.combatDialogueThisTurn = chosenDialogue;
-    // console.log(this.name + ": " + this.combatDialogueThisTurn);
-  }
+  // chooseDialogue() {
+  //   // check each from lowest index to highest with
+  //   // highest being the one with priority to be chosen
+  //   // as the final choice if many are available
+  //   let chosenDialogue;
+  //   for (let i = 0; i < this.combatDialogueTriggers.length; i++) {
+  //     switch (this.combatDialogueTriggers[i]) {
+  //       case "base":
+  //         // start with the base dialogue
+  //         chosenDialogue = this.combatDialogue[i];
+  //         break;
+  //       // if this enemy has been hit by an ally and
+  //       // took damage from it
+  //       case "damaged":
+  //         if (this.harmed === true) {
+  //           chosenDialogue = this.combatDialogue[i];
+  //         }
+  //         break;
+  //       default:
+  //     }
+  //   }
+  //   this.combatDialogueThisTurn = chosenDialogue;
+  //   // console.log(this.name + ": " + this.combatDialogueThisTurn);
+  // }
 }

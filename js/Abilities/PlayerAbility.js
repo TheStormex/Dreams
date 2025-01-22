@@ -39,7 +39,10 @@ class PlayerAbility {
     let hitTarget = false;
     let healed = false;
     // remove the energy this costs and set the player's acted to yes
-    this.costCurrent = this.cost - this.user.abilityDiscount;
+    let discountedCost = this.cost - this.user.abilityDiscount;
+    if (this.costCurrent < 1) {
+      this.costCurrent = 1;
+    }
     this.user.energy -= this.costCurrent;
     this.user.acted = true;
     if (this.ultimate === true) {

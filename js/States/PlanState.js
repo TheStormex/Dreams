@@ -386,7 +386,7 @@ class PlanState {
         // apply any discounts to non ultimates
         if (currentChar.abilities[0][i].ultimate === false) {
           currentChar.abilities[0][i].costCurrent = currentChar.abilities[0][i].cost - currentChar.abilityDiscount;
-          currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 0, 999);
+          currentChar.abilities[0][i].costCurrent = constrain(currentChar.abilities[0][i].costCurrent, 1, 999);
         }
         let abilityCostNumber = currentChar.abilities[0][i].costCurrent;
         let abilityCostText;
@@ -598,7 +598,11 @@ class PlanState {
           // if a player's ability is moused over, then clicking selects that ability to be used
         } else if (currentChar.abilities[0].includes(mouseOver) && !currentChar.status.includes("stun")) {
           // if this ability is not an ultimate, and if they have enough energy to use it, and it has not been used this turn then it works
-          if (mouseOver.ultimate === false && currentChar.energy - mouseOver.costCurrent >= 0 && mouseOver.used === false) {
+          let realCostOfAbility = mouseOver.cost - currentChar.abilityDiscount;
+          if (realCostOfAbility < 1) {
+            realCostOfAbility = 1;
+          }
+          if (mouseOver.ultimate === false && currentChar.energy - realCostOfAbility >= 0 && mouseOver.used === false) {
             this.selectAbility();
           } else if (mouseOver.ultimate === true && currentChar.ultCharge === 100) {
             this.selectAbility();

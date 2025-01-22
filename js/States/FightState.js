@@ -128,7 +128,7 @@ class FightState {
         // apply any discounts to non ultimates
         if (currentChar.abilities[1][i].ultimate === false) {
           currentChar.abilities[1][i].costCurrent = currentChar.abilities[1][i].cost - currentChar.abilityDiscount;
-          currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 0, 999);
+          currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 1, 999);
         }
         let abilityCostNumber = currentChar.abilities[1][i].costCurrent;
         let abilityCostText;
@@ -270,8 +270,13 @@ class FightState {
       let abilityButton = combatButtons[i][1];
       if (currentCombatAbilityKey === abilityButton) {
         let abilityToBeActivated = currentChar.abilities[1][i];
+        let realCostOfAbility = abilityToBeActivated.cost - currentChar.abilityDiscount;
+        console.log(realCostOfAbility);
+        if (realCostOfAbility < 1) {
+          realCostOfAbility = 1;
+        }
         // if this ability is not an ultimate and the player character does not have enough to use it, and if they have enough energy to use it, and it is not on cooldown then it works
-        if (abilityToBeActivated.ultimate === false && currentChar.energy - abilityToBeActivated.cost >= 0 && abilityToBeActivated.cooldownLeft === 0) {
+        if (abilityToBeActivated.ultimate === false && currentChar.energy - realCostOfAbility >= 0 && abilityToBeActivated.cooldownLeft === 0) {
           currentAbility = currentChar.abilities[1][i];
           this.situation = "ability";
         } else if (abilityToBeActivated.ultimate === true && currentChar.ultCharge === 100) {
