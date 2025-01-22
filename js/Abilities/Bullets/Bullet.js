@@ -105,6 +105,7 @@ class Bullet {
   effectHappens(target) {
     for (let i2 = 0; i2 < this.effects.length; i2++) {
       addUsedAffected(target, "affected", this.effects[i2][0], this.origin.type);
+      addUsedAffected(this.origin, "used", this.effects[i2][0], this.origin.type);
       switch (this.effects[i2][0]) {
         case "Damage":
         // if this is a player's bullet:
@@ -236,7 +237,7 @@ class Bullet {
     }
     switch (this.ifHit[1]) {
       case "spawn":
-        // create new bullets
+        // create new bullets, currently not used
         break;
       case "nothing":
         // nothing

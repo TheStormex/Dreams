@@ -23,6 +23,10 @@ class Player {
     this.defenseChange = 0;
     // discount to abilities if applicable
     this.abilityDiscount = 0;
+    // positive changes
+    this.offenseBuff = 0;
+    this.defenseBuff = 0;
+    this.costBuff = 0;
     // negative changes
     this.offenseDebuff = 0;
     this.defenseDebuff = 0;

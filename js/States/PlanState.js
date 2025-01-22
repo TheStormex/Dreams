@@ -325,16 +325,16 @@ class PlanState {
         text("Target:", width * (i + 1) / (enemiesList.length + 1), height / 5.8);
         strokeWeight(2);
         text(theUsedTalent.chosenTarget.name, width * (i + 1) / (enemiesList.length + 1), height / 5.1);
+        strokeWeight(0);
+        text("Effects:", width * (i + 1) / (enemiesList.length + 1), height / 4.5);
+        strokeWeight(0);
+        text("Amounts:", width * (i + 1) / (enemiesList.length + 1), height / 3.7);
         for (let i2 = 0; i2 < theUsedTalent.effects.length; i2++) {
           theUsedTalent.effects[i2];
-          strokeWeight(0);
-          text("Effect:", width * (i + 1) / (enemiesList.length + 1), height / (4.5 + i2 * 0.3));
           strokeWeight(2);
-          text(theUsedTalent.effects[i2], width * (i + 1) / (enemiesList.length + 1), height / (4.1 + i2 * 0.2));
-          strokeWeight(0);
-          text("Amount:", width * (i + 1) / (enemiesList.length + 1), height / (3.7 + i2 * 0.2));
+          text(theUsedTalent.effects[i2], width * (i + 1  + i2 * 0.2) / (enemiesList.length + 1), height / 4.1);
           strokeWeight(2);
-          text(theUsedTalent.amount[i2], width * (i + 1) / (enemiesList.length + 1), height / (3.4 + i2 * 0.1));
+          text(theUsedTalent.amount[i2], width * (i + 1 + i2 * 0.1) / (enemiesList.length + 1), height / 3.4);
         }
         pop();
       }

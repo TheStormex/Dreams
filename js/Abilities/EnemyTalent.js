@@ -75,7 +75,6 @@ class EnemyTalent {
         for (let i = 0; i < triggerCheckGroupSpecific.length; i++) {
           // for each type of effect that affected this character
           for (let i2 = 0; i2 < triggerCheckGroupSpecific[i].affectedList.length; i2++) {
-            console.log(triggerCheckInOutList);
             triggerCheckInOutList.push([triggerCheckGroupSpecific[i].affectedList[i2][0], triggerCheckGroupSpecific[i].affectedList[i2][1]]);
           }
         }
@@ -215,11 +214,21 @@ class EnemyTalent {
           break;
         case "Offense Change":
           this.chosenTarget.offenseChange += this.amount[i];
-          this.chosenTarget.offenseDebuff += this.amount[i];
+          if (this.amount[i] > 0) {
+            this.chosenTarget.offenseBuff += this.amount[i];
+          }
+          if (this.amount[i] <= 0) {
+            this.chosenTarget.offenseDebuff += this.amount[i];
+          }
           break;
         case "Defense Change":
           this.chosenTarget.defenseChange += this.amount[i];
-          this.chosenTarget.defenseDebuff += this.amount[i];
+          if (this.amount[i] > 0) {
+            this.chosenTarget.defenseBuff += this.amount[i];
+          }
+          if (this.amount[i] <= 0) {
+            this.chosenTarget.defenseDebuff += this.amount[i];
+          }
           break;
         case "Stun":
           this.chosenTarget.status.push("stun");
