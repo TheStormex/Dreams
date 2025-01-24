@@ -123,7 +123,7 @@ class FightState {
           }
         }
         textAlign(CENTER, CENTER);
-        textSize(width / 80 + height / 80);
+        textSize(width / 100 + height / 80);
         text(currentChar.abilities[1][i].name, width / 3.75 + (i * width / 3.5), height - height / 6);
         // apply any discounts to non ultimates
         if (currentChar.abilities[1][i].ultimate === false) {
@@ -145,7 +145,7 @@ class FightState {
         // apply any discounts
         currentChar.abilities[1][i].costCurrent = currentChar.abilities[1][i].cost - currentChar.abilityDiscount;
         currentChar.abilities[1][i].costCurrent = constrain(currentChar.abilities[1][i].costCurrent, 0, 999);
-        textSize(width / 150 + height / 150);
+        textSize(width / 300 + height / 120);
         text(currentChar.abilities[1][i].description, width / 3.75 + (i * width / 3.5), height - height / 12);
         // what button to press to activate this ability
         let abilityButtonText = combatButtons[i][0];
@@ -170,9 +170,10 @@ class FightState {
         } else if (currentChar.abilities[1][i].costCurrent < currentChar.abilities[1][i].cost) {
           fill(0, 255, 0);
         }
-        textSize(width / 80 + height / 80);
+        textAlign(CENTER, CENTER);
+        textSize(width / 100 + height / 80);
         if (currentChar.abilities[1][i].ultimate === false) {
-          text(abilityCostNumber, width / 3.95 + (i * width / 3.5), height - height / 8);
+          text(abilityCostNumber, width / 3.85 + (i * width / 3.5), height - height / 8);
         }
         // the cooldown of each ability if it is on cooldown
         if (currentChar.abilities[1][i].onCooldown === true) {
