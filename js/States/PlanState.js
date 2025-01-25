@@ -594,6 +594,7 @@ class PlanState {
           if (mouseOver.energy >= 1 && frontline != mouseOver) {
             mouseOver.energy -= 1;
             frontline = mouseOver;
+            A_SELECT_ABILITY.play();
           }
           // if a player's ability is moused over, then clicking selects that ability to be used
         } else if (currentChar.abilities[0].includes(mouseOver) && !currentChar.status.includes("stun")) {
@@ -648,10 +649,12 @@ class PlanState {
             A_SUPPORT.play();
           }
           currentAbility.happens();
+          A_USE_ABILITY.play();
           this.situation = "choose";
         }
         if (mouseOver === "cancel") {
           this.situation = "choose";
+          A_CANCEL_ABILITY.play();
         }
       }
     }
@@ -659,6 +662,7 @@ class PlanState {
   // select this ability
   selectAbility() {
     currentAbility = mouseOver;
+    A_SELECT_ABILITY.play();
     // remove the ability from mouseOver since what will be mousedOver will be a character
     mouseOver = 0;
 //    currentAbility.currentStep = 1;
@@ -676,6 +680,7 @@ class PlanState {
   goToFight() {
     currentChar = frontline;
     frontline.harmed = false;
+    A_START_FIGHT.play();
     // all characters not frontline has their frontline turns reset
     for (let i = 0; i < playersList.length; i++) {
       if (playersList[i].name !== frontline.name) {

@@ -226,6 +226,7 @@ class FightState {
     } else if (this.situation === "ability" && currentChar.canAbility === true) {
       currentAbility.user = currentChar;
       currentAbility.happens();
+      A_USE_ABILITY.play();
       // if this is a combat ability with a cooldown, then after use, set the timer (old)
       // let thisAbility = currentAbility;
       // if (thisAbility.cooldown !== 0) {
@@ -262,6 +263,7 @@ class FightState {
         currentAbility = 0;
         this.situation = "shoot";
         currentCombatAbilityKey = "none";
+        A_CANCEL_ABILITY.play();
       }
     }
   }
@@ -280,9 +282,11 @@ class FightState {
         if (abilityToBeActivated.ultimate === false && currentChar.energy - realCostOfAbility >= 0 && abilityToBeActivated.cooldownLeft === 0) {
           currentAbility = currentChar.abilities[1][i];
           this.situation = "ability";
+          A_SELECT_ABILITY.play();
         } else if (abilityToBeActivated.ultimate === true && currentChar.ultCharge === 100) {
           currentAbility = currentChar.abilities[1][i];
           this.situation = "ability";
+          A_SELECT_ABILITY.play();
         } else {
           currentAbility = 0;
           currentCombatAbilityKey = 0;

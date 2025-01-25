@@ -32,6 +32,10 @@ let currentDialogText;
 // game just started or no
 let firstClick = true;
 // sounds for P5 part
+let A_SELECT_ABILITY;
+let A_USE_ABILITY;
+let A_CANCEL_ABILITY;
+let A_START_FIGHT;
 let A_CHAR_DEATH;
 let A_BOLT_BASIC;
 let A_NUTS_BASIC;
@@ -422,6 +426,10 @@ function preload() {
   S_LOGO = loadImage(`assets/images/clown.png`);
   S_NAME = loadImage(`assets/images/clown.png`);
   soundFormats('wav', 'ogg');
+  A_SELECT_ABILITY = loadSound(`assets/sounds/a_select_ability.wav`);
+  A_USE_ABILITY = loadSound(`assets/sounds/a_use_ability.wav`);
+  A_CANCEL_ABILITY = loadSound(`assets/sounds/a_cancel_ability.wav`);
+  A_START_FIGHT = loadSound(`assets/sounds/a_start_fight.wav`);
   A_CHAR_DEATH = loadSound(`assets/sounds/a_char_death.wav`);
   A_BOLT_BASIC = loadSound(`assets/sounds/a_bolt_basic.wav`);
   A_NUTS_BASIC = loadSound(`assets/sounds/a_nuts_basic.wav`);
@@ -442,6 +450,10 @@ function setup() {
   gameScreen.style('display', 'none');
   background(100);
   // add non-music sounds to list
+  soundsList.push(A_SELECT_ABILITY);
+  soundsList.push(A_USE_ABILITY);
+  soundsList.push(A_CANCEL_ABILITY);
+  soundsList.push(A_START_FIGHT);
   soundsList.push(A_CHAR_DEATH);
   soundsList.push(A_BOLT_BASIC);
   soundsList.push(A_NUTS_BASIC);
@@ -510,6 +522,7 @@ function draw() {
 // run this and remove the first click gate once a second has passed
 function preventStartMouseClick() {
   firstClick = true;
+  mouseOver = 0;
   setTimeout(removeFirstClick, 1000);
 }
 
