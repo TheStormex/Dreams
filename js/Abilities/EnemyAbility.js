@@ -15,63 +15,71 @@ class EnemyAbility {
     this.user = user;
   }
   enemyEffectHappens() {
-    // for each effect, apply
-    for (let i = 0; i < this.effects.length; i++) {
-      let theEffect = this.effects[i];
-      switch (this.effects[i].type) {
-        case "Damage":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i2].hp -= round(theEffect.amount * (1+this.user.offenseChange*0.01) * (1+theEffect.targets[i2].defenseChange*0.01));
-            theEffect.targets[i2].hp = constrain(theEffect.targets[i2].hp, 0, theEffect.targets[i2].maxHp);
-          }
-          break;
-        case "Heal":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            let targetOldHp = theEffect.targets[i2].hp;
-            theEffect.targets[i2].hp += theEffect.amount;
-            theEffect.targets[i2].hp = constrain(theEffect.targets[i2].hp, 0, theEffect.targets[i2].maxHp);
-            // if the target's health went up after being healed, then give heal ult charge
-            if (targetOldHp < theEffect.targets[i2].maxHp && theEffect.targets[i2].hp > targetOldHp) {
-              healed = true;
+    // make sure this character is still alive
+    if (this.user.hp <= 0 || this.user.canAbility === false) {
+      console.log("can't activate");
+    } else {
+   // for each effect, apply
+      for (let i = 0; i < this.effects.length; i++) {
+        let theEffect = this.effects[i];
+        switch (this.effects[i].type) {
+          case "Damage":
+            for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+              theEffect.targets[i2].hp -= round(theEffect.amount * (1+this.user.offenseChange*0.01) * (1+theEffect.targets[i2].defenseChange*0.01));
+              theEffect.targets[i2].hp = constrain(theEffect.targets[i2].hp, 0, theEffect.targets[i2].maxHp);
             }
-          }
-          break;
-        case "Offense Change":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i2].offenseChange += theEffect.amount;
-          }
-          break;
-        case "Defense Change":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i2].defenseChange += theEffect.amount;
-          }
-          break;
-        case "Energy Change":
-          for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
-            theEffect.targets[i2].energy += theEffect.amount;
-            theEffect.targets[i2].energy = constrain(theEffect.targets[i2].energy, 0, theEffect.targets[i2].maxEnergy);
-          }
-          break;
-        // combat only effects
-        case "Bullet":
-          shootBullets(theEffect, this);
-          break;
-        // move the user towards the mouse angle direction
-        case "Dash":
-          let dashCounter = 10;
-          let currentUserAngle = this.user.angle;
-          let dashInterval = setInterval(() => {
-            this.user.vx = this.user.currentSpeed * theEffect.amount * cos(currentUserAngle);
-            this.user.vy = this.user.currentSpeed * theEffect.amount * sin(currentUserAngle);
-            this.user.x += this.user.vx;
-            this.user.y += this.user.vy;
-            dashCounter--;
-            if (dashCounter <= 0) {
-              clearInterval(dashInterval);
+            break;
+          case "Heal":
+            for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+              let targetOldHp = theEffect.targets[i2].hp;
+              theEffect.targets[i2].hp += theEffect.amount;
+              theEffect.targets[i2].hp = constrain(theEffect.targets[i2].hp, 0, theEffect.targets[i2].maxHp);
+              // if the target's health went up after being healed, then give heal ult charge
+              if (targetOldHp < theEffect.targets[i2].maxHp && theEffect.targets[i2].hp > targetOldHp) {
+                healed = true;
+              }
             }
-          }, 10);
-          break;
-        default: console.log("error");
+            break;
+          case "Offense Change":
+            for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+              theEffect.targets[i2].offenseChange += theEffect.amount;
+            }
+            break;
+          case "Defense Change":
+            for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+              theEffect.targets[i2].defenseChange += theEffect.amount;
+            }
+            break;
+          case "Energy Change":
+            for (let i2 = 0; i2 < theEffect.targets.length; i2++) {
+              theEffect.targets[i2].energy += theEffect.amount;
+              theEffect.targets[i2].energy = constrain(theEffect.targets[i2].energy, 0, theEffect.targets[i2].maxEnergy);
+            }
+            break;
+          // combat only effects
+          // case "Bullet":
+          //   console.log(this.user.name + this.user.canShoot);
+          //   if (this.user.canShoot === true) {
+          //     shootBullets(theEffect, this);
+          //   }
+          //   break;
+          // move the user towards the mouse angle direction
+          case "Dash":
+            let dashCounter = 10;
+            let currentUserAngle = this.user.angle;
+            let dashInterval = setInterval(() => {
+              this.user.vx = this.user.currentSpeed * theEffect.amount * cos(currentUserAngle);
+              this.user.vy = this.user.currentSpeed * theEffect.amount * sin(currentUserAngle);
+              this.user.x += this.user.vx;
+              this.user.y += this.user.vy;
+              dashCounter--;
+              if (dashCounter <= 0) {
+                clearInterval(dashInterval);
+              }
+            }, 10);
+            break;
+          default: console.log("error");
+        }
       }
     }
   }

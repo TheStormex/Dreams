@@ -757,6 +757,10 @@ function newTurn() {
 function checkAliveAll() {
   for (let i = 0; i < enemiesList.length; i++) {
     if (enemiesList[i].hp <= 0) {
+      enemiesList[i].canMove = false;
+      enemiesList[i].canShoot = false;
+      enemiesList[i].canAbility = false;
+      enemiesList[i].abilities = [];
       enemiesList.splice(i, 1);
       A_CHAR_DEATH.play();
     }
@@ -848,125 +852,127 @@ function shootBullets(effect, ability) {
   let howManyShots = theEffect.amount;
   let howManyBulletsPerShot = theEffect.perDelay;
   let shotsCount = 0;
-  // create timer that creates every shot of bullets
-  let allBulletSpawnTimer = setInterval(() => {
-    for (let i = 0; i < howManyBulletsPerShot; i++) {
-      // set the angle of the new bullet
-      let angleOfBullet;
-      switch (theEffect.bullet.angle) {
-        case "origin":
-          angleOfBullet = theAbility.user.angle;
-          break;
-        case "random":
-          angleOfBullet = random(0, 2 * PI);
-          break;
-        case "angles":
-          angleOfBullet = ((PI * 2) / howManyBulletsPerShot) * i;
-          break;
-        case "towards":
-          // for the enemy to aim at the player
-          let angleTowardsTarget;
-          let side1 = frontline.x - theAbility.user.x;
-          let side2 = frontline.y - theAbility.user.y;
-          angleTowardsTarget = atan(side2 / side1);
-          if (side1 <= 0) {
-            angleTowardsTarget += PI;
-          }
-          angleOfBullet = random(angleTowardsTarget - PI / 4, angleTowardsTarget + PI / 4);
-        default:
-      }
-      let newAbilityBullet = new Bullet(theAbility.user, theAbility.user.x, theAbility.user.y, width * (theEffect.bullet.speed / 2) / 100 + height * (theEffect.bullet.speed / 2) / 100, angleOfBullet, theEffect.bullet.moveType, theEffect.bullet.targets, theEffect.bullet.effects, width * (theEffect.bullet.size / 2) / 100 + height * (theEffect.bullet.size / 2) / 100, theEffect.bullet.changes, theEffect.bullet.images, theEffect.bullet.sounds, theEffect.bullet.wall, theEffect.bullet.ifHit, theEffect.bullet.timer);
-      // if the user is still alive
-      newAbilityBullet.sounds.play();
-      // start the interval for changes of each bullet
-      for (let i = 0; i < newAbilityBullet.changes.length; i++) {
-        let timePerLoop = 10;
-        let whichChange;
-        switch (newAbilityBullet.changes[i][0]) {
-          case "size":
-            // total change / miliseconds
-            let bulletSizeChange = (newAbilityBullet.changes[i][1] * newAbilityBullet.size / 100) / (newAbilityBullet.changes[i][2] / 10);
-            let bulletSizeTarget = newAbilityBullet.size + newAbilityBullet.changes[i][1] * newAbilityBullet.size / 100;
-            let bulletSizeTimeCount = 0;
-            whichChange = i;
-            let bulletSizeInterval = setInterval(() => {
-              // change the bullet's size
-              newAbilityBullet.size += bulletSizeChange;
-              bulletSizeTimeCount++;
-              // if time reaches max, clear timer
-              if (newAbilityBullet.changes[whichChange][2] / bulletSizeTimeCount <= timePerLoop) {
-                clearInterval(bulletSizeInterval);
-              }
-              // if reach target, stop timer
-              if (newAbilityBullet.changes[whichChange][1] > 0) {
-                if (newAbilityBullet.size >= bulletSizeTarget) {
-                  clearInterval(bulletSizeInterval);
-                }
-              } else if (newAbilityBullet.changes[whichChange][1] < 0) {
-                if (newAbilityBullet.size <= bulletSizeTarget) {
-                  clearInterval(bulletSizeInterval);
-                }
-              }
-              // if bullet would be too small, finish timer
-              if (newAbilityBullet.size <= 0) {
-                let index = projectilesList.indexOf(this);
-                projectilesList.splice(index, 1);
-                clearInterval(bulletSizeInterval);
-              }
-
-            }, timePerLoop);
+  if (theAbility.user.canShoot === true) {
+    // create timer that creates every shot of bullets
+    let allBulletSpawnTimer = setInterval(() => {
+      for (let i = 0; i < howManyBulletsPerShot; i++) {
+        // set the angle of the new bullet
+        let angleOfBullet;
+        switch (theEffect.bullet.angle) {
+          case "origin":
+            angleOfBullet = theAbility.user.angle;
             break;
-          case "speed":
-            // total change / miliseconds
-            let bulletSpeedChange = (newAbilityBullet.changes[i][1] * newAbilityBullet.speed / 100) / (newAbilityBullet.changes[i][2] / 10);
-            let bulletSpeedTarget = newAbilityBullet.speed + newAbilityBullet.changes[i][1] * newAbilityBullet.speed / 100;
-            let bulletSpeedTimeCount = 0;
-            let timePerSpeedLoop = 10;
-            whichChange = i;
-            let bulletSpeedInterval = setInterval(() => {
-              // change the bullet's size
-              newAbilityBullet.speed += bulletSpeedChange;
-              bulletSpeedTimeCount++;
-              // if time reaches max, clear timer
-              if (newAbilityBullet.changes[whichChange][2] / bulletSpeedTimeCount <= timePerSpeedLoop) {
-                clearInterval(bulletSpeedInterval);
-              }
-              // if reach target, stop timer
-              if (newAbilityBullet.changes[whichChange][1] > 0) {
-                if (newAbilityBullet.speed >= bulletSpeedTarget) {
-                  clearInterval(bulletSpeedInterval);
-                }
-              } else if (newAbilityBullet.changes[whichChange][1] < 0) {
-                if (newAbilityBullet.speed <= bulletSpeedTarget) {
-                  clearInterval(bulletSpeedInterval);
-                }
-              }
-              // if bullet would be too small, finish timer
-              if (newAbilityBullet.speed <= 0) {
-                clearInterval(bulletSpeedInterval);
-              }
-
-            }, timePerLoop);
+          case "random":
+            angleOfBullet = random(0, 2 * PI);
             break;
-          case "spawn":
-            // for (let i3 = 0; i3 < newAbilityBullet.changes[i].length; i++) {
-            //   let newSpawnBulletStats = newAbilityBullet.changes[i][1];
-            //   let newSpawnedBullet = new Bullet(theAbility.user, newAbilityBullet.x, newAbilityBullet.y, width*(newSpawnBulletStats.speed/2)/100+height*(newSpawnBulletStats.speed/2)/100, newAbilityBullet.angle, newSpawnBulletStats.moveType, newSpawnBulletStats.targets, newSpawnBulletStats.effects, width*(newSpawnBulletStats.size/2)/100+height*(newSpawnBulletStats.size/2)/100, newSpawnBulletStats.changes, newSpawnBulletStats.images, newSpawnBulletStats.sounds, newSpawnBulletStats.wall, newSpawnBulletStats.ifHit, newSpawnBulletStats.timer);
-            //   projectilesList.push(newSpawnedBullet);
-            //   newSpawnedBullet.sounds.play();
-            // }
+          case "angles":
+            angleOfBullet = ((PI * 2) / howManyBulletsPerShot) * i;
             break;
+          case "towards":
+            // for the enemy to aim at the player
+            let angleTowardsTarget;
+            let side1 = frontline.x - theAbility.user.x;
+            let side2 = frontline.y - theAbility.user.y;
+            angleTowardsTarget = atan(side2 / side1);
+            if (side1 <= 0) {
+              angleTowardsTarget += PI;
+            }
+            angleOfBullet = random(angleTowardsTarget - PI / 4, angleTowardsTarget + PI / 4);
           default:
         }
+        let newAbilityBullet = new Bullet(theAbility.user, theAbility.user.x, theAbility.user.y, width * (theEffect.bullet.speed / 2) / 100 + height * (theEffect.bullet.speed / 2) / 100, angleOfBullet, theEffect.bullet.moveType, theEffect.bullet.targets, theEffect.bullet.effects, width * (theEffect.bullet.size / 2) / 100 + height * (theEffect.bullet.size / 2) / 100, theEffect.bullet.changes, theEffect.bullet.images, theEffect.bullet.sounds, theEffect.bullet.wall, theEffect.bullet.ifHit, theEffect.bullet.timer);
+        // if the user is still alive
+        newAbilityBullet.sounds.play();
+        // start the interval for changes of each bullet
+        for (let i = 0; i < newAbilityBullet.changes.length; i++) {
+          let timePerLoop = 10;
+          let whichChange;
+          switch (newAbilityBullet.changes[i][0]) {
+            case "size":
+              // total change / miliseconds
+              let bulletSizeChange = (newAbilityBullet.changes[i][1] * newAbilityBullet.size / 100) / (newAbilityBullet.changes[i][2] / 10);
+              let bulletSizeTarget = newAbilityBullet.size + newAbilityBullet.changes[i][1] * newAbilityBullet.size / 100;
+              let bulletSizeTimeCount = 0;
+              whichChange = i;
+              let bulletSizeInterval = setInterval(() => {
+                // change the bullet's size
+                newAbilityBullet.size += bulletSizeChange;
+                bulletSizeTimeCount++;
+                // if time reaches max, clear timer
+                if (newAbilityBullet.changes[whichChange][2] / bulletSizeTimeCount <= timePerLoop) {
+                  clearInterval(bulletSizeInterval);
+                }
+                // if reach target, stop timer
+                if (newAbilityBullet.changes[whichChange][1] > 0) {
+                  if (newAbilityBullet.size >= bulletSizeTarget) {
+                    clearInterval(bulletSizeInterval);
+                  }
+                } else if (newAbilityBullet.changes[whichChange][1] < 0) {
+                  if (newAbilityBullet.size <= bulletSizeTarget) {
+                    clearInterval(bulletSizeInterval);
+                  }
+                }
+                // if bullet would be too small, finish timer
+                if (newAbilityBullet.size <= 0) {
+                  let index = projectilesList.indexOf(this);
+                  projectilesList.splice(index, 1);
+                  clearInterval(bulletSizeInterval);
+                }
+
+              }, timePerLoop);
+              break;
+            case "speed":
+              // total change / miliseconds
+              let bulletSpeedChange = (newAbilityBullet.changes[i][1] * newAbilityBullet.speed / 100) / (newAbilityBullet.changes[i][2] / 10);
+              let bulletSpeedTarget = newAbilityBullet.speed + newAbilityBullet.changes[i][1] * newAbilityBullet.speed / 100;
+              let bulletSpeedTimeCount = 0;
+              let timePerSpeedLoop = 10;
+              whichChange = i;
+              let bulletSpeedInterval = setInterval(() => {
+                // change the bullet's size
+                newAbilityBullet.speed += bulletSpeedChange;
+                bulletSpeedTimeCount++;
+                // if time reaches max, clear timer
+                if (newAbilityBullet.changes[whichChange][2] / bulletSpeedTimeCount <= timePerSpeedLoop) {
+                  clearInterval(bulletSpeedInterval);
+                }
+                // if reach target, stop timer
+                if (newAbilityBullet.changes[whichChange][1] > 0) {
+                  if (newAbilityBullet.speed >= bulletSpeedTarget) {
+                    clearInterval(bulletSpeedInterval);
+                  }
+                } else if (newAbilityBullet.changes[whichChange][1] < 0) {
+                  if (newAbilityBullet.speed <= bulletSpeedTarget) {
+                    clearInterval(bulletSpeedInterval);
+                  }
+                }
+                // if bullet would be too small, finish timer
+                if (newAbilityBullet.speed <= 0) {
+                  clearInterval(bulletSpeedInterval);
+                }
+
+              }, timePerLoop);
+              break;
+            case "spawn":
+              // for (let i3 = 0; i3 < newAbilityBullet.changes[i].length; i++) {
+              //   let newSpawnBulletStats = newAbilityBullet.changes[i][1];
+              //   let newSpawnedBullet = new Bullet(theAbility.user, newAbilityBullet.x, newAbilityBullet.y, width*(newSpawnBulletStats.speed/2)/100+height*(newSpawnBulletStats.speed/2)/100, newAbilityBullet.angle, newSpawnBulletStats.moveType, newSpawnBulletStats.targets, newSpawnBulletStats.effects, width*(newSpawnBulletStats.size/2)/100+height*(newSpawnBulletStats.size/2)/100, newSpawnBulletStats.changes, newSpawnBulletStats.images, newSpawnBulletStats.sounds, newSpawnBulletStats.wall, newSpawnBulletStats.ifHit, newSpawnBulletStats.timer);
+              //   projectilesList.push(newSpawnedBullet);
+              //   newSpawnedBullet.sounds.play();
+              // }
+              break;
+            default:
+          }
+        }
+        projectilesList.push(newAbilityBullet);
       }
-      projectilesList.push(newAbilityBullet);
-    }
-    shotsCount++;
-    if (shotsCount >= howManyShots) {
-      clearInterval(allBulletSpawnTimer);
-    }
-  }, theEffect.delay);
-  intervalsList.push(allBulletSpawnTimer);
+      shotsCount++;
+      if (shotsCount >= howManyShots) {
+        clearInterval(allBulletSpawnTimer);
+      }
+    }, theEffect.delay);
+    intervalsList.push(allBulletSpawnTimer);
+  }
 }
 
 // end the game
@@ -1088,23 +1094,23 @@ function initialisation() {
     [ab_escapeButton, ab_plasmaPulse, ab_ult_paradoxProtocol]
   ], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
-  agent = new Enemy("Agent - Hackshield", 500, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce],
+  agent = new Enemy("Agent - Hackshield", 10, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce],
    [], ["Halt!", "Cease!"], ["base", "damaged"], ["hp", "lowest"]);
   for (let i = 0; i < agent.abilities.length; i++) {
     agent.abilities[i].user = agent;
   }
-  agent2 = new Enemy("Agent - Quarantine", 500, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_taunt, ta_e_agent_overload],
+  agent2 = new Enemy("Agent - Quarantine", 10, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_taunt, ta_e_agent_overload],
     [], ["Halt!", "Cease!"], ["base", "damaged"], ["hp", "highest"]);
   for (let i = 0; i < agent2.abilities.length; i++) {
     agent2.abilities[i].user = agent2;
   }
   serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
-  serpent = new Enemy("Serpent - Serverspy", 700, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
+  serpent = new Enemy("Serpent - Serverspy", 10, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
     ta_e_serpent_spray], [], ["SSS!", "AKK!"], ["base", "damaged"], ["ultCharge", "lowest"]);
   for (let i = 0; i < serpent.abilities.length; i++) {
     serpent.abilities[i].user = serpent;
   }
-  serpent2 = new Enemy("Serpent - Killswitch", 700, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_gaze, ta_e_serpent_swat],
+  serpent2 = new Enemy("Serpent - Killswitch", 10, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_gaze, ta_e_serpent_swat],
   [], ["SSS!", "AKK!"], ["base", "damaged"], ["ultCharge", "highest"]);
   for (let i = 0; i < serpent2.abilities.length; i++) {
     serpent2.abilities[i].user = serpent2;
