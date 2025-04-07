@@ -1094,12 +1094,12 @@ function initialisation() {
     [ab_escapeButton, ab_plasmaPulse, ab_ult_paradoxProtocol]
   ], pro_p_nuts_basic, robotImages);
   agentImages = new Images(S_AGENT_LEFT, S_AGENT_RIGHT, S_AGENT_FRONT, "none");
-  agent = new Enemy("Agent - Hackshield", 600, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce],
+  agent = new Enemy("Agent - Hackshield", 500, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_block, ta_e_agent_pierce],
    [], ["Halt!", "Cease!"], ["base", "damaged"], ["hp", "lowest"]);
   for (let i = 0; i < agent.abilities.length; i++) {
     agent.abilities[i].user = agent;
   }
-  agent2 = new Enemy("Agent - Quarantine", 70, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_taunt, ta_e_agent_overload],
+  agent2 = new Enemy("Agent - Quarantine", 700, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_taunt, ta_e_agent_overload],
     [], ["Halt!", "Cease!"], ["base", "damaged"], ["hp", "highest"]);
   for (let i = 0; i < agent2.abilities.length; i++) {
     agent2.abilities[i].user = agent2;
@@ -1110,7 +1110,7 @@ function initialisation() {
   for (let i = 0; i < serpent.abilities.length; i++) {
     serpent.abilities[i].user = serpent;
   }
-  serpent2 = new Enemy("Serpent - Killswitch", 800, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_gaze, ta_e_serpent_swat],
+  serpent2 = new Enemy("Serpent - Killswitch", 700, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_gaze, ta_e_serpent_swat],
   [], ["SSS!", "AKK!"], ["base", "damaged"], ["ultCharge", "highest"]);
   for (let i = 0; i < serpent2.abilities.length; i++) {
     serpent2.abilities[i].user = serpent2;
