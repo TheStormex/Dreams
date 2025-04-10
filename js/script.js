@@ -1099,13 +1099,13 @@ function initialisation() {
   for (let i = 0; i < agent.abilities.length; i++) {
     agent.abilities[i].user = agent;
   }
-  agent2 = new Enemy("Agent - Quarantine", 700, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_taunt, ta_e_agent_overload],
+  agent2 = new Enemy("Agent - Quarantine", 500, width / 20 + height / 20, 4, [ab_e_agent_shoot, ab_e_agent_spread, ab_e_agent_explode], agentImages, [ta_e_agent_taunt, ta_e_agent_overload],
     [], ["Halt!", "Cease!"], ["base", "damaged"], ["hp", "highest"]);
   for (let i = 0; i < agent2.abilities.length; i++) {
     agent2.abilities[i].user = agent2;
   }
   serpentImages = new Images(S_SERPENT_LEFT, S_SERPENT_RIGHT, S_SERPENT_FRONT, "none");
-  serpent = new Enemy("Serpent - Serverspy", 500, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
+  serpent = new Enemy("Serpent - Serverspy", 700, width / 20 + height / 20, 6, [ab_e_serpent_shoot, ab_e_serpent_wave, ab_e_serpent_gatling], serpentImages, [ta_e_serpent_swipe,
     ta_e_serpent_spray], [], ["SSS!", "AKK!"], ["base", "damaged"], ["ultCharge", "lowest"]);
   for (let i = 0; i < serpent.abilities.length; i++) {
     serpent.abilities[i].user = serpent;
