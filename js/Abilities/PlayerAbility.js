@@ -205,6 +205,15 @@ class PlayerAbility {
       // remove all targets from the ability effect since ability effect is finished
       theEffect.targets = [];
     }
+    // ensure all player characters' energy and ultCharge do not go into negative somehow
+    for (let i = 0; i < playersList.length; i++) {
+      if (playersList[i].energy < 0) {
+        playersList[i].energy = 0;
+      }
+      if (playersList[i].ultCharge < 0) {
+        playersList[i].ultCharge = 0;
+      }
+    }
   }
 }
 
